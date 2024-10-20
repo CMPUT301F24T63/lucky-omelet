@@ -12,6 +12,7 @@ public class Event {
     private int eventID;
     private String name;
     private String description;
+    private int limit;
     private User creator;
     private Facility facility;
     private Picture poster;
@@ -22,10 +23,11 @@ public class Event {
     private ArrayList<User> finalList;
 
     // Constructor
-    public Event(int eventID, String name, String description, User creator, Facility facility) {
+    public Event(int eventID, String name, String description, int limit, User creator, Facility facility) {
         this.eventID = eventID;
         this.name = name;
         this.description = description;
+        this.limit = limit;
         this.creator = creator;
         this.facility = facility;
         this.poster = null; // no poster
@@ -48,6 +50,10 @@ public class Event {
 
     public String getDescription() {
         return description;
+    }
+
+    public int getLimit() {
+        return limit;
     }
 
     public User getCreator() {

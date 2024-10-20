@@ -50,4 +50,7 @@ public class Control {
     public ArrayList<Picture> getPictureList() {
         return pictureList;
     }
+
+    // functions
+
 }
