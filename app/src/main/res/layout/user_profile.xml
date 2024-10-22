@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Button
+        android:id="@+id/upload_user_image_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
+        android:text="Upload Image"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.592"
+        app:layout_constraintStart_toEndOf="@+id/user_name"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/edit_facility_button"
+        android:layout_width="135dp"
+        android:layout_height="50dp"
+        android:layout_marginBottom="140dp"
+        android:text="Edit Facility"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/user_picture_generate_button"
+        app:layout_constraintHorizontal_bias="0.534"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/user_name"
+        android:layout_width="158dp"
+        android:layout_height="34dp"
+        android:layout_marginStart="56dp"
+        android:layout_marginTop="60dp"
+        android:text="User Name"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/profile_image"
+        android:layout_width="270dp"
+        android:layout_height="172dp"
+        android:layout_marginStart="58dp"
+        android:layout_marginTop="156dp"
+        android:layout_marginEnd="83dp"
+        app:layout_constraintBottom_toTopOf="@+id/user_email"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.006"
+        tools:srcCompat="@tools:sample/avatars[0]" />
+
+    <Button
+        android:id="@+id/user_picture_generate_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="40dp"
+        android:layout_marginBottom="140dp"
+        android:text="Generate Picture"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/user_email"
+        android:layout_width="105dp"
+        android:layout_height="24dp"
+        android:layout_marginBottom="56dp"
+        android:text="Email"
+        app:layout_constraintBottom_toTopOf="@+id/user_contact"
+        tools:layout_editor_absoluteX="145dp" />
+
+    <TextView
+        android:id="@+id/user_contact"
+        android:layout_width="136dp"
+        android:layout_height="28dp"
+        android:layout_marginBottom="80dp"
+        android:text="Optional Contact"
+        app:layout_constraintBottom_toTopOf="@+id/edit_facility_button"
+        tools:layout_editor_absoluteX="114dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
