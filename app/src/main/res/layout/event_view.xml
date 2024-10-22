@@ -3,83 +3,88 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
 
     <TextView
         android:id="@+id/event_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="48dp"
-        android:text="User Name"
+        android:text="Event Title"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/upload_poster_button"
-        app:layout_constraintHorizontal_bias="0.0" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/upload_poster_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="48dp"
-        android:text="Upload Image"
+        android:text="Upload Poster"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/event_title"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/poster"
-        android:layout_width="270dp"
-        android:layout_height="172dp"
-        android:layout_marginTop="24dp"
+        android:layout_width="292dp"
+        android:layout_height="274dp"
+        android:layout_marginTop="16dp"
         app:layout_constraintTop_toBottomOf="@+id/event_title"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        tools:srcCompat="@tools:sample/avatars[0]" />
+        tools:srcCompat="@tools:sample/avatars[5]" />
 
     <TextView
-        android:id="@+id/user_email"
+        android:id="@+id/Event_detail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="Email"
+        android:text="Detailed Information"
         app:layout_constraintTop_toBottomOf="@+id/poster"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5" />
-
-    <TextView
-        android:id="@+id/user_contact"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Optional Contact"
-        app:layout_constraintTop_toBottomOf="@+id/user_email"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <Button
-        android:id="@+id/edit_facility_button"
+        android:id="@+id/Entrant_join_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Edit Facility"
-        app:layout_constraintTop_toBottomOf="@+id/user_contact"
+        android:text="Join Event"
+        app:layout_constraintTop_toBottomOf="@+id/Event_detail"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/user_picture_generate_button"
-        app:layout_constraintHorizontal_bias="0.5" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <Button
-        android:id="@+id/user_picture_generate_button"
+        android:id="@+id/Event_edit_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="Edit"
+        app:layout_constraintTop_toBottomOf="@+id/Entrant_join_button"
+        app:layout_constraintStart_toStartOf="parent"
         android:layout_marginTop="16dp"
-        android:text="Generate Picture"
-        app:layout_constraintTop_toBottomOf="@+id/user_contact"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/edit_facility_button" />
+        app:layout_constraintEnd_toStartOf="@+id/show_map_button" />
+
+    <Button
+        android:id="@+id/show_map_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Show Map"
+        app:layout_constraintTop_toBottomOf="@+id/Entrant_join_button"
+        app:layout_constraintStart_toEndOf="@+id/Event_edit_button"
+        android:layout_marginStart="16dp"
+        app:layout_constraintEnd_toStartOf="@+id/manage_member_button" />
+
+    <Button
+        android:id="@+id/manage_member_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Manage Member"
+        app:layout_constraintTop_toBottomOf="@+id/Entrant_join_button"
+        app:layout_constraintStart_toEndOf="@+id/show_map_button"
+        android:layout_marginStart="16dp"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationView"
