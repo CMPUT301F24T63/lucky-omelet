@@ -21,9 +21,10 @@
         android:id="@+id/upload_poster_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="40dp"
         android:text="Upload Poster"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.503"
         app:layout_constraintStart_toEndOf="@+id/event_title"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -63,7 +64,6 @@
         android:text="Edit"
         app:layout_constraintTop_toBottomOf="@+id/Entrant_join_button"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="16dp"
         app:layout_constraintEnd_toStartOf="@+id/show_map_button" />
 
     <Button

@@ -6,12 +6,20 @@
     android:orientation="vertical">
 
     <EditText
-        android:id="@+id/user_name_edit"
+        android:id="@+id/first_name_edit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
         android:textSize="18sp"
-        android:hint="Firstname Lastname" />
+        android:hint="First name" />
+
+    <EditText
+        android:id="@+id/last_name_edit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:textSize="18sp"
+        android:hint="Last name" />
 
     <EditText
         android:id="@+id/user_email_edit"
@@ -27,7 +35,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
         android:textSize="18sp"
-        android:hint="optional Contact" />
+        android:hint="Contact" />
 
 
     <Button

@@ -48,6 +48,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintHeight_percent="0.5" /> <!-- Occupies half the screen height -->
+        <!-- This content should not be confined to a fixed screen size.
+        The user should be able to scroll through the screen to view all the lists in a sequential order.-->
 
     <TextView
         android:id="@+id/owned_text"
