@@ -29,19 +29,21 @@
 
     <Button
         android:id="@+id/upload_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="628dp"
-        android:layout_marginEnd="68dp"
+        android:layout_width="144dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="44dp"
+        android:layout_marginEnd="44dp"
         android:text="Upload Poster"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/manage_member_button"
+        app:layout_constraintVertical_bias="0.0" />
 
     <ImageView
         android:id="@+id/poster"
         android:layout_width="292dp"
         android:layout_height="274dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="4dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
@@ -52,42 +54,43 @@
         android:id="@+id/Event_detail"
         android:layout_width="253dp"
         android:layout_height="106dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="4dp"
         android:text="Detailed Information"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/poster" />
 
     <Button
-        android:id="@+id/Entrant_join_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Join Event"
-        tools:layout_editor_absoluteX="122dp"
-        tools:layout_editor_absoluteY="547dp" />
-
-    <Button
         android:id="@+id/Event_edit_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="125dp"
+        android:layout_height="38dp"
+        android:layout_marginTop="56dp"
+        android:layout_marginEnd="12dp"
         android:text="Edit"
-        tools:layout_editor_absoluteX="34dp"
-        tools:layout_editor_absoluteY="570dp" />
+        app:layout_constraintEnd_toStartOf="@+id/manage_member_button"
+        app:layout_constraintHorizontal_bias="0.755"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Event_detail" />
 
     <Button
         android:id="@+id/show_map_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="127dp"
+        android:layout_height="39dp"
         android:text="Show Map"
-        tools:layout_editor_absoluteX="56dp"
-        tools:layout_editor_absoluteY="628dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/upload_button"
+        app:layout_constraintHorizontal_bias="0.687"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Event_edit_button"
+        app:layout_constraintVertical_bias="0.494" />
 
     <Button
         android:id="@+id/manage_member_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="143dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="44dp"
         android:text="Manage Member"
-        tools:layout_editor_absoluteX="245dp"
-        tools:layout_editor_absoluteY="554dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:layout_editor_absoluteY="561dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
