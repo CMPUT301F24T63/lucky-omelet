@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -18,48 +17,18 @@
                 android:id="@+id/title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="QR code"
-                android:textSize="30sp"
+                android:text="Image Upload"
+                android:textSize="24sp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 />
 
-            <ImageView
-                android:id="@+id/QRcode"
-                android:layout_width="120pt"
-                android:layout_height="120pt"
-                android:src="@drawable/qrcode"
-                android:elevation="8dp"
-                android:layout_marginTop="16dp"
-                android:layout_gravity="center_horizontal"
-                android:foregroundGravity="center_horizontal"
-
-                />
-
             <TextView
-                android:id="@+id/pre"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Hash data of your QR code:"
-                android:layout_marginStart="16dp"
-
-                />
-
-            <TextView
-                android:id="@+id/Hash_data"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Omelet test"
-                android:layout_marginStart="16dp"
-
-                />
-
-            <TextView
-                android:id="@+id/ask"
+                android:id="@+id/text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="Would you like to store it and publish?"
+                android:text="Do you want to upload this image as your profile picture?"
                 android:layout_marginStart="16dp"
 
                 />
@@ -68,14 +37,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
-                android:gravity="right"
+                android:gravity="end"
                 app:layout_constraintEnd_toEndOf="parent">
 
                 <Button
                     android:id="@+id/button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Cancel"
+                    android:text="No"
                     style="@style/TransparentButton"
 
                     />
@@ -83,7 +52,7 @@
                     android:id="@+id/button2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Save Code and Publish"
+                    android:text="Yes"
                     style="@style/TransparentButton"
 
                     />
