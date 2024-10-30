@@ -36,6 +36,9 @@ public class Control {
     }
 
     public ArrayList<User> getUserList() {
+        // if user need admin privilege to getUserList, they can not add themself to the list
+        // Maybe try to control this with database permission later?
+        // Write permission and no read permission?
         return userList;
     }
 
