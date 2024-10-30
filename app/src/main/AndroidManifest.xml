@@ -21,6 +21,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".EventslistActivity" />
+        <activity android:name=".ProfileActivity" />
+        <activity android:name=".NotificationActivity" />
     </application>
 
 </manifest>
