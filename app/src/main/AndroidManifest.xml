@@ -24,6 +24,8 @@
         <activity android:name=".EventslistActivity" />
         <activity android:name=".ProfileActivity" />
         <activity android:name=".NotificationActivity" />
+        <activity android:name=".Landing_page" />
+        <activity android:name=".facilityActivity" />
     </application>
 
 </manifest>

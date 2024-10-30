@@ -1,56 +1,25 @@
 package com.example.eventlotterysystem;
 
-import android.app.Activity;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ImageButton;
-import android.widget.ImageView;
+import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 public class MainActivity extends AppCompatActivity {
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.landing_page);
+        setContentView(R.layout.check_device);
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.landing_page), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
-
-        // Set OnClickListener on eventsIcon
-        ImageView eventsIcon = findViewById(R.id.eventsIcon);
-        eventsIcon.setOnClickListener(new View.OnClickListener() {
+        Button checkDeviceButton = findViewById(R.id.check_device_button);
+        checkDeviceButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, EventslistActivity.class);
+                Intent intent = new Intent(MainActivity.this, Landing_page.class);
                 startActivity(intent);
             }
         });
-
-        ImageView profileIcon = findViewById(R.id.profileIcon);
-        profileIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        ImageView notificationIcon = findViewById(R.id.notificationsIcon);
-        notificationIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, NotificationActivity.class);
-                startActivity(intent);
-            }
-        });
-
     }
 }
