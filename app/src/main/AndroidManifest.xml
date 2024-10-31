@@ -25,6 +25,9 @@
         <activity
             android:name=".FacilityListActivity"
             android:exported="true" />
+        <activity
+            android:name=".EditFacilityActivity"
+            android:exported="true" />
     </application>
 
 </manifest>
