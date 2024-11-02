@@ -16,6 +16,23 @@ public class User {
     private int userID;
     private String firstName;
     private String lastName;
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setContact(String contact) {
+        this.contact = contact;
+    }
+
     private String email;
     private String contact;
     private Picture picture; // Convert pictures to String
@@ -35,6 +52,19 @@ public class User {
         this.picture = null; // no pic
         this.facility = null; // A user has no facility at creation
         this.isAdmin = isAdmin;
+        this.notificationList = new ArrayList<>();
+        this.enrolledList = new ArrayList<>();
+        this.organizedList = new ArrayList<>();
+    }
+    public User (int userID) {
+        this.userID = userID;
+        this.firstName = "Default";
+        this.lastName = "Default";
+        this.email = "Default";
+        this.contact = "Default";
+        this.picture = null; // no pic
+        this.facility = null; // A user has no facility at creation
+        this.isAdmin = false;
         this.notificationList = new ArrayList<>();
         this.enrolledList = new ArrayList<>();
         this.organizedList = new ArrayList<>();
@@ -101,11 +131,20 @@ public class User {
         this.picture = null;
     }
 
-    public void createFacility(Control control, String name, String location, String description, String openTime, User creator) {
+    public void createFacility(Control control, String name, String location, String description, String openTime) {
         if (this.facility == null) {
-            Facility newFacility = new Facility(name, location, description, openTime, creator);
+            Facility newFacility = new Facility(name, location, description, openTime, this);
             this.facility = newFacility;
             control.getFacilityList().add(newFacility);
+        }
+    }
+
+    public void editFacility(Control control, String name, String location, String description, String openTime) {
+        if (this.facility != null) {
+            this.facility.setName(name);
+            this.facility.setLocation(location);
+            this.facility.setDescription(description);
+            this.facility.setOpenTime(openTime);
         }
     }
 
@@ -115,10 +154,12 @@ public class User {
     }
 
     public void createEvent(Control control, String name, String description, int limit) {
-        int eventID = control.getCurrentEventID();
-        Event newEvent = new Event(eventID, name, description, limit, this, facility); // "this" refers to the user himself
-        this.organizedList.add(newEvent); // add to organized events
-        control.getEventList().add(newEvent); // add to all events
+        if (this.facility != null) {
+            int eventID = control.getCurrentEventID();
+            Event newEvent = new Event(eventID, name, description, limit, this, facility); // "this" refers to the user himself
+            this.organizedList.add(newEvent); // add to organized events
+            control.getEventList().add(newEvent); // add to all events
+        }
     }
 
     // Function to delete an event
@@ -145,13 +186,11 @@ public class User {
     // Function to accept an invitation
     public void acceptInvitation(Notification notification) {
         notification.accept();
-        notification.getEvent().getChosenList().add(this); // accept -> chosen list
     }
 
     // Function to decline an invitation
     public void declineInvitation(Notification notification) {
         notification.decline();
-        notification.getEvent().getCancelledList().add(this);
     }
 
     // Function to remove a notification
@@ -162,30 +201,38 @@ public class User {
     public void reRoll(Event event){ // use for the first time = draw
         // Construct message
         String automaticMessage = "[Auto] Congratulations! You have been chosen to attend " + event.getName() + "! Click 'Accept' below to accept the invitation!";
-        Notification automaticInvitation = new Notification(event, true, automaticMessage);
         // Calculate remaining spots
         int remainingSpot = event.getLimit() - event.getChosenList().size();
         // if not enough people registered
-        if (event.getWaitingList().size() <= remainingSpot) {
-            for (int i = 0; i < event.getWaitingList().size(); i++) {
-                // give everyone an invitation
-                event.getWaitingList().get(i).getNotificationList().add(automaticInvitation);
+        if (event.getWaitingList().size() <= remainingSpot) { // enough spots for everyone
+            for (User winner: event.getWaitingList()) { // waiting list shrinks as we delete them
+                winner.getNotificationList().add(new Notification(event, winner, true, automaticMessage)); // give everyone an invitation
+                event.getChosenList().add(winner); // add the winner to chosen list
             }
+            event.getWaitingList().clear(); // clear the waiting list (avoid concurrent modification exception)
         } else { // not enough spots for everyone
             //draw randomly from waiting list (result is in descending order)
-            List<Integer> result = Utils.drawRandomNumbers(remainingSpot, event.getWaitingList().size());
-            for (int i = 0; i < event.getWaitingList().size(); i++) {
-                event.getChosenList().add(event.getWaitingList().get(i)); // add the winner to chosen list
-                event.getWaitingList().remove(i); // remove the winner from waiting list
+            List<Integer> result = Utils.drawRandomNumbers(remainingSpot, event.getWaitingList().size()-1);
+            for (int i = 0; i < result.size(); i++) {
+                event.getChosenList().add(event.getWaitingList().get(result.get(i))); // add the winner to chosen list
+                event.getWaitingList().remove((int)result.get(i)); // remove the winner from waiting list
                 // this operation is done from high index to low index, so this should not cause the index of the winners to change
+            }
+            // add notifications to winners
+            for (int i = 0; i < event.getChosenList().size(); i++) {
+                event.getChosenList().get(i).getNotificationList().add(new Notification(event, event.getChosenList().get(i), true,automaticMessage));
             }
         }
 
     }
 
-    public void makeFinal(Event event){
-        event.getFinalList().clear();
-        event.getFinalList().addAll(event.getWaitingList());
-    }
+    // This is not right... We should automatically add those who accepted in the notification to the final list
+    // Those who does not click "accept" or "decline" will stay in the waiting list
+    // Those who click "decline" will be moved to the cancelled list
+
+//    public void makeFinal(Event event){
+//        event.getFinalList().clear();
+//        event.getFinalList().addAll(event.getWaitingList());
+//    }
 
 }

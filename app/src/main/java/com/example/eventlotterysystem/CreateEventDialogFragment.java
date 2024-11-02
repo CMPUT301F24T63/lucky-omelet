@@ -20,7 +20,7 @@ public class CreateEventDialogFragment extends DialogFragment {
         View view = inflater.inflate(R.layout.edit_event_fragment, container, false);
 
         // Initialize UI components
-        EditText titleEdit = view.findViewById(R.id.title_edit);
+        EditText titleEdit = view.findViewById(R.id.firstName);
         EditText descriptionEdit = view.findViewById(R.id.title_edit5);
         EditText waitingListLimitEdit = view.findViewById(R.id.editTextNumber);
         EditText eventLimitEdit = view.findViewById(R.id.editTextNumber2);

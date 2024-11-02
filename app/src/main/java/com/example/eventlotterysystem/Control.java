@@ -1,8 +1,18 @@
 package com.example.eventlotterysystem;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Control {
+    private static Control instance;
+
+    public static Control getInstance() {
+        if (instance == null) {
+            instance = new Control();
+        }
+        return instance;
+    }
+
     // Attributes
     private int currentUserID;
     private int currentEventID;
@@ -22,6 +32,9 @@ public class Control {
     }
 
     //getters
+    public void set_currentUserID(int id){
+        this.currentUserID = id;
+    }
 
     public int getCurrentEventID() {
         int id = currentEventID;
@@ -30,9 +43,7 @@ public class Control {
     }
 
     public int getCurrentUserID() {
-        int id = currentUserID;
-        currentUserID++;
-        return id;
+        return currentUserID;
     }
 
     public ArrayList<User> getUserList() {

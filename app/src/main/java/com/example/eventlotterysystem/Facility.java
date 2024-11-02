@@ -6,7 +6,7 @@ public class Facility {
     private String location;
     private String description;
     private String openTime;
-    private User creator;
+    private final User creator;
     private Picture poster;
 
     // Constructor
@@ -45,8 +45,26 @@ public class Facility {
         return poster;
     }
 
-    // Functions
+    // Setters (May add constraint later)
 
+    public void setName(String name) {
+        this.name = name;
+    }
 
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setOpenTime(String openTime) {
+        this.openTime = openTime;
+    }
+
+    public void setPoster(Picture poster) {
+        this.poster = poster;
+    }
 
 }
