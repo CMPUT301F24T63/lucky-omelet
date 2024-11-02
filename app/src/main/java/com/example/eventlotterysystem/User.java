@@ -14,8 +14,7 @@ import java.util.List;
 public class User {
     // Attributes
     private int userID;
-    private String firstName;
-    private String lastName;
+    private String name;
     private String email;
     private String contact;
     private Picture picture; // Convert pictures to String
@@ -26,10 +25,9 @@ public class User {
     private ArrayList<Event> organizedList;
 
     // Constructor
-    public User(int userID, String firstName, String lastName, String email, String contact, Boolean isAdmin) {
+    public User(int userID, String name, String email, String contact, Boolean isAdmin) {
         this.userID = userID;
-        this.firstName = firstName;
-        this.lastName = lastName;
+        this.name = name;
         this.email = email;
         this.contact = contact;
         this.picture = null; // no pic
@@ -46,12 +44,8 @@ public class User {
         return userID;
     }
 
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
+    public String getName() {
+        return name;
     }
 
     public String getEmail() {

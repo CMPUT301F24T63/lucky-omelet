@@ -17,8 +17,8 @@ public class EventTest {
     public void setUp() {
         control = new Control();
         // All users are new
-        User organizer = new User(control.getCurrentUserID(),"Organizer", "Test", "email", "contact", false );
-        User entrant = new User(control.getCurrentUserID(),"Entrant", "Test", "email", "contact", false );
+        User organizer = new User(control.getCurrentUserID(),"Organizer", "email", "contact", false );
+        User entrant = new User(control.getCurrentUserID(),"Entrant", "email", "contact", false );
         control.getUserList().add(organizer);
         control.getUserList().add(entrant);
 
@@ -74,10 +74,10 @@ public class EventTest {
     @Test
     public void testWaitingListLimit() {
         User organizer = control.getUserList().get(0);
-        User bot0 = new User(control.getCurrentUserID(), "Bot", "Test", "email", "contact", false);
-        User bot1 = new User(control.getCurrentUserID(), "Bot", "Test", "email", "contact", false);
-        User bot2 = new User(control.getCurrentUserID(), "Bot", "Test", "email", "contact", false);
-        User bot3 = new User(control.getCurrentUserID(), "Bot", "Test", "email", "contact", false);
+        User bot0 = new User(control.getCurrentUserID(), "Bot", "email", "contact", false);
+        User bot1 = new User(control.getCurrentUserID(), "Bot", "email", "contact", false);
+        User bot2 = new User(control.getCurrentUserID(), "Bot", "email", "contact", false);
+        User bot3 = new User(control.getCurrentUserID(), "Bot", "email", "contact", false);
         organizer.createEvent(control, "Test Event Name", "Test Event Description", 2, 2);
         bot0.joinEvent(control.getEventList().get(0));
         bot1.joinEvent(control.getEventList().get(0));
@@ -105,16 +105,16 @@ public class EventTest {
         User organizer = control.getUserList().get(0);
         // create 11 users
         User entrant = control.getUserList().get(1);
-        User bot1 = new User(control.getCurrentUserID(), "Bot", "Test", "email", "contact", false);
-        User bot2 = new User(control.getCurrentUserID(), "Bot", "Test", "email", "contact", false);
-        User bot3 = new User(control.getCurrentUserID(), "Bot", "Test", "email", "contact", false);
-        User bot4 = new User(control.getCurrentUserID(), "Bot", "Test", "email", "contact", false);
-        User bot5 = new User(control.getCurrentUserID(), "Bot", "Test", "email", "contact", false);
-        User bot6 = new User(control.getCurrentUserID(), "Bot", "Test", "email", "contact", false);
-        User bot7 = new User(control.getCurrentUserID(), "Bot", "Test", "email", "contact", false);
-        User bot8 = new User(control.getCurrentUserID(), "Bot", "Test", "email", "contact", false);
-        User bot9 = new User(control.getCurrentUserID(), "Bot", "Test", "email", "contact", false);
-        User bot10 = new User(control.getCurrentUserID(), "Bot", "Test", "email", "contact", false);
+        User bot1 = new User(control.getCurrentUserID(), "Bot", "email", "contact", false);
+        User bot2 = new User(control.getCurrentUserID(), "Bot", "email", "contact", false);
+        User bot3 = new User(control.getCurrentUserID(), "Bot", "email", "contact", false);
+        User bot4 = new User(control.getCurrentUserID(), "Bot", "email", "contact", false);
+        User bot5 = new User(control.getCurrentUserID(), "Bot", "email", "contact", false);
+        User bot6 = new User(control.getCurrentUserID(), "Bot", "email", "contact", false);
+        User bot7 = new User(control.getCurrentUserID(), "Bot", "email", "contact", false);
+        User bot8 = new User(control.getCurrentUserID(), "Bot", "email", "contact", false);
+        User bot9 = new User(control.getCurrentUserID(), "Bot", "email", "contact", false);
+        User bot10 = new User(control.getCurrentUserID(), "Bot", "email", "contact", false);
         // Event limit set to 5 people, 11 people join the event
         organizer.createEvent(control, "Test Event Name", "Test Event Description", 5, 20);
         entrant.joinEvent(control.getEventList().get(0));
@@ -167,8 +167,8 @@ public class EventTest {
         User organizer = control.getUserList().get(0);
         // create 3 users
         User entrant = control.getUserList().get(1);
-        User bot1 = new User(control.getCurrentUserID(), "Bot", "Test", "email", "contact", false);
-        User bot2 = new User(control.getCurrentUserID(), "Bot", "Test", "email", "contact", false);
+        User bot1 = new User(control.getCurrentUserID(), "Bot", "email", "contact", false);
+        User bot2 = new User(control.getCurrentUserID(), "Bot", "email", "contact", false);
         // Event limit set to 5 people, only 3 people join the event
         organizer.createEvent(control, "Test Event Name", "Test Event Description", 5, 20);
         Event event = organizer.getOrganizedList().get(0);
