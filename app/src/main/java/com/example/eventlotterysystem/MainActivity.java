@@ -38,12 +38,10 @@ public class MainActivity extends AppCompatActivity {
          * 2024-11-02 16:28:28.695 12295-12295 User 0 not... list size com.example.eventlotterysystem       I  2
          **********************************************************************************************************/
 
-
-        // Chose which user to test for MainActivity
-
-        User me = control.getUserList().get(0); // entrant
-        // User me = control.getUserList().get(10); // organizer
-        // User me = control.getUserList().get(11); // admin
+        // Chose which user to test for MainActivity in checkDevice function
+        checkDevice(control);
+        // Get current user by calling Control.getCurrentUser();
+        // e.g. Control.getCurrentUser().joinEvent(event);
 
 
         super.onCreate(savedInstanceState);
@@ -114,5 +112,12 @@ public class MainActivity extends AppCompatActivity {
         organizer.reRoll(organizer.getOrganizedList().get(2));
 
 
+    }
+
+    protected void checkDevice(Control control){
+        // find index of current user in user list by IMEI
+        int index = 0;
+        // 0: entrant   10: organizer   11: admin
+        Control.setCurrentUser(control.getUserList().get(index));
     }
 }

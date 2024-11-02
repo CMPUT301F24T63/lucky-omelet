@@ -11,6 +11,7 @@ public class Control {
     private ArrayList<Event> eventList;
     private ArrayList<Picture> pictureList;
     private static Control instance;
+    private static User currentUser = null;
 
     // Constructor
     public Control() {
@@ -60,6 +61,14 @@ public class Control {
 
     public ArrayList<Picture> getPictureList() {
         return pictureList;
+    }
+
+    public static User getCurrentUser() {
+        return currentUser;
+    }
+
+    public static void setCurrentUser(User user) {
+        currentUser = user;
     }
 
     // functions
