@@ -10,6 +10,7 @@ public class Control {
     private ArrayList<Facility> facilityList;
     private ArrayList<Event> eventList;
     private ArrayList<Picture> pictureList;
+    private static Control instance;
 
     // Constructor
     public Control() {
@@ -19,6 +20,13 @@ public class Control {
         this.facilityList = new ArrayList<>();
         this.eventList = new ArrayList<>();
         this.pictureList = new ArrayList<>();
+    }
+
+    public static Control getInstance() {
+        if (instance == null) {
+            instance = new Control();
+        }
+        return instance;
     }
 
     //getters
