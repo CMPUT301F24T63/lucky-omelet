@@ -139,8 +139,9 @@ public class User {
     }
 
     public void joinEvent(Event event) {
-        if (!event.getWaitingList().contains(this)) { // if this user is not on the waiting list
+        if (!event.getWaitingList().contains(this) && event.getWaitingList().size() < event.getLimitWaitinglList()) { // if this user is not on the waiting list
             event.getWaitingList().add(this);
+            enrolledList.add(event);
         }
     }
 
@@ -151,6 +152,7 @@ public class User {
             event.getCancelledList().add(this);
         }
         event.getFinalList().remove(this);
+        enrolledList.remove(event);
     }
 
     // Function to accept an invitation
@@ -199,10 +201,5 @@ public class User {
     // This is not right... We should automatically add those who accepted in the notification to the final list
     // Those who does not click "accept" or "decline" will stay in the waiting list
     // Those who click "decline" will be moved to the cancelled list
-
-//    public void makeFinal(Event event){
-//        event.getFinalList().clear();
-//        event.getFinalList().addAll(event.getWaitingList());
-//    }
 
 }
