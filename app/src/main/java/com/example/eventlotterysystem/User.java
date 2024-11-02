@@ -123,10 +123,10 @@ public class User {
         this.facility = null;
     }
 
-    public void createEvent(Control control, String name, String description, int limit) {
+    public void createEvent(Control control, String name, String description, int limitChosenList, int limitWaitinglList) {
         if (this.facility != null) {
             int eventID = control.getCurrentEventID();
-            Event newEvent = new Event(eventID, name, description, limit, this, facility); // "this" refers to the user himself
+            Event newEvent = new Event(eventID, name, description, limitChosenList, limitWaitinglList, this); // "this" refers to the user himself
             this.organizedList.add(newEvent); // add to organized events
             control.getEventList().add(newEvent); // add to all events
         }
@@ -172,7 +172,7 @@ public class User {
         // Construct message
         String automaticMessage = "[Auto] Congratulations! You have been chosen to attend " + event.getName() + "! Click 'Accept' below to accept the invitation!";
         // Calculate remaining spots
-        int remainingSpot = event.getLimit() - event.getChosenList().size();
+        int remainingSpot = event.getLimitChosenList() - event.getChosenList().size();
         // if not enough people registered
         if (event.getWaitingList().size() <= remainingSpot) { // enough spots for everyone
             for (User winner: event.getWaitingList()) { // waiting list shrinks as we delete them

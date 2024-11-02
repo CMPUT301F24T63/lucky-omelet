@@ -12,9 +12,9 @@ public class Event {
     private int eventID;
     private String name;
     private String description;
-    private int limit;
+    private int limitChosenList;
+    private int limitWaitinglList;
     private User creator;
-    private Facility facility;
     private Picture poster;
     private String hashCodeQR;
     private ArrayList<User> waitingList;
@@ -23,13 +23,13 @@ public class Event {
     private ArrayList<User> finalList;
 
     // Constructor
-    public Event(int eventID, String name, String description, int limit, User creator, Facility facility) {
+    public Event(int eventID, String name, String description, int limitChosenList, int limitWaitinglList, User creator) {
         this.eventID = eventID;
         this.name = name;
         this.description = description;
-        this.limit = limit;
+        this.limitChosenList = limitChosenList;
+        this.limitWaitinglList = limitWaitinglList;
         this.creator = creator;
-        this.facility = facility;
         this.poster = null; // no poster
         this.hashCodeQR = "";
         this.waitingList = new ArrayList<>();
@@ -52,16 +52,16 @@ public class Event {
         return description;
     }
 
-    public int getLimit() {
-        return limit;
+    public int getLimitChosenList() {
+        return limitChosenList;
+    }
+
+    public int getLimitWaitinglList() {
+        return limitWaitinglList;
     }
 
     public User getCreator() {
         return creator;
-    }
-
-    public Facility getFacility() {
-        return facility;
     }
 
     public Picture getPoster() {
