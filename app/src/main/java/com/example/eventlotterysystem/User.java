@@ -23,6 +23,7 @@ public class User {
     private ArrayList<Notification> notificationList;
     private ArrayList<Event> enrolledList;
     private ArrayList<Event> organizedList;
+    private Boolean notificationSetting;
 
     // Constructor
     public User(int userID, String name, String email, String contact, Boolean isAdmin) {
@@ -36,6 +37,7 @@ public class User {
         this.notificationList = new ArrayList<>();
         this.enrolledList = new ArrayList<>();
         this.organizedList = new ArrayList<>();
+        this.notificationSetting = true;
     }
 
     // Getters
@@ -78,6 +80,10 @@ public class User {
 
     public ArrayList<Event> getOrganizedList() {
         return organizedList;
+    }
+
+    public Boolean getNotificationSetting() {
+        return notificationSetting;
     }
 
     // Functions
@@ -196,4 +202,7 @@ public class User {
     // Those who does not click "accept" or "decline" will stay in the waiting list
     // Those who click "decline" will be moved to the cancelled list
 
+    public void changeNotificationSetting(Boolean setting) {
+        this.notificationSetting = setting;
+    }
 }
