@@ -1,3 +1,6 @@
+/**
+ * The {@code Utils} class provides utility methods for common operations in the event lottery system.
+ */
 package com.example.eventlotterysystem;
 
 import java.util.ArrayList;
@@ -9,8 +12,22 @@ import java.util.Set;
 
 public class Utils {
 
-    // Method to draw n unique random numbers from [0, m] where m > n and return them in descending order
+    /**
+     * Draws {@code n} unique random numbers from the range [0, {@code m}], where {@code m > n},
+     * and returns them in descending order.
+     * <p>
+     * This method ensures that all drawn numbers are unique by using a {@code Set} to store
+     * them, then converts the {@code Set} to a {@code List} and sorts it in descending order.
+     *
+     * @param n the number of unique random numbers to draw
+     * @param m the upper bound (inclusive) for the random numbers
+     * @return a {@code List<Integer>} containing {@code n} unique random numbers in descending order
+     * @throws IllegalArgumentException if {@code m <= n}, as it would be impossible to draw {@code n} unique numbers
+     */
     public static List<Integer> drawRandomNumbers(int n, int m) {
+        if (m <= n) {
+            throw new IllegalArgumentException("Upper bound m must be greater than n for unique draws.");
+        }
         Set<Integer> resultSet = new HashSet<>();
         Random random = new Random();
 
