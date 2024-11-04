@@ -115,6 +115,52 @@ public class User {
     /** @return the user's notification setting. */
     public Boolean getNotificationSetting() { return notificationSetting; }
 
+    // Setters
+
+    /**
+     * Sets the user's facility. Used to set data read from the database.
+     *
+     * @param facility the facility to set
+     */
+    public void setFacility(Facility facility) {
+        this.facility = facility;
+    }
+
+    /**
+     * Sets the user's profile picture. Used to set data read from the database.
+     *
+     * @param picture the picture to set
+     */
+    public void setPicture(Picture picture) {
+        this.picture = picture;
+    }
+
+    /**
+     * Sets the user's name.
+     *
+     * @param name the name to set
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /**
+     * Sets the user's contact.
+     *
+     * @param contact the email to set
+     */
+    public void setContact(String contact) {
+        this.contact = contact;
+    }
+
+    /**
+     * Sets the user's email.
+     *
+     * @param email the email to set
+     */
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
     // Functions
 
