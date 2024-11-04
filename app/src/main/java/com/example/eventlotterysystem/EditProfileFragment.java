@@ -44,9 +44,9 @@ public class EditProfileFragment extends DialogFragment {
         contactEditText = view.findViewById(R.id.user_contact);
 
         if (getArguments() != null) {
-            nameEditText.setHint(getArguments().getString("name"));
-            emailEditText.setHint(getArguments().getString("email"));
-            contactEditText.setHint(getArguments().getString("contact"));
+            nameEditText.setText(getArguments().getString("name"));
+            emailEditText.setText(getArguments().getString("email"));
+            contactEditText.setText(getArguments().getString("contact"));
         }
 
         Button finishButton = view.findViewById(R.id.finish_button);
