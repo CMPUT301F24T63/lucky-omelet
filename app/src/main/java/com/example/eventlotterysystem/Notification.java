@@ -57,6 +57,10 @@ public class Notification {
      */
     public Boolean getIsAccepted() {return isAccepted;}
 
+    public User getUser() {
+        return user;
+    }
+
     /**
      * Checks if the notification has been declined by the user.
      *

@@ -33,6 +33,26 @@ public class User {
 
     // Constructor
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setContact(String contact) {
+        this.contact = contact;
+    }
+
+    public void setPicture(Picture picture) {
+        this.picture = picture;
+    }
+
+    public void setFacility(Facility facility) {
+        this.facility = facility;
+    }
+
     /**
      * Constructs a new {@code User} with the specified details. This constructor should be used
      * when reading data from the database, or creating mock data.
@@ -153,7 +173,7 @@ public class User {
      */
     public void createFacility(Control control, String name, String location, String description, String openTime) {
         if (this.facility == null) {
-            Facility newFacility = new Facility(name, location, description, openTime, this);
+            Facility newFacility = new Facility(name, description, this);
             this.facility = newFacility;
             control.getFacilityList().add(newFacility);
         }

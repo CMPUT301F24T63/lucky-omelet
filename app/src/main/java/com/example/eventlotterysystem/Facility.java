@@ -24,16 +24,12 @@ public class Facility {
      * open time, and creator.
      *
      * @param name the name of the facility
-     * @param location the location of the facility
      * @param description a brief description of the facility
-     * @param openTime the opening hours of the facility
      * @param creator the {@code User} who created the facility
      */
-    public Facility(String name, String location, String description, String openTime, User creator) {
+    public Facility(String name, String description, User creator) {
         this.name = name;
-        this.location = location;
         this.description = description;
-        this.openTime = openTime;
         this.creator = creator;
         this.poster = null;
     }

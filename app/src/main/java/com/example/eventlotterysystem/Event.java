@@ -97,6 +97,34 @@ public class Event {
      */
     public User getCreator() {return creator;}
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setLimitChosenList(int limitChosenList) {
+        this.limitChosenList = limitChosenList;
+    }
+
+    public void setLimitWaitinglList(int limitWaitinglList) {
+        this.limitWaitinglList = limitWaitinglList;
+    }
+
+    public void setCreator(User creator) {
+        this.creator = creator;
+    }
+
+    public void setPoster(Picture poster) {
+        this.poster = poster;
+    }
+
+    public void setHashCodeQR(String hashCodeQR) {
+        this.hashCodeQR = hashCodeQR;
+    }
+
     /**
      * Retrieves the poster image for the event.
      *
