@@ -18,17 +18,15 @@ public class ProfileActivity extends AppCompatActivity implements EditProfileFra
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_profile);
 
-        curUser = control.getUserList().get(control.getCurrentUserID());
+        curUser = control.getUserList().get(0);
 
         nameTextView = findViewById(R.id.name);
         emailTextView = findViewById(R.id.email);
         contactTextView = findViewById(R.id.contact);
 
-        nameTextView.setText(curUser.getFirstName() + " " + curUser.getLastName());
+        nameTextView.setText(curUser.getName());
         emailTextView.setText("Email: " +curUser.getEmail());
         contactTextView.setText("Contact: " +curUser.getContact());
-
-        updateProfileUI();
 
         findViewById(R.id.edit_button).setOnClickListener(v -> openEditProfileFragment());
 
@@ -39,8 +37,7 @@ public class ProfileActivity extends AppCompatActivity implements EditProfileFra
 
     private void openEditProfileFragment() {
         EditProfileFragment editProfileFragment = EditProfileFragment.newInstance(
-                curUser.getFirstName(),
-                curUser.getLastName(),
+                curUser.getName(),
                 curUser.getEmail(),
                 curUser.getContact()
         );
@@ -52,9 +49,8 @@ public class ProfileActivity extends AppCompatActivity implements EditProfileFra
     }
 
     @Override
-    public void onProfileUpdated(String firstName, String lastName, String email, String contact) {
-        curUser.setFirstName(firstName);
-        curUser.setLastName(lastName);
+    public void onProfileUpdated(String name, String email, String contact) {
+        curUser.setName(name);
         curUser.setEmail(email);
         curUser.setContact(contact);
 
@@ -63,8 +59,7 @@ public class ProfileActivity extends AppCompatActivity implements EditProfileFra
 
 
     private void updateProfileUI() {
-        String fullName = curUser.getFirstName() + " " + curUser.getLastName();
-        nameTextView.setText(fullName);
+        nameTextView.setText(curUser.getName());
         emailTextView.setText("Email: " + curUser.getEmail());
         contactTextView.setText("Contact: " + curUser.getContact());
         FirestoreManager fm = new FirestoreManager();

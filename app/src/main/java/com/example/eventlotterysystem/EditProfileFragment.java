@@ -1,6 +1,5 @@
 package com.example.eventlotterysystem;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,22 +13,21 @@ import androidx.fragment.app.DialogFragment;
 
 public class EditProfileFragment extends DialogFragment {
 
-    private EditText firstNameEditText, lastNameEditText, emailEditText, contactEditText;
+    private EditText nameEditText, emailEditText, contactEditText;
     private OnProfileUpdatedListener profileUpdatedListener;
 
     public interface OnProfileUpdatedListener {
-        void onProfileUpdated(String firstName, String lastName, String email, String contact);
+        void onProfileUpdated(String firstName, String lastName, String email);
     }
 
     public void setOnProfileUpdatedListener(OnProfileUpdatedListener listener) {
         this.profileUpdatedListener = listener;
     }
 
-    public static EditProfileFragment newInstance(String firstName, String lastName, String email, String contact) {
+    public static EditProfileFragment newInstance(String name, String email, String contact) {
         EditProfileFragment fragment = new EditProfileFragment();
         Bundle args = new Bundle();
-        args.putString("firstName", firstName);
-        args.putString("lastName", lastName);
+        args.putString("Name", name);
         args.putString("email", email);
         args.putString("contact", contact);
         fragment.setArguments(args);
@@ -41,14 +39,12 @@ public class EditProfileFragment extends DialogFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.edit_user_fragment, container, false);
 
-        firstNameEditText = view.findViewById(R.id.firstName);
-        lastNameEditText = view.findViewById(R.id.lastName);
+        nameEditText = view.findViewById(R.id.name);
         emailEditText = view.findViewById(R.id.email);
         contactEditText = view.findViewById(R.id.user_contact);
 
         if (getArguments() != null) {
-            firstNameEditText.setHint(getArguments().getString("firstName"));
-            lastNameEditText.setHint(getArguments().getString("lastName"));
+            nameEditText.setHint(getArguments().getString("name"));
             emailEditText.setHint(getArguments().getString("email"));
             contactEditText.setHint(getArguments().getString("contact"));
         }
@@ -59,8 +55,7 @@ public class EditProfileFragment extends DialogFragment {
         finishButton.setOnClickListener(v -> {
             if (profileUpdatedListener != null) {
                 profileUpdatedListener.onProfileUpdated(
-                        firstNameEditText.getText().toString(),
-                        lastNameEditText.getText().toString(),
+                        nameEditText.getText().toString(),
                         emailEditText.getText().toString(),
                         contactEditText.getText().toString()
                 );
