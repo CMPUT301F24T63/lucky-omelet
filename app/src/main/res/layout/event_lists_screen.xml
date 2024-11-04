@@ -103,8 +103,8 @@
 
     <Button
         android:id="@+id/create_button"
-        android:layout_width="410dp"
-        android:layout_height="46dp"
+        android:layout_width="326dp"
+        android:layout_height="39dp"
         android:text="Create an Event"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
