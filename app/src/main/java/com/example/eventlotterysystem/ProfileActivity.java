@@ -18,7 +18,9 @@ public class ProfileActivity extends AppCompatActivity implements EditProfileFra
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_profile);
 
-        curUser = control.getUserList().get(0);
+        // try different index here to get different user (this suggest database read is successful)
+        // curUser = control.getUserList().get(0);
+        curUser = control.getEventList().get(0).getWaitingList().get(0);// Entrant 5 (This confirms database read is successful!)
 
         nameTextView = findViewById(R.id.name);
         emailTextView = findViewById(R.id.email);
