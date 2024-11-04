@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         // Chose which user to test for MainActivity in checkDevice function
-        checkDevice(control);
+        // checkDevice(control);
         // Get current user by calling Control.getCurrentUser();
         // e.g. Control.getCurrentUser().joinEvent(event);
 
