@@ -71,6 +71,15 @@ public class Notification {
      */
     public String getCustomMessage() {return customMessage;}
 
+    /**
+     * Retrieves the user associated with this notification.
+     *
+     * @return the user associated with this notification
+     */
+    public User getUser() {
+        return user;
+    }
+
     // Functions
 
     /**

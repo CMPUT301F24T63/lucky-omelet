@@ -139,4 +139,24 @@ public class Event {
      */
     public ArrayList<User> getFinalList() {return finalList;}
 
+    // Setters
+
+    /**
+     * Sets the HashCodeQR of the event. Used to set data read from database.
+     *
+     * @param hashCodeQR
+     */
+    public void setHashCodeQR(String hashCodeQR) {
+        this.hashCodeQR = hashCodeQR;
+    }
+
+    /**
+     * Sets the poster image for the event. Used to set data read from database.
+     *
+     * @param poster the {@code Picture} representing the event's poster
+     */
+    public void setPoster(Picture poster) {
+        this.poster = poster;
+    }
+
 }

@@ -38,6 +38,15 @@ public class Facility {
         this.poster = null;
     }
 
+    public Facility(String name, String description, User creator) {
+        this.name = name;
+        this.location = "Default location";
+        this.description = description;
+        this.openTime = "Default open time";
+        this.creator = creator;
+        this.poster = null;
+    }
+
     // Getters
 
     /**
