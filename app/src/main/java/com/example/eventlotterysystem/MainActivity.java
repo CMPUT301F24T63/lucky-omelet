@@ -1,3 +1,10 @@
+// Do not use any data fetched from database in MainActivity.
+// Somehow this is causing the app to crash.
+// You can start to use control data in other activities.
+// You can try to do this by uncomment line 45 (checkDevice function call).
+// This will cause the app to crash because the in checkDevice function,
+// we tried to use data in userList read from database. (control.getUserList().get(index))
+
 package com.example.eventlotterysystem;
 
 import android.os.Bundle;
