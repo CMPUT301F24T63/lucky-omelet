@@ -26,6 +26,10 @@
         <activity android:name=".NotificationActivity" />
         <activity android:name=".Landing_page" />
         <activity android:name=".facilityActivity" />
+        <activity android:name=".WaitingListManageActivity" />
+        <activity android:name=".ChosenListManageActivity" />
+        <activity android:name=".CancelledListManageActivity" />
+        <activity android:name=".FinalListManageActivity" />
     </application>
 
 </manifest>

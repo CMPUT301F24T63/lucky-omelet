@@ -12,8 +12,11 @@
 
 package com.example.eventlotterysystem;
 
+import android.widget.Toast;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class User {
 
@@ -373,4 +376,19 @@ public class User {
     public void changeNotificationSetting(Boolean setting) {
         this.notificationSetting = setting;
     }
+
+
+    public void drawRandomReplacement(Event event) {
+        if (event.getWaitingList().isEmpty()) {
+            Toast.makeText(null, "No more applicants in the waiting list", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        Random random = new Random();
+        int index = random.nextInt(event.getWaitingList().size());
+        User replacement = event.getWaitingList().remove(index);
+        event.getChosenList().add(replacement);
+        replacement.getNotificationList().add(new Notification(event, replacement, true, "[Auto] Congratulations! You have been chosen to attend " + event.getName() + "! Click 'Accept' below to accept the invitation!"));
+    }
 }
+
