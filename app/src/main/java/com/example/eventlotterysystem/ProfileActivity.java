@@ -35,6 +35,17 @@ public class ProfileActivity extends AppCompatActivity implements EditProfileFra
         emailTextView.setText("Email: " +curUser.getEmail());
         contactTextView.setText("Contact: " +curUser.getContact());
 
+        if ("000-000-0000".equals(curUser.getContact())) {
+            nameTextView.setText(curUser.getName());
+            emailTextView.setText("Email: " +curUser.getEmail());
+            contactTextView.setText("Contact: " +curUser.getContact());
+            openEditProfileFragment();
+        } else {
+            nameTextView.setText(curUser.getName());
+            emailTextView.setText("Email: " +curUser.getEmail());
+            contactTextView.setText("Contact: " +curUser.getContact());
+        }
+
         findViewById(R.id.edit_button).setOnClickListener(v -> openEditProfileFragment());
 
         ImageButton returnButton = findViewById(R.id.return_button);
@@ -69,7 +80,7 @@ public class ProfileActivity extends AppCompatActivity implements EditProfileFra
         nameTextView.setText(curUser.getName());
         emailTextView.setText("Email: " + curUser.getEmail());
         contactTextView.setText("Contact: " + curUser.getContact());
-        // Utils.checkControlData(control);
-        // FirestoreManager.getInstance().saveControl(control);
+        Utils.checkControlData(Control.getInstance());
+        FirestoreManager.getInstance().saveControl(Control.getInstance());
     }
 }

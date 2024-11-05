@@ -169,6 +169,21 @@ public class Control {
         this.currentEventID = currentEventID;
     }
 
+
+    /**
+     * Sets the singleton instance of {@code Control}.
+     *
+     * @param instance the {@code Control} instance to set as the singleton
+     */
+    public static void setInstance(Control instance) {
+        Control.instance = instance;
+    }
+
+    /**
+    * Get Event object by providing eventID. 
+    *
+    * @para eventId EventID
+    */
     public Event getEventById(int eventId) {
         for (Event event : eventList) {
             if (event.getEventID() == eventId) {

@@ -318,6 +318,7 @@ public class User {
      * @param event the event to cancel participation in
      */
     public void cancelEvent(Event event) {
+        this.enrolledList.remove(event);
         event.getWaitingList().remove(this);
         if (event.getChosenList().contains(this)){
             event.getChosenList().remove(this);
@@ -366,7 +367,7 @@ public class User {
         // Construct message
         String automaticMessage = "[Auto] Congratulations! You have been chosen to attend " + event.getName() + "! Click 'Accept' below to accept the invitation!";
         // Calculate remaining spots
-        int remainingSpot = event.getLimitChosenList() - event.getChosenList().size();
+        int remainingSpot = event.getLimitChosenList() - event.getChosenList().size() - event.getFinalList().size();
         // if not enough people registered
         if (event.getWaitingList().size() <= remainingSpot) { // enough spots for everyone
             for (User winner: event.getWaitingList()) { // waiting list shrinks as we delete them
