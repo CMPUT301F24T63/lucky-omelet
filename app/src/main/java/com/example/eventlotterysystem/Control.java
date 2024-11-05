@@ -130,4 +130,21 @@ public class Control {
         currentUser = user;
     }
 
+    /**
+     * Sets the current unique event ID. Used to set data read from database.
+     *
+     * @param currentUserID
+     */
+    public void setCurrentUserID(int currentUserID) {
+        this.currentUserID = currentUserID;
+    }
+
+    /**
+     * Sets the current unique event ID. Used to set data read from database.
+     *
+     * @param currentEventID
+     */
+    public void setCurrentEventID(int currentEventID) {
+        this.currentEventID = currentEventID;
+    }
 }

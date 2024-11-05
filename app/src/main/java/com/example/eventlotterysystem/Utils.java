@@ -106,17 +106,21 @@ public class Utils {
 
     public static void checkControlData(Control control){
         // Control Data Test
+        Log.i("CurrentUserID", String.valueOf(control.getCurrentUserID()));
+        Log.i("CurrentEventID", String.valueOf(control.getCurrentEventID()));
         Log.i("UserListSize", String.valueOf(control.getUserList().size()));
         Log.i("FacilityListSize", String.valueOf(control.getFacilityList().size()));
         Log.i("EventListSize", String.valueOf(control.getEventList().size()));
-        Log.i("Event 0 Waiting List Size", String.valueOf(control.getEventList().get(0).getWaitingList().size()));
-        Log.i("Event 0 Chosen List Size", String.valueOf(control.getEventList().get(0).getChosenList().size()));
-        Log.i("Event 0 Cancelled List Size", String.valueOf(control.getEventList().get(0).getCancelledList().size()));
-        Log.i("Event 0 FinalList size", String.valueOf(control.getEventList().get(0).getFinalList().size()));
-        Log.i("User 0 notification list size", String.valueOf(control.getUserList().get(0).getNotificationList().size()));
+        Log.i("E0 Waiting List Size", String.valueOf(control.getEventList().get(0).getWaitingList().size()));
+        Log.i("E0 Chosen List Size", String.valueOf(control.getEventList().get(0).getChosenList().size()));
+        Log.i("E0 Cancelled List Size", String.valueOf(control.getEventList().get(0).getCancelledList().size()));
+        Log.i("E0 FinalList size", String.valueOf(control.getEventList().get(0).getFinalList().size()));
+        Log.i("U0 notification list size", String.valueOf(control.getUserList().get(0).getNotificationList().size()));
 
 
         /**********************  You should see something like this in your logcat  ******************************
+         * 2024-11-04 18:49:51.100  4392-4392  CurrentUserID           com.example.eventlotterysystem       I  3
+         * 2024-11-04 18:49:51.100  4392-4392  CurrentEventID          com.example.eventlotterysystem       I  3
          * 2024-11-02 16:28:28.695 12295-12295 UserListSize            com.example.eventlotterysystem       I  12
          * 2024-11-02 16:28:28.695 12295-12295 FacilityListSize        com.example.eventlotterysystem       I  1
          * 2024-11-02 16:28:28.695 12295-12295 EventListSize           com.example.eventlotterysystem       I  3

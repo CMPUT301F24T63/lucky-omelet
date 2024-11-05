@@ -80,6 +80,26 @@ public class Notification {
         return user;
     }
 
+    //Setters
+
+    /**
+     * Sets the acceptance status of the notification.
+     *
+     * @param accepted the new custom message
+     */
+    public void setAccepted(Boolean accepted) {
+        isAccepted = accepted;
+    }
+
+    /**
+     * Sets the rejection status of the notification.
+     *
+     * @param declined the new custom message
+     */
+    public void setDeclined(Boolean declined) {
+        isDeclined = declined;
+    }
+
     // Functions
 
     /**
