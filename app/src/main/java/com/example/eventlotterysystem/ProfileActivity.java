@@ -1,6 +1,7 @@
 package com.example.eventlotterysystem;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -19,12 +20,12 @@ public class ProfileActivity extends AppCompatActivity implements EditProfileFra
         setContentView(R.layout.user_profile);
         Control control = Control.getInstance();
         // Test control data
+        Log.i("checkControlData", "Profile Activity Control Data Test");
         Utils.checkControlData(control);
-
         // try different index here to get different user (this suggest database read is successful)
-        // curUser = control.getUserList().get(0);
+        curUser = control.getUserList().get(0);
         // curUser = control.getEventList().get(0).getWaitingList().get(0);// Entrant 5 (This confirms database read is successful!)
-        curUser = Control.getCurrentUser();
+        // curUser = Control.getCurrentUser();
 
         nameTextView = findViewById(R.id.name);
         emailTextView = findViewById(R.id.email);

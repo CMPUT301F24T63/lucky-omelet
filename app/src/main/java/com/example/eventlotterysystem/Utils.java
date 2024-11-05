@@ -116,6 +116,7 @@ public class Utils {
         Log.i("E0 Cancelled List Size", String.valueOf(control.getEventList().get(0).getCancelledList().size()));
         Log.i("E0 FinalList size", String.valueOf(control.getEventList().get(0).getFinalList().size()));
         Log.i("U0 notification list size", String.valueOf(control.getUserList().get(0).getNotificationList().size()));
+        Log.i("Local FID", Control.getLocalFID());
 
 
         /**********************  You should see something like this in your logcat  ******************************
@@ -129,6 +130,7 @@ public class Utils {
          * 2024-11-02 16:28:28.695 12295-12295 Event 0 Ca... List Size com.example.eventlotterysystem       I  2
          * 2024-11-02 16:28:28.695 12295-12295 Event 0 FinalList size  com.example.eventlotterysystem       I  2
          * 2024-11-02 16:28:28.695 12295-12295 User 0 not... list size com.example.eventlotterysystem       I  2
+         * 2024-11-04 20:36:35.074  7458-7458  Local FID               com.example.eventlotterysystem       I  fwNYuvlkT1GoJ9NkI_zFQw
          **********************************************************************************************************/
 
     }
