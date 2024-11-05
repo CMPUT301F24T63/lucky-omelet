@@ -3,11 +3,12 @@ package com.example.eventlotterysystem;
 import android.os.Bundle;
 import android.widget.ImageButton;
 import android.widget.Switch;
+import com.google.android.material.materialswitch.MaterialSwitch;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 public class SettingActivity extends AppCompatActivity {
-    private Switch notiSwitch;
+    private MaterialSwitch notiSwitch;
     private Control control;
     private User curUser;
 
