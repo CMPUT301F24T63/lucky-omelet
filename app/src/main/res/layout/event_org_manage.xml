@@ -5,16 +5,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
+
     <ImageButton
         android:id="@+id/return_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:src="@drawable/ic_back"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:padding="8dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:src="@drawable/ic_back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <ImageButton
         android:id="@+id/del_button"
         android:layout_width="wrap_content"
@@ -39,21 +41,10 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/upload_button"
-        android:layout_width="144dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="24dp"
-        android:text="Upload Poster"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.333"
-        app:layout_constraintStart_toEndOf="@+id/show_map_button"
-        app:layout_constraintTop_toBottomOf="@+id/button" />
-
     <ImageView
         android:id="@+id/poster"
-        android:layout_width="292dp"
-        android:layout_height="274dp"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
         android:layout_marginTop="4dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
@@ -62,54 +53,58 @@
         tools:srcCompat="@tools:sample/avatars[5]" />
 
     <TextView
-        android:id="@+id/Event_detail"
-        android:layout_width="253dp"
-        android:layout_height="106dp"
+        android:id="@+id/event_detail"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:text="Detailed Information"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/poster" />
 
-    <Button
-        android:id="@+id/Event_edit_button"
-        android:layout_width="130dp"
-        android:layout_height="38dp"
-        android:layout_marginStart="56dp"
-        android:text="Edit"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="586dp" />
-
-    <Button
-        android:id="@+id/show_map_button"
-        android:layout_width="133dp"
-        android:layout_height="39dp"
-        android:layout_marginStart="56dp"
-        android:layout_marginTop="24dp"
-        android:text="Show Map"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Event_edit_button" />
-
-    <Button
-        android:id="@+id/manage_member_button"
-        android:layout_width="252dp"
-        android:layout_height="44dp"
-        android:layout_marginTop="12dp"
-        android:text="Manage Member"
+    <GridLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:alignmentMode="alignBounds"
+        android:columnCount="2"
+        android:padding="16dp"
+        android:rowCount="2"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.503"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Event_detail" />
+        app:layout_constraintTop_toBottomOf="@+id/event_detail">
 
-    <Button
-        android:id="@+id/button"
-        android:layout_width="141dp"
-        android:layout_height="38dp"
-        android:layout_marginTop="24dp"
-        android:text="QR code"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.362"
-        app:layout_constraintStart_toEndOf="@+id/Event_edit_button"
-        app:layout_constraintTop_toBottomOf="@+id/manage_member_button" />
+        <Button
+            android:id="@+id/show_map_button"
+            android:layout_width="164dp"
+            android:layout_height="wrap_content"
+            android:text="Show Map"
+            tools:layout_editor_absoluteX="220dp"
+            tools:layout_editor_absoluteY="525dp" />
+
+        <Button
+            android:id="@+id/event_edit_button"
+            android:layout_width="164dp"
+            android:layout_height="wrap_content"
+            android:text="Edit"
+            tools:layout_editor_absoluteX="220dp"
+            tools:layout_editor_absoluteY="477dp" />
+
+        <Button
+            android:id="@+id/manage_member_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Manage Members"
+            tools:layout_editor_absoluteX="56dp"
+            tools:layout_editor_absoluteY="525dp" />
+
+        <Button
+            android:id="@+id/qr_code_button"
+            android:layout_width="164dp"
+            android:layout_height="wrap_content"
+            android:text="QR Code"
+            tools:layout_editor_absoluteX="56dp"
+            tools:layout_editor_absoluteY="477dp" />
+    </GridLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

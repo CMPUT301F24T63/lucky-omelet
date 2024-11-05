@@ -16,7 +16,7 @@ public class CreateEventDialogFragment extends DialogFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        // Inflate the layout for this dialog fragment
+
         View view = inflater.inflate(R.layout.edit_event_fragment, container, false);
 
         // Initialize UI components
@@ -31,6 +31,14 @@ public class CreateEventDialogFragment extends DialogFragment {
 
         Button finishButton = view.findViewById(R.id.finish_button);
         Button cancelButton = view.findViewById(R.id.cancel_button);
+
+        String eventTitle = titleEdit.getText().toString().trim();
+        String eventDescription = descriptionEdit.getText().toString().trim();
+        String waitingListLimit = waitingListLimitEdit.getText().toString().trim();
+        String eventLimit = eventLimitEdit.getText().toString().trim();
+        String openDate = openDateEdit.getText().toString().trim();
+        String registerDate = registerDateEdit.getText().toString().trim();
+        String price = priceEdit.getText().toString().trim();
 
         // Set up button click listeners
         finishButton.setOnClickListener(v -> {
