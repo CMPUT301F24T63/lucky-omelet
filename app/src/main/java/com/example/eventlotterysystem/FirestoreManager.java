@@ -330,6 +330,7 @@ public class FirestoreManager {
                                             for (User waituser : control.getUserList()) {
                                                 if (waituser.getUserID()==userId) {
                                                     curEvent.getWaitingList().add(waituser);
+                                                    waituser.getEnrolledList().add(curEvent);
                                                     break;
                                                 }
                                             }
@@ -342,6 +343,8 @@ public class FirestoreManager {
                                             for (User chosenuser : control.getUserList()) {
                                                 if (chosenuser.getUserID()==userId) {
                                                     curEvent.getChosenList().add(chosenuser);
+                                                    chosenuser.getEnrolledList().add(curEvent);
+                                                    break;
                                                 }
                                             }
                                         }
@@ -357,13 +360,15 @@ public class FirestoreManager {
                                             }
                                         }
                                     }
-                                    List<DocumentReference> FinalList = (List<DocumentReference>) doc.get("FinalList");
+                                    List<DocumentReference> FinalList = (List<DocumentReference>) doc.get("finalList");
                                     if (FinalList != null) {
                                         for (DocumentReference userRef : FinalList) {
                                             int userId = Integer.parseInt(userRef.getId());
                                             for (User finaluser : control.getUserList()) {
                                                 if (finaluser.getUserID()==userId) {
                                                     curEvent.getFinalList().add(finaluser);
+                                                    // finaluser.getEnrolledList().add(curEvent);
+
                                                 }
                                             }
                                         }

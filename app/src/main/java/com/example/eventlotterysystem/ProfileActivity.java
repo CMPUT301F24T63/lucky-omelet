@@ -26,7 +26,7 @@ public class ProfileActivity extends AppCompatActivity implements EditProfileFra
         // curUser = control.getUserList().get(0);
         // curUser = control.getEventList().get(0).getWaitingList().get(0);// Entrant 5 (This confirms database read is successful!)
         curUser = Control.getCurrentUser();
-
+        Log.i("my index", control.getUserList().indexOf(Control.getCurrentUser())+"");
         nameTextView = findViewById(R.id.name);
         emailTextView = findViewById(R.id.email);
         contactTextView = findViewById(R.id.contact);
@@ -69,7 +69,7 @@ public class ProfileActivity extends AppCompatActivity implements EditProfileFra
         nameTextView.setText(curUser.getName());
         emailTextView.setText("Email: " + curUser.getEmail());
         contactTextView.setText("Contact: " + curUser.getContact());
-
-        FirestoreManager.getInstance().saveControl(control);
+        // Utils.checkControlData(control);
+        // FirestoreManager.getInstance().saveControl(control);
     }
 }

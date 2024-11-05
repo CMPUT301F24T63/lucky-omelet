@@ -36,6 +36,15 @@ public class Landing_page extends AppCompatActivity {
             }
         });
 
+        ImageView SettingIcon = findViewById(R.id.settingsIcon);
+        SettingIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Landing_page.this, SettingActivity.class); // have not done
+                startActivity(intent);
+            }
+        });
+
         ImageView profileIcon = findViewById(R.id.profileIcon);
         profileIcon.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,7 +95,6 @@ public class Landing_page extends AppCompatActivity {
         Log.i("checkDevice", "After checkDevice function Control Data Test");
         Utils.checkControlData(control);
         FirestoreManager.getInstance().saveControl(control);
-
         // Or set user by using index: 0: entrant   10: organizer   11: admin
         // Control.setCurrentUser(control.getUserList().get(0));
 

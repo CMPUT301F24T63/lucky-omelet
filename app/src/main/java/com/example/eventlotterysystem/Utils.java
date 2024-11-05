@@ -105,7 +105,7 @@ public class Utils {
     }
 
     public static void checkControlData(Control control){
-        // Control Data Test
+         // Control Data Test
         Log.i("UserListSize", String.valueOf(control.getUserList().size()));
         Log.i("FacilityListSize", String.valueOf(control.getFacilityList().size()));
         Log.i("EventListSize", String.valueOf(control.getEventList().size()));
@@ -113,6 +113,7 @@ public class Utils {
         Log.i("E0 Chosen List Size", String.valueOf(control.getEventList().get(0).getChosenList().size()));
         Log.i("E0 Cancelled List Size", String.valueOf(control.getEventList().get(0).getCancelledList().size()));
         Log.i("E0 FinalList size", String.valueOf(control.getEventList().get(0).getFinalList().size()));
+
         Log.i("U0 notification list size", String.valueOf(control.getUserList().get(0).getNotificationList().size()));
         Log.i("U0 EnrolledList size", String.valueOf(control.getUserList().get(0).getEnrolledList().size()));
         Log.i("U0 OrganizedList size", String.valueOf(control.getUserList().get(0).getOrganizedList().size()));
