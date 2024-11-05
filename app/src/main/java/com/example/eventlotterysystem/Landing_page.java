@@ -21,6 +21,9 @@ public class Landing_page extends AppCompatActivity {
         setContentView(R.layout.landing_page);
 
         Control control = Control.getInstance();
+        FirestoreManager fm = FirestoreManager.getInstance();
+        fm.loadNotifications(control);
+
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.landing_page), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -66,4 +69,12 @@ public class Landing_page extends AppCompatActivity {
         });
 
     }
+
+    protected void checkDevice(Control control){
+        // find index of current user in user list by IMEI
+        int index = 0;
+        // 0: entrant   10: organizer   11: admin
+        Control.setCurrentUser(control.getUserList().get(index));
+    }
+
 }
