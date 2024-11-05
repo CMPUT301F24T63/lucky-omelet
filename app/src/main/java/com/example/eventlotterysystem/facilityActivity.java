@@ -24,7 +24,7 @@ public class facilityActivity extends AppCompatActivity implements EditFacilityF
 
         // Initialize UI elements
         nameTextView = findViewById(R.id.name);
-        descriptionTextView = findViewById(R.id.textView2);
+        descriptionTextView = findViewById(R.id.edit_button);
 
         if (curUser.getFacility() == null) {
             openEditFacilityFragment();

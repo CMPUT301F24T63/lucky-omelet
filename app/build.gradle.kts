@@ -40,6 +40,7 @@ dependencies {
     implementation(libs.activity)
     implementation(libs.constraintlayout)
     implementation(libs.play.services.maps)
+    implementation("androidx.compose.material3:material3:1.3.1")
 
     // firestore
     implementation(libs.firebase.firestore)
