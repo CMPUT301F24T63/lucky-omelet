@@ -322,7 +322,7 @@ public class FirestoreManager {
                                 if (user.getUserID()==creatorId) {
                                     Event curEvent = new Event(id, name, description, limitChosenList, limitWaitingList, user);
                                     control.getEventList().add(curEvent);
-
+                                    user.getOrganizedList().add(curEvent);
                                     List<DocumentReference> waitingList = (List<DocumentReference>) doc.get("waitingList");
                                     if (waitingList != null) {
                                         for (DocumentReference userRef : waitingList) {
@@ -367,7 +367,7 @@ public class FirestoreManager {
                                             for (User finaluser : control.getUserList()) {
                                                 if (finaluser.getUserID()==userId) {
                                                     curEvent.getFinalList().add(finaluser);
-                                                    // finaluser.getEnrolledList().add(curEvent);
+                                                    finaluser.getEnrolledList().add(curEvent);
 
                                                 }
                                             }

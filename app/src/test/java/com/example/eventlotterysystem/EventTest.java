@@ -158,7 +158,7 @@ public class EventTest {
         user3.declineInvitation(user3.getNotificationList().get(0));
         assertEquals(1, event.getFinalList().size());
         assertEquals(2, event.getCancelledList().size());
-        assertEquals(5-2, event.getChosenList().size());
+        assertEquals(5-2-1, event.getChosenList().size());
 
     }
 
@@ -192,6 +192,6 @@ public class EventTest {
         bot2.declineInvitation(bot2.getNotificationList().get(0));
         assertEquals(2, event.getFinalList().size());
         assertEquals(1, event.getCancelledList().size());
-        assertEquals(3-1, event.getChosenList().size());
+        assertEquals(3-1-2, event.getChosenList().size());
     }
 }
