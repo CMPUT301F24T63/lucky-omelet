@@ -12,6 +12,14 @@
 
 package com.example.eventlotterysystem;
 
+import android.util.Log;
+
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.installations.FirebaseInstallations;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,6 +38,7 @@ public class User {
     private ArrayList<Event> enrolledList; // List of events the user is enrolled in
     private ArrayList<Event> organizedList; // List of events organized by the user
     private Boolean notificationSetting; // Notification settings for the user
+    private String FID; // Firebase ID of the user
 
     // Constructor
 
@@ -56,6 +65,8 @@ public class User {
         this.enrolledList = new ArrayList<>();
         this.organizedList = new ArrayList<>();
         this.notificationSetting = true;
+        this.FID = "Fake User";
+
     }
 
     /**
@@ -78,6 +89,16 @@ public class User {
         this.enrolledList = new ArrayList<>();
         this.organizedList = new ArrayList<>();
         this.notificationSetting = true;
+        FirebaseInstallations.getInstance().getId().addOnCompleteListener(new OnCompleteListener<String>() {
+            @Override
+            public void onComplete(@NonNull Task<String> task) {
+                if (task.isSuccessful()) {
+                    FID = task.getResult();
+                } else {
+                    Log.e("Installations", "Unable to get Installation ID");
+                }
+            }
+        });
     }
 
     // Getters
@@ -114,6 +135,9 @@ public class User {
 
     /** @return the user's notification setting. */
     public Boolean getNotificationSetting() { return notificationSetting; }
+
+    /** @return the user's Firebase ID. */
+    public String getFID() { return FID; }
 
     // Setters
 
@@ -160,6 +184,24 @@ public class User {
      */
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    /**
+     * Sets the user's notification setting.
+     *
+     * @param notificationSetting the notification setting to set
+     */
+    public void setNotificationSetting(Boolean notificationSetting) {
+        this.notificationSetting = notificationSetting;
+    }
+
+    /**
+     * Sets the user's Firebase ID.
+     *
+     * @param FID the Firebase ID to set
+     */
+    public void setFID(String FID) {
+        this.FID = FID;
     }
 
     // Functions

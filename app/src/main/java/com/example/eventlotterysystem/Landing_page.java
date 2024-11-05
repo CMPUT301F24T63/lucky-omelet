@@ -3,15 +3,21 @@ package com.example.eventlotterysystem;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.installations.FirebaseInstallations;
 
 public class Landing_page extends AppCompatActivity {
 
@@ -20,10 +26,7 @@ public class Landing_page extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.landing_page);
 
-        Control control = Control.getInstance();
-        FirestoreManager fm = FirestoreManager.getInstance();
-        fm.loadNotifications(control);
-
+        checkDevice(Control.getInstance());
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.landing_page), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -71,10 +74,21 @@ public class Landing_page extends AppCompatActivity {
     }
 
     protected void checkDevice(Control control){
-        // find index of current user in user list by IMEI
-        int index = 0;
-        // 0: entrant   10: organizer   11: admin
-        Control.setCurrentUser(control.getUserList().get(index));
+        for (User user : control.getUserList()) {
+            if (user.getFID().equals(Control.getLocalFID())) {
+                Control.setCurrentUser(user);
+                return;
+            } else {
+                User me = new User(control.getCurrentUserID());
+                control.getUserList().add(me);
+                Control.setCurrentUser(me);
+                FirestoreManager.getInstance().saveControl(control);
+                return;
+            }
+        }
+
+        // Or set user by using index: 0: entrant   10: organizer   11: admin
+        // Control.setCurrentUser(control.getUserList().get(0));
     }
 
 }

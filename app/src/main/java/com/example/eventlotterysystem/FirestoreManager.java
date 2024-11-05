@@ -1,7 +1,6 @@
 /*
 To do:
-    1. Notifications (new collection + new document + create refs in users)
-    2. modify and test load data
+    1. Notifications load function
  */
 
 package com.example.eventlotterysystem;
@@ -73,6 +72,8 @@ public class FirestoreManager {
         userData.put("email", user.getEmail());
         userData.put("contact", user.getContact());
         userData.put("isAdmin", user.isAdmin());
+        userData.put("notificationSetting", user.getNotificationSetting());
+        userData.put("FID", user.getFID());
 
         if (user.getPicture() != null) {
             userData.put("pictureRef", db.collection("pictures").document(String.valueOf(user.getUserID())));
@@ -226,7 +227,7 @@ public class FirestoreManager {
         loadFacilities(control);
         loadPictures(control);
         loadEvents(control);
-        //loadNotifications(control);
+        loadNotifications(control);
     }
 
     private void loadUsers(Control control) {
@@ -241,6 +242,8 @@ public class FirestoreManager {
                                 document.getString("contact"),
                                 document.getBoolean("isAdmin")
                         );
+                        user.setNotificationSetting(document.getBoolean("notificationSetting"));
+                        user.setFID(document.getString("FID"));
                         control.getUserList().add(user);
                     }
                 })

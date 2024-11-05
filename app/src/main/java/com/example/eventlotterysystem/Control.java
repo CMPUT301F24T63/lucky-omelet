@@ -20,7 +20,15 @@ public class Control {
     private ArrayList<Picture> pictureList; // List of pictures uploaded by users
     private static Control instance; // Singleton instance of Control
     private static User currentUser = null; // Currently logged-in user
+    private static String localFID; // Local Firebase installation ID
 
+    public static void setLocalFID(String localFID) {
+        Control.localFID = localFID;
+    }
+
+    public static String getLocalFID() {
+        return localFID;
+    }
 
     // Constructor
 
