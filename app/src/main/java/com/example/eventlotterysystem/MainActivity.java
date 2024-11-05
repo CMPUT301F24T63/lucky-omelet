@@ -27,18 +27,17 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Control control = Control.getInstance();
+
 
         // Refresh Database data
-//        Utils.setUpMockData(control);
-//        fm = new FirestoreManager();
-//        fm.saveControl(control);
+//        Utils.setUpMockData(Control.getInstance());
+//        FirestoreManager.getInstance().saveControl(Control.getInstance());
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.check_device);
 
-        fm = FirestoreManager.getInstance();
-        fm.loadControl(control);
+        // Load Control data from Firestore
+        FirestoreManager.getInstance().loadControl(Control.getInstance());
 
         // get Firebase installation ID
         FirebaseInstallations.getInstance().getId().addOnCompleteListener(new OnCompleteListener<String>() {

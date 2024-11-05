@@ -87,12 +87,12 @@ public class Utils {
             control.getEventList().get(0).getWaitingList().remove(control.getUserList().get(i));
         }
         // ChosenList
-        control.getEventList().get(0).getChosenList().add(control.getUserList().get(0));
-        control.getEventList().get(0).getChosenList().add(control.getUserList().get(1));
         control.getEventList().get(0).getChosenList().add(control.getUserList().get(4));
         // CancelledList
-        control.getEventList().get(0).getCancelledList().add(control.getUserList().get(2));
-        control.getEventList().get(0).getCancelledList().add(control.getUserList().get(3));
+        control.getUserList().get(2).cancelEvent(control.getEventList().get(0));
+        control.getUserList().get(3).cancelEvent(control.getEventList().get(0));
+//        control.getEventList().get(0).getCancelledList().add(control.getUserList().get(2));
+//        control.getEventList().get(0).getCancelledList().add(control.getUserList().get(3));
         // FinalList
         control.getEventList().get(0).getFinalList().add(control.getUserList().get(0));
         control.getEventList().get(0).getFinalList().add(control.getUserList().get(1));
@@ -113,10 +113,11 @@ public class Utils {
         Log.i("E0 Chosen List Size", String.valueOf(control.getEventList().get(0).getChosenList().size()));
         Log.i("E0 Cancelled List Size", String.valueOf(control.getEventList().get(0).getCancelledList().size()));
         Log.i("E0 FinalList size", String.valueOf(control.getEventList().get(0).getFinalList().size()));
-
+        Log.i("U0 FID", control.getUserList().get(0).getFID());
         Log.i("U0 notification list size", String.valueOf(control.getUserList().get(0).getNotificationList().size()));
         Log.i("U0 EnrolledList size", String.valueOf(control.getUserList().get(0).getEnrolledList().size()));
         Log.i("U0 OrganizedList size", String.valueOf(control.getUserList().get(0).getOrganizedList().size()));
+        Log.i("U10 OrganizedEventsize", String.valueOf(control.getUserList().get(2).getOrganizedList().size()));
         Log.i("Local FID", Control.getLocalFID());
 
 

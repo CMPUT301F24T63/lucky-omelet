@@ -69,7 +69,7 @@ public class ProfileActivity extends AppCompatActivity implements EditProfileFra
         nameTextView.setText(curUser.getName());
         emailTextView.setText("Email: " + curUser.getEmail());
         contactTextView.setText("Contact: " + curUser.getContact());
-        // Utils.checkControlData(control);
-        // FirestoreManager.getInstance().saveControl(control);
+        Utils.checkControlData(Control.getInstance());
+        FirestoreManager.getInstance().saveControl(Control.getInstance());
     }
 }

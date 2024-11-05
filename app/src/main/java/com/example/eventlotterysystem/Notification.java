@@ -107,6 +107,7 @@ public class Notification {
      */
     public void accept(){
         if (this.needAccept) {isAccepted = true;}
+        event.getChosenList().remove(user);
         event.getFinalList().add(user);
         // Do not remove from waiting list (otherwise more users will be invited if click "Reroll")
     }

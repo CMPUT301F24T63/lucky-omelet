@@ -168,4 +168,13 @@ public class Control {
     public void setCurrentEventID(int currentEventID) {
         this.currentEventID = currentEventID;
     }
+
+    /**
+     * Sets the singleton instance of {@code Control}.
+     *
+     * @param instance the {@code Control} instance to set as the singleton
+     */
+    public static void setInstance(Control instance) {
+        Control.instance = instance;
+    }
 }
