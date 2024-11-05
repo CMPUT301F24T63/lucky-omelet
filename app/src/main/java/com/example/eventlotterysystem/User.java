@@ -89,16 +89,7 @@ public class User {
         this.enrolledList = new ArrayList<>();
         this.organizedList = new ArrayList<>();
         this.notificationSetting = true;
-        FirebaseInstallations.getInstance().getId().addOnCompleteListener(new OnCompleteListener<String>() {
-            @Override
-            public void onComplete(@NonNull Task<String> task) {
-                if (task.isSuccessful()) {
-                    FID = task.getResult();
-                } else {
-                    Log.e("Installations", "Unable to get Installation ID");
-                }
-            }
-        });
+        this.FID = "Waiting For Update";
     }
 
     // Getters

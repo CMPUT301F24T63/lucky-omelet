@@ -65,7 +65,7 @@ public class FirestoreManager {
 
     }
 
-    private void saveUser(User user) {
+    public void saveUser(User user) {
         Map<String, Object> userData = new HashMap<>();
         userData.put("userID", user.getUserID());
         userData.put("name", user.getName());

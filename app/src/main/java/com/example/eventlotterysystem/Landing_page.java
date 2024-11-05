@@ -75,17 +75,19 @@ public class Landing_page extends AppCompatActivity {
 
     protected void checkDevice(Control control){
         Log.i("checkDevice", "checkDevice function Control Data Test");
-        // Utils.checkControlData(control);
+        Utils.checkControlData(control);
         for (User user : control.getUserList()) {
             if (user.getFID().equals(Control.getLocalFID())) {
                 Control.setCurrentUser(user);
                 return;
             } else {
                 User me = new User(control.getCurrentUserID());
+                me.setFID(Control.getLocalFID());
                 control.getUserList().add(me);
                 Control.setCurrentUser(me);
                 // Just don't save... Saving is causing the app to crash
                 // FirestoreManager.getInstance().saveControl(control);
+                FirestoreManager.getInstance().saveUser(me);
                 return;
             }
         }
