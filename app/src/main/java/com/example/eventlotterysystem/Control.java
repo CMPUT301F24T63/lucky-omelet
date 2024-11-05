@@ -147,4 +147,13 @@ public class Control {
     public void setCurrentEventID(int currentEventID) {
         this.currentEventID = currentEventID;
     }
+
+    public Event getEventById(int eventId) {
+        for (Event event : eventList) {
+            if (event.getEventID() == eventId) {
+                return event;
+            }
+        }
+        return null;
+    }
 }
