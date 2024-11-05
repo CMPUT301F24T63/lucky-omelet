@@ -1,5 +1,6 @@
 package com.example.eventlotterysystem;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,15 +34,28 @@ public class EventslistActivity extends AppCompatActivity {
         addEventToSection("Owned Event 1", "Event information", ownedList);
         addEventToSection("All Event 1", "Event information", allList);
 
-        findViewById(R.id.create_button).setOnClickListener(v -> {
-            showCreateEventDialog(); // Show the dialog
+        Button createEventButton = findViewById(R.id.create_button);
+        createEventButton.setOnClickListener(v -> {
+            Intent intent = new Intent(EventslistActivity.this, CreateEventActivity.class);
+            startActivity(intent);
         });
+
+        Button allEventsButton = findViewById(R.id.all_events_button);
+        allEventsButton.setOnClickListener(v -> {
+            Intent intent = new Intent(EventslistActivity.this, AllEventsActivity.class);
+            startActivity(intent);
+        });
+
+
+//        findViewById(R.id.create_button).setOnClickListener(v -> {
+//            showCreateEventDialog(); // Show the dialog
+//       });
     }
 
-    private void showCreateEventDialog() {
-        CreateEventDialogFragment dialog = new CreateEventDialogFragment();
-        dialog.show(getSupportFragmentManager(), "CreateEventDialog");
-    }
+//   private void showCreateEventDialog() {
+//        CreateEventDialogFragment dialog = new CreateEventDialogFragment();
+//        dialog.show(getSupportFragmentManager(), "CreateEventDialog");
+//    }
 
     private void addEventToSection(String eventName, String eventInfo, LinearLayout section) {
         LayoutInflater inflater = LayoutInflater.from(this);

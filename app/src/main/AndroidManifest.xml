@@ -26,6 +26,9 @@
         <activity android:name=".NotificationActivity" />
         <activity android:name=".Landing_page" />
         <activity android:name=".facilityActivity" />
+        <activity android:name=".CreateEventActivity" />
+        <activity android:name=".AllEventsActivity" />
+        <activity android:name=".ViewEventActivity" />
     </application>
 
 </manifest>
