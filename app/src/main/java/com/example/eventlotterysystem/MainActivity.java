@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
     private FirestoreManager fm;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +39,18 @@ public class MainActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         usersRef = db.collection("users");
         control = Control.getInstance();
+
+        DocumentReference docRef = db.collection("control").document("main");
+        docRef.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                DocumentSnapshot document = task.getResult();
+                if (document != null && document.exists()) {
+                    control.setCurrentEventID(document.getLong("currentEventID").intValue());
+                    control.setCurrentUserID(document.getLong("currentUserID").intValue());
+                }
+            }
+        });
+
 
         usersRef = db.collection("users");
         usersRef.get().addOnCompleteListener(task -> {
@@ -107,6 +120,7 @@ public class MainActivity extends AppCompatActivity {
                                 if (user.getUserID()==creatorId) {
                                     curEvent = new Event(id, name, description, limitChosenList, limitWaitingList, user);
                                     control.getEventList().add(curEvent);
+                                    user.getOrganizedList().add(curEvent);
 
                                     List<DocumentReference> waitingList = (List<DocumentReference>) doc.get("waitingList");
                                     if (waitingList != null) {
@@ -149,6 +163,7 @@ public class MainActivity extends AppCompatActivity {
                                             for (User finaluser : control.getUserList()) {
                                                 if (finaluser.getUserID()==userId) {
                                                     curEvent.getFinalList().add(finaluser);
+                                                    finaluser.getEnrolledList().add(curEvent);
                                                 }
                                             }
                                         }
@@ -162,9 +177,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
         FirestoreManager fm = new FirestoreManager();
         fm.saveControl(control);
-
         Button checkDeviceButton = findViewById(R.id.check_device_button);
         checkDeviceButton.setOnClickListener(new View.OnClickListener() {
             @Override

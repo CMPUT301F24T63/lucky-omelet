@@ -14,13 +14,15 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 public class Landing_page extends AppCompatActivity {
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.landing_page);
 
         Control control = Control.getInstance();
+        // Check device here:
+
+        control.setCurrentUser(control.getUserList().get(7));
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.landing_page), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -61,6 +63,15 @@ public class Landing_page extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Landing_page.this, facilityActivity.class); // have not done
+                startActivity(intent);
+            }
+        });
+
+        ImageView SettingIcon = findViewById(R.id.settingsIcon);
+        SettingIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Landing_page.this, SettingActivity.class); // have not done
                 startActivity(intent);
             }
         });

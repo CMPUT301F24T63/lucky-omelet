@@ -103,6 +103,14 @@ public class Control {
         return eventList;
     }
 
+    public void setCurrentUserID(int currentUserID) {
+        this.currentUserID = currentUserID;
+    }
+
+    public void setCurrentEventID(int currentEventID) {
+        this.currentEventID = currentEventID;
+    }
+
     /**
      * Retrieves the list of pictures uploaded by users.
      *

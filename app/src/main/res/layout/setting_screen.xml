@@ -16,23 +16,13 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <Switch
-        android:id="@+id/dark_switch"
-        android:layout_width="349dp"
-        android:layout_height="36dp"
-        android:text="Dark Mode"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.151" />
-
-    <Switch
         android:id="@+id/noti_switch"
         android:layout_width="349dp"
         android:layout_height="36dp"
+        android:layout_marginTop="116dp"
         android:text="Notification"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/dark_switch" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

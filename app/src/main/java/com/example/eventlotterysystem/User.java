@@ -179,6 +179,10 @@ public class User {
         }
     }
 
+    public void setNotificationSetting(Boolean notificationSetting) {
+        this.notificationSetting = notificationSetting;
+    }
+
     /**
      * The user edits the managed facility.
      *

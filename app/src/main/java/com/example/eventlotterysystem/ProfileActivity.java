@@ -18,15 +18,22 @@ public class ProfileActivity extends AppCompatActivity implements EditProfileFra
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_profile);
 
-        curUser = control.getUserList().get(6);
+        curUser = control.getCurrentUser();
 
         nameTextView = findViewById(R.id.name);
         emailTextView = findViewById(R.id.email);
         contactTextView = findViewById(R.id.contact);
+        if ("000-000-0000".equals(curUser.getContact())) {
+            nameTextView.setText(curUser.getName());
+            emailTextView.setText("Email: " +curUser.getEmail());
+            contactTextView.setText("Contact: " +curUser.getContact());
+            openEditProfileFragment();
+        } else {
+            nameTextView.setText(curUser.getName());
+            emailTextView.setText("Email: " +curUser.getEmail());
+            contactTextView.setText("Contact: " +curUser.getContact());
+        }
 
-        nameTextView.setText(curUser.getName());
-        emailTextView.setText("Email: " +curUser.getEmail());
-        contactTextView.setText("Contact: " +curUser.getContact());
 
         findViewById(R.id.edit_button).setOnClickListener(v -> openEditProfileFragment());
 
