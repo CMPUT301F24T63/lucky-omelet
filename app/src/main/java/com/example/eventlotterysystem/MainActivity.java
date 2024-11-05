@@ -8,33 +8,20 @@
 package com.example.eventlotterysystem;
 
 import android.os.Bundle;
-import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
-
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.installations.FirebaseInstallations;
 
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    private FirebaseFirestore db;
-    private CollectionReference usersRef;
-    private Control control; // Instance of Control
-    private User curUser;
-    private CollectionReference facRef;
-    private Facility curFac;
-    private CollectionReference eventRef;
-    private Event curEvent;
     private FirestoreManager fm;
 
 
@@ -53,6 +40,18 @@ public class MainActivity extends AppCompatActivity {
         fm = FirestoreManager.getInstance();
         fm.loadControl(control);
 
+        // get Firebase installation ID
+        FirebaseInstallations.getInstance().getId().addOnCompleteListener(new OnCompleteListener<String>() {
+            @Override
+            public void onComplete(@NonNull Task<String> task) {
+                if (task.isSuccessful()) {
+                    Control.setLocalFID(task.getResult()+"");
+                } else {
+                    Log.e("Firebase Error", "Error getting Firebase Installation ID", task.getException());
+                }
+            }
+        });
+
         Button checkDeviceButton = findViewById(R.id.check_device_button);
         checkDeviceButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,9 +61,5 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
     }
-
-
-
 }

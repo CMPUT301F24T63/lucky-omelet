@@ -44,6 +44,7 @@ dependencies {
     // firestore
     implementation(libs.firebase.firestore)
     implementation(platform("com.google.firebase:firebase-bom:33.5.1"))
+    implementation(libs.firebase.installations)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)

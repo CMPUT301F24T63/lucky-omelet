@@ -51,18 +51,18 @@ public class Utils {
 
         // 10 entrants (index 0-9)
         for (int i = 0; i < 10; i++) {
-            User entrant = new User(control.getCurrentUserID(), "Entrant" + i, "entrant" + i + "@example.com", "contact" + i, false);
+            User entrant = new User(control.getUserIDForUserCreation(), "Entrant" + i, "entrant" + i + "@example.com", "contact" + i, false);
             control.getUserList().add(entrant);
         }
 
         // 1 organizer (index 10)
-        User organizer = new User(control.getCurrentUserID(), "Organizer", "organizer" + "@example.com", "contact", false);
+        User organizer = new User(control.getUserIDForUserCreation(), "Organizer", "organizer" + "@example.com", "contact", false);
         control.getUserList().add(organizer);
         organizer.createFacility(control, "Test Facility Name", "Test Facility Location", "Test Facility Description", "Test Facility Open Time");
 
 
         // 1 admin (index 11)
-        User admin = new User(control.getCurrentUserID(), "Admin", "email", "contact", true);
+        User admin = new User(control.getUserIDForUserCreation(), "Admin", "email", "contact", true);
         control.getUserList().add(admin);
 
         // Organizer create multiple events
@@ -105,9 +105,7 @@ public class Utils {
     }
 
     public static void checkControlData(Control control){
-        // Control Data Test
-        Log.i("CurrentUserID", String.valueOf(control.getCurrentUserID()));
-        Log.i("CurrentEventID", String.valueOf(control.getCurrentEventID()));
+         // Control Data Test
         Log.i("UserListSize", String.valueOf(control.getUserList().size()));
         Log.i("FacilityListSize", String.valueOf(control.getFacilityList().size()));
         Log.i("EventListSize", String.valueOf(control.getEventList().size()));
@@ -115,7 +113,11 @@ public class Utils {
         Log.i("E0 Chosen List Size", String.valueOf(control.getEventList().get(0).getChosenList().size()));
         Log.i("E0 Cancelled List Size", String.valueOf(control.getEventList().get(0).getCancelledList().size()));
         Log.i("E0 FinalList size", String.valueOf(control.getEventList().get(0).getFinalList().size()));
+
         Log.i("U0 notification list size", String.valueOf(control.getUserList().get(0).getNotificationList().size()));
+        Log.i("U0 EnrolledList size", String.valueOf(control.getUserList().get(0).getEnrolledList().size()));
+        Log.i("U0 OrganizedList size", String.valueOf(control.getUserList().get(0).getOrganizedList().size()));
+        Log.i("Local FID", Control.getLocalFID());
 
 
         /**********************  You should see something like this in your logcat  ******************************
@@ -129,6 +131,7 @@ public class Utils {
          * 2024-11-02 16:28:28.695 12295-12295 Event 0 Ca... List Size com.example.eventlotterysystem       I  2
          * 2024-11-02 16:28:28.695 12295-12295 Event 0 FinalList size  com.example.eventlotterysystem       I  2
          * 2024-11-02 16:28:28.695 12295-12295 User 0 not... list size com.example.eventlotterysystem       I  2
+         * 2024-11-04 20:36:35.074  7458-7458  Local FID               com.example.eventlotterysystem       I  fwNYuvlkT1GoJ9NkI_zFQw
          **********************************************************************************************************/
 
     }

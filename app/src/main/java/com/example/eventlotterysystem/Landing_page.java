@@ -1,12 +1,10 @@
 package com.example.eventlotterysystem;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
@@ -20,10 +18,7 @@ public class Landing_page extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.landing_page);
 
-        Control control = Control.getInstance();
-        FirestoreManager fm = FirestoreManager.getInstance();
-        fm.loadNotifications(control);
-
+        checkDevice(Control.getInstance());
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.landing_page), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -37,6 +32,15 @@ public class Landing_page extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Landing_page.this, EventslistActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        ImageView SettingIcon = findViewById(R.id.settingsIcon);
+        SettingIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Landing_page.this, SettingActivity.class); // have not done
                 startActivity(intent);
             }
         });
@@ -71,10 +75,33 @@ public class Landing_page extends AppCompatActivity {
     }
 
     protected void checkDevice(Control control){
-        // find index of current user in user list by IMEI
-        int index = 0;
-        // 0: entrant   10: organizer   11: admin
-        Control.setCurrentUser(control.getUserList().get(index));
-    }
+        Log.i("checkDevice", "checkDevice function Control Data Test");
+        Utils.checkControlData(control);
+        for (User user : control.getUserList()) {
+            if (user.getFID().equals(Control.getLocalFID())) {
+                Control.setCurrentUser(user);
+                return;
+            }
+        }
+        if (Control.getCurrentUser() == null){
+            User me = new User(control.getUserIDForUserCreation());
+            me.setFID(Control.getLocalFID());
+            control.getUserList().add(me);
+            Control.setCurrentUser(me);
+            // Just don't save... Saving is causing the app to crash
+            // FirestoreManager.getInstance().saveControl(control);
+            // FirestoreManager.getInstance().saveUser(me);
+        }
+        Log.i("checkDevice", "After checkDevice function Control Data Test");
+        Utils.checkControlData(control);
+        FirestoreManager.getInstance().saveControl(control);
+        // Or set user by using index: 0: entrant   10: organizer   11: admin
+        // Control.setCurrentUser(control.getUserList().get(0));
 
+    }
 }
+
+
+
+
+
