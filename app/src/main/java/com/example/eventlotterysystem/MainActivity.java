@@ -42,6 +42,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         Control control = Control.getInstance();
 
+        // Refresh Database data
+//        Utils.setUpMockData(control);
+//        fm = new FirestoreManager();
+//        fm.saveControl(control);
 
         // Chose which user to test for MainActivity in checkDevice function
         // checkDevice(control);
