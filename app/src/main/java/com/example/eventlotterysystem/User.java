@@ -12,14 +12,6 @@
 
 package com.example.eventlotterysystem;
 
-import android.util.Log;
-
-import androidx.annotation.NonNull;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.installations.FirebaseInstallations;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -287,7 +279,7 @@ public class User {
      */
     public void createEvent(Control control, String name, String description, int limitChosenList, int limitWaitingList) {
         if (this.facility != null) {
-            int eventID = control.getCurrentEventID();
+            int eventID = control.getEventIDForEventCreation();
             Event newEvent = new Event(eventID, name, description, limitChosenList, limitWaitingList, this);
             this.organizedList.add(newEvent);
             control.getEventList().add(newEvent);

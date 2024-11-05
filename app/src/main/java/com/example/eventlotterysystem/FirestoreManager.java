@@ -11,9 +11,11 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.ArrayList;
 
@@ -66,6 +68,7 @@ public class FirestoreManager {
     }
 
     public void saveUser(User user) {
+        Log.i("Saving User", "Saving User " + user.getUserID());
         Map<String, Object> userData = new HashMap<>();
         userData.put("userID", user.getUserID());
         userData.put("name", user.getName());
@@ -295,43 +298,128 @@ public class FirestoreManager {
 
     private void loadEvents(Control control) {
         Log.i("Hello", "Hello from loadEvents!!!!!");
-        db.collection("events").get()
-                .addOnSuccessListener(queryDocumentSnapshots -> {
-                    for (DocumentSnapshot document : queryDocumentSnapshots) {
-                        DocumentReference creatorRef = (DocumentReference) document.get("creatorRef");
-                        User creator = findUserById(control, Integer.parseInt(creatorRef.getId()));
+        CollectionReference eventRef;
 
-                        if (creator != null) {
-                            Event event = new Event(
-                                    document.getLong("eventID").intValue(),
-                                    document.getString("name"),
-                                    document.getString("description"),
-                                    document.getLong("limitChosenList").intValue(),
-                                    document.getLong("limitWaitingList").intValue(),
-                                    creator
-                            );
 
-                            event.setHashCodeQR(document.getString("hashCodeQR"));
 
-                            // Load poster if exists
-                            DocumentReference posterRef = (DocumentReference) document.get("posterRef");
-                            if (posterRef != null) {
-                                Picture poster = findPictureByUploaderId(control, Integer.parseInt(posterRef.getId()));
-                                event.setPoster(poster);
+        eventRef = db.collection("events");
+        eventRef.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                QuerySnapshot querySnapshot = task.getResult();
+                if (querySnapshot != null) {
+                    control.getEventList().clear();
+                    for (QueryDocumentSnapshot doc : querySnapshot) {
+                        int id = Integer.parseInt(doc.getId());
+                        String name = doc.getString("name");
+                        String description = doc.getString("description");
+                        int limitChosenList = doc.getLong("limitChosenList").intValue();
+                        int limitWaitingList = doc.getLong("limitWaitingList").intValue();
+                        DocumentReference creatorRef = doc.getDocumentReference("creatorRef");
+                        creatorRef.get().addOnCompleteListener(creatorTask -> {
+                            DocumentSnapshot creatorDoc = creatorTask.getResult();
+                            int creatorId = Integer.parseInt(creatorDoc.getId());
+                            for (User user : control.getUserList()) {
+                                if (user.getUserID()==creatorId) {
+                                    Event curEvent = new Event(id, name, description, limitChosenList, limitWaitingList, user);
+                                    control.getEventList().add(curEvent);
+
+                                    List<DocumentReference> waitingList = (List<DocumentReference>) doc.get("waitingList");
+                                    if (waitingList != null) {
+                                        for (DocumentReference userRef : waitingList) {
+                                            int userId = Integer.parseInt(userRef.getId());
+                                            for (User waituser : control.getUserList()) {
+                                                if (waituser.getUserID()==userId) {
+                                                    curEvent.getWaitingList().add(waituser);
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                    }
+                                    List<DocumentReference> chosenList = (List<DocumentReference>) doc.get("chosenList");
+                                    if (chosenList != null) {
+                                        for (DocumentReference userRef : chosenList) {
+                                            int userId = Integer.parseInt(userRef.getId());
+                                            for (User chosenuser : control.getUserList()) {
+                                                if (chosenuser.getUserID()==userId) {
+                                                    curEvent.getChosenList().add(chosenuser);
+                                                }
+                                            }
+                                        }
+                                    }
+                                    List<DocumentReference> cancelledList = (List<DocumentReference>) doc.get("cancelledList");
+                                    if (cancelledList != null) {
+                                        for (DocumentReference userRef : cancelledList) {
+                                            int userId = Integer.parseInt(userRef.getId());
+                                            for (User cancelleduser : control.getUserList()) {
+                                                if (cancelleduser.getUserID()==userId) {
+                                                    curEvent.getCancelledList().add(cancelleduser);
+                                                }
+                                            }
+                                        }
+                                    }
+                                    List<DocumentReference> FinalList = (List<DocumentReference>) doc.get("FinalList");
+                                    if (FinalList != null) {
+                                        for (DocumentReference userRef : FinalList) {
+                                            int userId = Integer.parseInt(userRef.getId());
+                                            for (User finaluser : control.getUserList()) {
+                                                if (finaluser.getUserID()==userId) {
+                                                    curEvent.getFinalList().add(finaluser);
+                                                }
+                                            }
+                                        }
+                                    }
+                                    break;
+                                }
                             }
-
-                            // Load user lists
-                            loadUserList(document, "waitingList", event.getWaitingList(), control);
-                            loadUserList(document, "cancelledList", event.getCancelledList(), control);
-                            loadUserList(document, "chosenList", event.getChosenList(), control);
-                            loadUserList(document, "finalList", event.getFinalList(), control);
-
-                            control.getEventList().add(event);
-                            creator.getOrganizedList().add(event);
-                        }
+                        });
                     }
-                })
-                .addOnFailureListener(e -> Log.e("Database Error", "Error loading events: " + e));
+                }
+            }
+        });
+
+
+
+
+
+
+
+//        db.collection("events").get()
+//                .addOnSuccessListener(queryDocumentSnapshots -> {
+//                    for (DocumentSnapshot document : queryDocumentSnapshots) {
+//                        DocumentReference creatorRef = (DocumentReference) document.get("creatorRef");
+//                        User creator = findUserById(control, Integer.parseInt(creatorRef.getId()));
+//
+//                        if (creator != null) {
+//                            Event event = new Event(
+//                                    document.getLong("eventID").intValue(),
+//                                    document.getString("name"),
+//                                    document.getString("description"),
+//                                    document.getLong("limitChosenList").intValue(),
+//                                    document.getLong("limitWaitingList").intValue(),
+//                                    creator
+//                            );
+//
+//                            event.setHashCodeQR(document.getString("hashCodeQR"));
+//
+//                            // Load poster if exists
+//                            DocumentReference posterRef = (DocumentReference) document.get("posterRef");
+//                            if (posterRef != null) {
+//                                Picture poster = findPictureByUploaderId(control, Integer.parseInt(posterRef.getId()));
+//                                event.setPoster(poster);
+//                            }
+//
+//                            // Load user lists
+//                            loadUserList(document, "waitingList", event.getWaitingList(), control);
+//                            loadUserList(document, "cancelledList", event.getCancelledList(), control);
+//                            loadUserList(document, "chosenList", event.getChosenList(), control);
+//                            loadUserList(document, "finalList", event.getFinalList(), control);
+//
+//                            control.getEventList().add(event);
+//                            creator.getOrganizedList().add(event);
+//                        }
+//                    }
+//                })
+//                .addOnFailureListener(e -> Log.e("Database Error", "Error loading events: " + e));
     }
 
     public void loadNotifications(Control control) {

@@ -67,10 +67,14 @@ public class Control {
      *
      * @return the unique ID for the new event
      */
-    public int getCurrentEventID() {
+    public int getEventIDForEventCreation() {
         int id = currentEventID;
         currentEventID++;
         return id;
+    }
+
+    public int getCurrentEventID() {
+        return currentEventID;
     }
 
     /**
@@ -78,10 +82,19 @@ public class Control {
      *
      * @return the unique ID for the new user
      */
-    public int getCurrentUserID() {
+    public int getUserIDForUserCreation() {
         int id = currentUserID;
         currentUserID++;
         return id;
+    }
+
+    /**
+     * Retrieves the current unique user ID.
+     *
+     * @return the current unique user ID
+     */
+    public int getCurrentUserID() {
+        return currentUserID;
     }
 
     /**

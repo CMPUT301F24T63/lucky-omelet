@@ -12,7 +12,7 @@ public class ControlAndFacilityTest {
     public void setUp() {
         control = new Control();
         // All users are new
-        User organizer = new User(control.getCurrentUserID(),"Organizer", "email", "contact", false );
+        User organizer = new User(control.getUserIDForUserCreation(),"Organizer", "email", "contact", false );
         control.getUserList().add(organizer);
     }
 
@@ -37,8 +37,8 @@ public class ControlAndFacilityTest {
     @Test
     public void testUserID() {
         User organizer = control.getUserList().get(0);
-        User bot1 = new User(control.getCurrentUserID(), "Bot",  "email", "contact", false);
-        User bot2 = new User(control.getCurrentUserID(), "Bot", "email", "contact", false);
+        User bot1 = new User(control.getUserIDForUserCreation(), "Bot",  "email", "contact", false);
+        User bot2 = new User(control.getUserIDForUserCreation(), "Bot", "email", "contact", false);
         assertEquals(0, organizer.getUserID());
         assertEquals(1, bot1.getUserID());
         assertEquals(2, bot2.getUserID());

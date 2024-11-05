@@ -1,23 +1,15 @@
 package com.example.eventlotterysystem;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.installations.FirebaseInstallations;
 
 public class Landing_page extends AppCompatActivity {
 
@@ -80,20 +72,28 @@ public class Landing_page extends AppCompatActivity {
             if (user.getFID().equals(Control.getLocalFID())) {
                 Control.setCurrentUser(user);
                 return;
-            } else {
-                User me = new User(control.getCurrentUserID());
-                me.setFID(Control.getLocalFID());
-                control.getUserList().add(me);
-                Control.setCurrentUser(me);
-                // Just don't save... Saving is causing the app to crash
-                // FirestoreManager.getInstance().saveControl(control);
-                FirestoreManager.getInstance().saveUser(me);
-                return;
             }
         }
+        if (Control.getCurrentUser() == null){
+            User me = new User(control.getUserIDForUserCreation());
+            me.setFID(Control.getLocalFID());
+            control.getUserList().add(me);
+            Control.setCurrentUser(me);
+            // Just don't save... Saving is causing the app to crash
+            // FirestoreManager.getInstance().saveControl(control);
+            // FirestoreManager.getInstance().saveUser(me);
+        }
+        Log.i("checkDevice", "After checkDevice function Control Data Test");
+        Utils.checkControlData(control);
+        FirestoreManager.getInstance().saveControl(control);
 
         // Or set user by using index: 0: entrant   10: organizer   11: admin
         // Control.setCurrentUser(control.getUserList().get(0));
-    }
 
+    }
 }
+
+
+
+
+
