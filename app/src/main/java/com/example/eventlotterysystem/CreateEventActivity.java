@@ -57,16 +57,11 @@ public class CreateEventActivity extends AppCompatActivity {
                 Integer.parseInt(waitingListLimit);
             }
 
-//            Control control = Control.getInstance();
-//            User currentUser = Control.getInstance().getCurrentUser();
-//
-//            currentUser.createEvent(control, title, description, intEventLimit, intWaitingListLimit);
-//            int newEventId = control.getCurrentEventID();
-//
-//            FirestoreManager.getInstance().saveControl(Control.getInstance());
+            User currentUser = Control.getCurrentUser();
+            currentUser.createEvent(Control.getInstance(), title, description, intEventLimit, intWaitingListLimit);
+            FirestoreManager.getInstance().saveControl(Control.getInstance());
 
-            // Once fixed, replace 2 with newEventId
-            showQRDialog(2);
+            showQRDialog(currentUser.getOrganizedList().get(currentUser.getOrganizedList().size()-1).getEventID());
         });
     }
 
