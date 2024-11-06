@@ -1,4 +1,3 @@
-
 /**
  * The {@code Control} class is a singleton responsible for managing users, facilities, events, and
  * pictures in the event lottery system. It provides centralized access to the lists of these entities
@@ -181,10 +180,10 @@ public class Control {
     }
 
     /**
-     * Get Event object by providing eventID.
-     *
-     * @para eventId EventID
-     */
+    * Get Event object by providing eventID. 
+    *
+    * @para eventId EventID
+    */
     public Event getEventById(int eventId) {
         for (Event event : eventList) {
             if (event.getEventID() == eventId) {

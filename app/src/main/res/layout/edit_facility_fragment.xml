@@ -47,19 +47,6 @@
             android:hint="Facility description"
             android:textSize="18sp" />
 
-        <TextView
-            android:id="@+id/textView_loc"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="facility Location" />
-
-        <EditText
-            android:id="@+id/facility_location_edit"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="facility location"
-            android:textSize="18sp" />
-
         <Button
             android:id="@+id/finish_button"
             android:layout_width="match_parent"

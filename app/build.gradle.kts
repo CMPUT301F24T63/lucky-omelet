@@ -40,10 +40,12 @@ dependencies {
     implementation(libs.activity)
     implementation(libs.constraintlayout)
     implementation(libs.play.services.maps)
+    implementation("androidx.compose.material3:material3:1.3.1")
 
     // firestore
     implementation(libs.firebase.firestore)
     implementation(platform("com.google.firebase:firebase-bom:33.5.1"))
+    implementation(libs.firebase.installations)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)

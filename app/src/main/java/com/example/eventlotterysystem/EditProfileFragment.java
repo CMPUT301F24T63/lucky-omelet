@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -17,7 +18,7 @@ public class EditProfileFragment extends DialogFragment {
     private OnProfileUpdatedListener profileUpdatedListener;
 
     public interface OnProfileUpdatedListener {
-        void onProfileUpdated(String firstName, String lastName, String email);
+        void onProfileUpdated(String name, String email, String contact);
     }
 
     public void setOnProfileUpdatedListener(OnProfileUpdatedListener listener) {
@@ -27,7 +28,7 @@ public class EditProfileFragment extends DialogFragment {
     public static EditProfileFragment newInstance(String name, String email, String contact) {
         EditProfileFragment fragment = new EditProfileFragment();
         Bundle args = new Bundle();
-        args.putString("Name", name);
+        args.putString("name", name);
         args.putString("email", email);
         args.putString("contact", contact);
         fragment.setArguments(args);
@@ -44,9 +45,9 @@ public class EditProfileFragment extends DialogFragment {
         contactEditText = view.findViewById(R.id.user_contact);
 
         if (getArguments() != null) {
-            nameEditText.setHint(getArguments().getString("name"));
-            emailEditText.setHint(getArguments().getString("email"));
-            contactEditText.setHint(getArguments().getString("contact"));
+            nameEditText.setText(getArguments().getString("name"));
+            emailEditText.setText(getArguments().getString("email"));
+            contactEditText.setText(getArguments().getString("contact"));
         }
 
         Button finishButton = view.findViewById(R.id.finish_button);
@@ -66,5 +67,13 @@ public class EditProfileFragment extends DialogFragment {
         cancelButton.setOnClickListener(v -> dismiss());
 
         return view;
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        // Set dialog size
+        int width = (int) (getResources().getDisplayMetrics().widthPixels * 0.99); // 90% of screen width
+        int height = WindowManager.LayoutParams.WRAP_CONTENT; // Adjust height as needed
+        getDialog().getWindow().setLayout(width, height);
     }
 }
