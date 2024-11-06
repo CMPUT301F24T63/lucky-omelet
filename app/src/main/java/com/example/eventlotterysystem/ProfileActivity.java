@@ -1,6 +1,7 @@
 package com.example.eventlotterysystem;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -12,16 +13,20 @@ public class ProfileActivity extends AppCompatActivity implements EditProfileFra
     private TextView emailTextView;
     private TextView contactTextView;
     private User curUser;
-    private Control control = Control.getInstance();
+    private Control control;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_profile);
-
+        Control control = Control.getInstance();
+        // Test control data
+        Log.i("checkControlData", "Profile Activity Control Data Test");
+        Utils.checkControlData(control);
         // try different index here to get different user (this suggest database read is successful)
         // curUser = control.getUserList().get(0);
-        curUser = control.getEventList().get(0).getWaitingList().get(0);// Entrant 5 (This confirms database read is successful!)
-
+        // curUser = control.getEventList().get(0).getWaitingList().get(0);// Entrant 5 (This confirms database read is successful!)
+        curUser = Control.getCurrentUser();
+        Log.i("my index", control.getUserList().indexOf(Control.getCurrentUser())+"");
         nameTextView = findViewById(R.id.name);
         emailTextView = findViewById(R.id.email);
         contactTextView = findViewById(R.id.contact);
@@ -29,6 +34,17 @@ public class ProfileActivity extends AppCompatActivity implements EditProfileFra
         nameTextView.setText(curUser.getName());
         emailTextView.setText("Email: " +curUser.getEmail());
         contactTextView.setText("Contact: " +curUser.getContact());
+
+        if ("000-000-0000".equals(curUser.getContact())) {
+            nameTextView.setText(curUser.getName());
+            emailTextView.setText("Email: " +curUser.getEmail());
+            contactTextView.setText("Contact: " +curUser.getContact());
+            openEditProfileFragment();
+        } else {
+            nameTextView.setText(curUser.getName());
+            emailTextView.setText("Email: " +curUser.getEmail());
+            contactTextView.setText("Contact: " +curUser.getContact());
+        }
 
         findViewById(R.id.edit_button).setOnClickListener(v -> openEditProfileFragment());
 
@@ -64,7 +80,7 @@ public class ProfileActivity extends AppCompatActivity implements EditProfileFra
         nameTextView.setText(curUser.getName());
         emailTextView.setText("Email: " + curUser.getEmail());
         contactTextView.setText("Contact: " + curUser.getContact());
-        FirestoreManager fm = new FirestoreManager();
-        fm.saveControl(control);
+        Utils.checkControlData(Control.getInstance());
+        FirestoreManager.getInstance().saveControl(Control.getInstance());
     }
 }

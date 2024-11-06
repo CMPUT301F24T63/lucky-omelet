@@ -1,166 +1,175 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/landing_page"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp"
-    android:gravity="center"
-    android:background="#FFFFFF">
+    android:layout_height="match_parent">
 
     <!-- @username should not be hard coded -->
-    <TextView
-        android:id="@+id/welcomeText"
+
+    <ScrollView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Welcome to Event Lottery System, @username!"
-        android:textSize="14sp"
-        android:textColor="#000000"
-        android:gravity="center"
-        android:layout_gravity="center"
-        android:paddingBottom="24dp"/>
-
-    <GridLayout
-        android:layout_width="305dp"
-        android:layout_height="502dp"
-        android:layout_gravity="center"
-        android:alignmentMode="alignMargins"
-        android:columnCount="2"
-        android:padding="8dp"
-        android:rowCount="3">
+        android:layout_centerInParent="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="12dp"
-            android:gravity="center"
+            android:layout_centerInParent="true"
             android:orientation="vertical">
 
-            <ImageView
-                android:id="@+id/eventsIcon"
-                android:layout_width="120dp"
-                android:layout_height="120dp"
-                android:src="@drawable/ic_events" />
-
             <TextView
+                android:id="@+id/welcomeText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:gravity="center"
-                android:text="Events"
-                android:textColor="#000000"
-                android:textSize="12sp" />
-        </LinearLayout>
+                android:paddingBottom="24dp"
+                android:text="Welcome to\nEvent Lottery System\n@username!"
+                android:textAppearance="@style/TextAppearance.Material3.HeadlineLarge" />
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="12dp"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <ImageView
-                android:id="@+id/facilitiesIcon"
-                android:layout_width="120dp"
-                android:layout_height="120dp"
-                android:src="@drawable/ic_facility" />
-
-            <TextView
+            <GridLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="Facilities"
-                android:textColor="#000000"
-                android:textSize="12sp" />
+                android:layout_gravity="center"
+                android:alignmentMode="alignMargins"
+                android:columnCount="2"
+                android:padding="12dp"
+                android:rowCount="3">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="12dp"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/eventsIcon"
+                        android:layout_width="120dp"
+                        android:layout_height="120dp"
+                        android:src="@drawable/ic_events" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="Events"
+                        android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="12dp"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/facilitiesIcon"
+                        android:layout_width="120dp"
+                        android:layout_height="120dp"
+                        android:src="@drawable/ic_facility" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="Facilities"
+                        android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="12dp"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/notificationsIcon"
+                        android:layout_width="120dp"
+                        android:layout_height="120dp"
+                        android:src="@drawable/ic_notifications" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="Notifications"
+                        android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="12dp"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/profileIcon"
+                        android:layout_width="120dp"
+                        android:layout_height="120dp"
+                        android:src="@drawable/ic_profile" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="Profile"
+                        android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="12dp"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/scanQRIcon"
+                        android:layout_width="120dp"
+                        android:layout_height="120dp"
+                        android:src="@drawable/ic_scan" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="Scan QR Code"
+                        android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="12dp"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/settingsIcon"
+                        android:layout_width="120dp"
+                        android:layout_height="120dp"
+                        android:src="@drawable/ic_setting" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="Settings"
+                        android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
+                </LinearLayout>
+
+            </GridLayout>
         </LinearLayout>
+    </ScrollView>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="12dp"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <ImageView
-                android:id="@+id/notificationsIcon"
-                android:layout_width="120dp"
-                android:layout_height="120dp"
-                android:src="@drawable/ic_notifications" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="Notifications"
-                android:textColor="#000000"
-                android:textSize="12sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="12dp"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <ImageView
-                android:id="@+id/profileIcon"
-                android:layout_width="120dp"
-                android:layout_height="120dp"
-                android:src="@drawable/ic_profile" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="Profile"
-                android:textColor="#000000"
-                android:textSize="12sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="12dp"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <ImageView
-                android:id="@+id/scanQRIcon"
-                android:layout_width="120dp"
-                android:layout_height="120dp"
-                android:src="@drawable/ic_scan" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="Scan QR Code"
-                android:textColor="#000000"
-                android:textSize="12sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="12dp"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <ImageView
-                android:id="@+id/settingsIcon"
-                android:layout_width="120dp"
-                android:layout_height="120dp"
-                android:src="@drawable/ic_setting" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="Settings"
-                android:textColor="#000000"
-                android:textSize="12sp" />
-        </LinearLayout>
-
-    </GridLayout>
-
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

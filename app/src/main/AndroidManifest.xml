@@ -29,6 +29,12 @@
         <activity android:name=".CreateEventActivity" />
         <activity android:name=".AllEventsActivity" />
         <activity android:name=".ViewEventActivity" />
+        <activity android:name=".SettingActivity" />
+        <activity android:name=".WaitingListManageActivity" />
+        <activity android:name=".ChosenListManageActivity" />
+        <activity android:name=".CancelledListManageActivity" />
+        <activity android:name=".FinalListManageActivity" />
+
     </application>
 
 </manifest>
