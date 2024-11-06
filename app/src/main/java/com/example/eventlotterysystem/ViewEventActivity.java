@@ -26,8 +26,10 @@ public class ViewEventActivity extends AppCompatActivity {
 
 //        eventTitle.setText("Title of Event");
 
+        int eventId = getIntent().getIntExtra("eventId", -1);
+
         Control control = Control.getInstance();
-        Event event = control.getEventList().get(0);
+        Event event = control.getEventList().get(eventId);
         String name = event.getName();
         String description = event.getDescription();
         String limitChosen = String.valueOf(event.getLimitChosenList());
@@ -67,7 +69,7 @@ public class ViewEventActivity extends AppCompatActivity {
     }
 
     private void showQRCodeDialog() {
-        QRCodeDialogFragment dialog = QRCodeDialogFragment.newInstance(true);
+        QRCodeDialogFragment dialog = QRCodeDialogFragment.newInstance(true, 0);
         dialog.show(getSupportFragmentManager(), "QRCodeDialog");
     }
 

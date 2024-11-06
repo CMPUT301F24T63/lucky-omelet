@@ -1,3 +1,4 @@
+
 /**
  * The {@code Control} class is a singleton responsible for managing users, facilities, events, and
  * pictures in the event lottery system. It provides centralized access to the lists of these entities
@@ -20,7 +21,15 @@ public class Control {
     private ArrayList<Picture> pictureList; // List of pictures uploaded by users
     private static Control instance; // Singleton instance of Control
     private static User currentUser = null; // Currently logged-in user
+    private static String localFID; // Local Firebase installation ID
 
+    public static void setLocalFID(String localFID) {
+        Control.localFID = localFID;
+    }
+
+    public static String getLocalFID() {
+        return localFID;
+    }
 
     // Constructor
 
@@ -59,10 +68,14 @@ public class Control {
      *
      * @return the unique ID for the new event
      */
-    public int getCurrentEventID() {
+    public int getEventIDForEventCreation() {
         int id = currentEventID;
         currentEventID++;
         return id;
+    }
+
+    public int getCurrentEventID() {
+        return currentEventID;
     }
 
     /**
@@ -70,10 +83,19 @@ public class Control {
      *
      * @return the unique ID for the new user
      */
-    public int getCurrentUserID() {
+    public int getUserIDForUserCreation() {
         int id = currentUserID;
         currentUserID++;
         return id;
+    }
+
+    /**
+     * Retrieves the current unique user ID.
+     *
+     * @return the current unique user ID
+     */
+    public int getCurrentUserID() {
+        return currentUserID;
     }
 
     /**
@@ -128,6 +150,48 @@ public class Control {
      */
     public static void setCurrentUser(User user) {
         currentUser = user;
+    }
+
+    /**
+     * Sets the current unique event ID. Used to set data read from database.
+     *
+     * @param currentUserID
+     */
+    public void setCurrentUserID(int currentUserID) {
+        this.currentUserID = currentUserID;
+    }
+
+    /**
+     * Sets the current unique event ID. Used to set data read from database.
+     *
+     * @param currentEventID
+     */
+    public void setCurrentEventID(int currentEventID) {
+        this.currentEventID = currentEventID;
+    }
+
+
+    /**
+     * Sets the singleton instance of {@code Control}.
+     *
+     * @param instance the {@code Control} instance to set as the singleton
+     */
+    public static void setInstance(Control instance) {
+        Control.instance = instance;
+    }
+
+    /**
+     * Get Event object by providing eventID.
+     *
+     * @para eventId EventID
+     */
+    public Event getEventById(int eventId) {
+        for (Event event : eventList) {
+            if (event.getEventID() == eventId) {
+                return event;
+            }
+        }
+        return null;
     }
 
 }

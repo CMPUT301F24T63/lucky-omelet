@@ -13,11 +13,13 @@ import androidx.fragment.app.DialogFragment;
 
 public class QRCodeDialogFragment extends DialogFragment {
     private static final String viewEventArg = "fromViewEvent";
+    private static final String eventIdArg = "eventId";
 
-    public static QRCodeDialogFragment newInstance(boolean fromViewEvent) {
+    public static QRCodeDialogFragment newInstance(boolean fromViewEvent, int eventId) {
         QRCodeDialogFragment fragment = new QRCodeDialogFragment();
         Bundle args = new Bundle();
         args.putBoolean(viewEventArg, fromViewEvent);
+        args.putInt(eventIdArg, eventId); // Pass eventId as an argument
         fragment.setArguments(args);
         return fragment;
     }
@@ -28,8 +30,9 @@ public class QRCodeDialogFragment extends DialogFragment {
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.dialog_qrcode, container, false);
 
-        assert getArguments() != null;
+        //assert getArguments() != null;
         boolean fromViewEvent = getArguments().getBoolean(viewEventArg, false);
+        int eventId = getArguments().getInt(eventIdArg, -1);
 
         Button buttonCancel = view.findViewById(R.id.buttonCancel);
         buttonCancel.setOnClickListener(v -> dismiss());
@@ -40,6 +43,7 @@ public class QRCodeDialogFragment extends DialogFragment {
         Button buttonPublish = view.findViewById(R.id.buttonPublish);
         buttonPublish.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), ViewEventActivity.class);
+            intent.putExtra("eventId", eventId);
             startActivity(intent);
             dismiss();
         });

@@ -43,32 +43,35 @@ public class CreateEventActivity extends AppCompatActivity {
             String registerDate = editRegisterDate.getText().toString().trim();
             String price = editPrice.getText().toString().trim();
 
-            int intEventLimit = Integer.parseInt(eventLimit);
-            int intWaitingListLimit = Integer.parseInt(waitingListLimit);
-            int intPrice = Integer.parseInt(price);
-
-            if (title.isEmpty() || description.isEmpty() || eventLimit.isEmpty() ||
+            if (title.isEmpty() || description.isEmpty() ||
             openDate.isEmpty() || registerDate.isEmpty() || price.isEmpty()) {
                 Toast.makeText(CreateEventActivity.this,
                         "Please fill in all required fields", Toast.LENGTH_SHORT).show();
                 return;
             }
 
+            int intEventLimit = Integer.parseInt(eventLimit);
+            int intPrice = Integer.parseInt(price);
+            int intWaitingListLimit = 9999; // Default value if the field is left blank
+            if (!waitingListLimit.isEmpty()) {
+                Integer.parseInt(waitingListLimit);
+            }
+
 //            Control control = Control.getInstance();
-//            User me = new User(69);
-//            control.getUserList().add(me);
-//            me.createEvent(control, title, description, intEventLimit, intWaitingListLimit);
+//            User currentUser = Control.getInstance().getCurrentUser();
 //
-//            // How to retrieve the eventID to pass to later activities?
+//            currentUser.createEvent(control, title, description, intEventLimit, intWaitingListLimit);
+//            int newEventId = control.getCurrentEventID();
 //
 //            FirestoreManager.getInstance().saveControl(Control.getInstance());
 
-            showQRDialog();
+            // Once fixed, replace 2 with newEventId
+            showQRDialog(2);
         });
     }
 
-    private void showQRDialog() {
-        QRCodeDialogFragment dialog = QRCodeDialogFragment.newInstance(false);
+    private void showQRDialog(int newEventId) {
+        QRCodeDialogFragment dialog = QRCodeDialogFragment.newInstance(false, newEventId);
         dialog.show(getSupportFragmentManager(), "QRCodeDialog");
     }
 

@@ -1,3 +1,4 @@
+
 /**
  * The {@code User} class represents a user in the event lottery system. All the user operations
  * from the user interface (except checkDevice) are implemented here.
@@ -30,6 +31,7 @@ public class User {
     private ArrayList<Event> enrolledList; // List of events the user is enrolled in
     private ArrayList<Event> organizedList; // List of events organized by the user
     private Boolean notificationSetting; // Notification settings for the user
+    private String FID; // Firebase ID of the user
 
     // Constructor
 
@@ -56,6 +58,8 @@ public class User {
         this.enrolledList = new ArrayList<>();
         this.organizedList = new ArrayList<>();
         this.notificationSetting = true;
+        this.FID = "Fake User";
+
     }
 
     /**
@@ -78,6 +82,7 @@ public class User {
         this.enrolledList = new ArrayList<>();
         this.organizedList = new ArrayList<>();
         this.notificationSetting = true;
+        this.FID = "Waiting For Update";
     }
 
     // Getters
@@ -114,6 +119,9 @@ public class User {
 
     /** @return the user's notification setting. */
     public Boolean getNotificationSetting() { return notificationSetting; }
+
+    /** @return the user's Firebase ID. */
+    public String getFID() { return FID; }
 
     // Setters
 
@@ -160,6 +168,24 @@ public class User {
      */
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    /**
+     * Sets the user's notification setting.
+     *
+     * @param notificationSetting the notification setting to set
+     */
+    public void setNotificationSetting(Boolean notificationSetting) {
+        this.notificationSetting = notificationSetting;
+    }
+
+    /**
+     * Sets the user's Firebase ID.
+     *
+     * @param FID the Firebase ID to set
+     */
+    public void setFID(String FID) {
+        this.FID = FID;
     }
 
     // Functions
@@ -254,7 +280,7 @@ public class User {
      */
     public void createEvent(Control control, String name, String description, int limitChosenList, int limitWaitingList) {
         if (this.facility != null) {
-            int eventID = control.getCurrentEventID();
+            int eventID = control.getEventIDForEventCreation();
             Event newEvent = new Event(eventID, name, description, limitChosenList, limitWaitingList, this);
             this.organizedList.add(newEvent);
             control.getEventList().add(newEvent);
@@ -293,6 +319,7 @@ public class User {
      * @param event the event to cancel participation in
      */
     public void cancelEvent(Event event) {
+        this.enrolledList.remove(event);
         event.getWaitingList().remove(this);
         if (event.getChosenList().contains(this)){
             event.getChosenList().remove(this);
@@ -341,7 +368,7 @@ public class User {
         // Construct message
         String automaticMessage = "[Auto] Congratulations! You have been chosen to attend " + event.getName() + "! Click 'Accept' below to accept the invitation!";
         // Calculate remaining spots
-        int remainingSpot = event.getLimitChosenList() - event.getChosenList().size();
+        int remainingSpot = event.getLimitChosenList() - event.getChosenList().size() - event.getFinalList().size();
         // if not enough people registered
         if (event.getWaitingList().size() <= remainingSpot) { // enough spots for everyone
             for (User winner: event.getWaitingList()) { // waiting list shrinks as we delete them
