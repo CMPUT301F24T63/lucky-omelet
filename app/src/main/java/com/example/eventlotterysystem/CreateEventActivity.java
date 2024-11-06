@@ -5,16 +5,19 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.Toast;
-
-
 import androidx.appcompat.app.AppCompatActivity;
+
+/**
+ * Activity with inputs fields for event creation, geolocation switch
+ * The Waiting List size field is optional (can be omitted)
+ * Upload Image button is not yet implemented
+ */
 
 public class CreateEventActivity extends AppCompatActivity {
     private EditText editTitle, editDescription, editWaitingListLimit,
     editEventLimit, editOpenDate, editRegisterDate, editPrice;
     private Switch switchGeolocation;
     private Button buttonPublish, buttonCancel;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +68,10 @@ public class CreateEventActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Method to display the QR Code Dialog Fragment
+     * @param newEventId is the ID of the newly created event which is passed to QRCodeDialogFragment
+     */
     private void showQRDialog(int newEventId) {
         QRCodeDialogFragment dialog = QRCodeDialogFragment.newInstance(false, newEventId);
         dialog.show(getSupportFragmentManager(), "QRCodeDialog");

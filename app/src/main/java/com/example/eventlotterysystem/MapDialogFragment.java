@@ -10,6 +10,10 @@ import androidx.fragment.app.DialogFragment;
 import android.widget.Button;
 import android.widget.ImageView;
 
+/**
+ * Dialog Fragment for displaying a map displaying where entrants join an event from
+ * Not yet implemented so currently displays a placeholder image
+ */
 public class MapDialogFragment extends DialogFragment {
 
     @Nullable

@@ -11,10 +11,23 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
+/**
+ * Dialog Fragment for displaying a QR Code
+ * @param "fromViewEvent" if the QR Code is displayed from ViewEventActivity,
+ * hides hash code and buttons that only appear when the event is first created
+ * @param "eventId" the ID of the event that is then passed to ViewEventActivity
+ * Code to generate QR and Hash codes not yet implemented, so there are placeholders
+ */
 public class QRCodeDialogFragment extends DialogFragment {
     private static final String viewEventArg = "fromViewEvent";
     private static final String eventIdArg = "eventId";
 
+    /**
+     * Factory method to create a new instance of QRCodeDialogFragment
+     * @param fromViewEvent check if the dialog is displayed from ViewEventActivity
+     * @param eventId the ID of the event that is then passed to ViewEventActivity
+     * @return the fragment with the correct arguments
+     */
     public static QRCodeDialogFragment newInstance(boolean fromViewEvent, int eventId) {
         QRCodeDialogFragment fragment = new QRCodeDialogFragment();
         Bundle args = new Bundle();

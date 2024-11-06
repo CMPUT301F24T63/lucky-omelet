@@ -11,6 +11,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
+/**
+ * Dialog Fragment for navigating to different lists (Waiting List, Chosen List, Cancelled List, Final List)
+ */
 public class ManageEventMembersDialogFragment extends DialogFragment {
     @Nullable
     @Override
@@ -34,6 +37,9 @@ public class ManageEventMembersDialogFragment extends DialogFragment {
         return view;
     }
 
+    /**
+     * Function that opens the tapped list and dismisses the dialog while doing so
+     */
 //    private void openActivity(Class<?> activityClass) {
 //        Intent intent = new Intent(getActivity(), activityClass);
 //        startActivity(intent);

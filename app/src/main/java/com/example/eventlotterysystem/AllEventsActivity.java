@@ -10,6 +10,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The {@code AllEventsActivity} activity is responsible for displaying a list of all events in the eventList
+ * It currently loads mock data to populate the list
+ */
 public class AllEventsActivity extends AppCompatActivity {
     private RecyclerView eventsRecyclerView;
     private EventAdapter eventAdapter;
@@ -30,6 +34,10 @@ public class AllEventsActivity extends AppCompatActivity {
         ImageButton returnButton = findViewById(R.id.return_button);
         returnButton.setOnClickListener(v -> finish());
     }
+
+    /** method to load mock events to populate the RecyclerView
+     *
+     */
 
     private void loadMockEvents() {
         eventList.clear();
