@@ -28,6 +28,22 @@ public class Event {
 
     // Constructor
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setLimitChosenList(int limitChosenList) {
+        this.limitChosenList = limitChosenList;
+    }
+
+    public void setLimitWaitinglList(int limitWaitinglList) {
+        this.limitWaitinglList = limitWaitinglList;
+    }
+
     /**
      * Constructs a new {@code Event} instance with the specified ID, name, description,
      * participant limits, and creator.
