@@ -215,7 +215,7 @@ public class FirestoreManager {
         loadFacilities(control);
         loadPictures(control);
         loadEvents(control);
-        loadNotifications(control);
+        // loadNotifications(control);
     }
 
     private void loadUsers(Control control) {
@@ -370,8 +370,18 @@ public class FirestoreManager {
             db.collection("notifications").document(userID).collection("Events").get()
                     .addOnSuccessListener(queryDocumentSnapshots -> {
                         for (DocumentSnapshot document : queryDocumentSnapshots) {
-                            DocumentReference eventRef = (DocumentReference) document.get("eventRef");
-                            Event event = findEventById(control, Integer.parseInt(eventRef.getId()));
+                            int eventID = -1;
+                            Event event;
+                            try{
+                                eventID=  Integer.parseInt(document.getId());
+                            } catch (Exception e) {
+                                Log.e("Database Error", "Irregular document name in notifications" + e);
+                            }
+                            if (eventID != -1) {
+                                event = findEventById(control, eventID);
+                            } else {
+                                event = null;
+                            }
 
                             if (event != null) {
                                 Notification notification = new Notification(

@@ -18,20 +18,23 @@ public class Landing_page extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.landing_page);
 
+        FirestoreManager.getInstance().loadNotifications(Control.getInstance());
+
         if (Control.getCurrentUser() == null){
             checkDevice(Control.getInstance());
-        } else {
-            int currentUserID = Control.getCurrentUser().getUserID();
-            Control control = new Control();
-            Control.setInstance(control);
-            FirestoreManager.getInstance().loadControl(Control.getInstance());
-            for (User user : Control.getInstance().getUserList()) {
-                if (user.getUserID() == currentUserID) {
-                    Control.setCurrentUser(user);
-                    break;
-                }
-            }
         }
+//        else {
+//            int currentUserID = Control.getCurrentUser().getUserID();
+//            Control control = new Control();
+//            Control.setInstance(control);
+//            FirestoreManager.getInstance().loadControl(Control.getInstance());
+//            for (User user : Control.getInstance().getUserList()) {
+//                if (user.getUserID() == currentUserID) {
+//                    Control.setCurrentUser(user);
+//                    break;
+//                }
+//            }
+//        }
 
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.landing_page), (v, insets) -> {
