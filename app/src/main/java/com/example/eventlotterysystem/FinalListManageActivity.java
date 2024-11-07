@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -15,7 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 
-public class FinalListManageActivity extends AppCompatActivity {
+public class FinalListManageActivity extends AppCompatActivity implements NotifyFragment.NotificationListener{
     private Event event;
     private Control control;
     private UserAdapter adapter;
@@ -73,6 +74,13 @@ public class FinalListManageActivity extends AppCompatActivity {
         ImageButton returnButton = findViewById(R.id.return_button);
         returnButton.setOnClickListener(v -> navigateBackToViewEvent());
 
+        Button sentNotiButton = findViewById(R.id.notify_button);
+        sentNotiButton.setOnClickListener(v -> {
+            // Show the notification dialog
+            NotifyFragment dialog = new NotifyFragment();
+            dialog.show(getSupportFragmentManager(), "NotificationDialogFragment");
+        });
+
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
@@ -80,7 +88,16 @@ public class FinalListManageActivity extends AppCompatActivity {
             }
         });
     }
+    @Override
+    public void onNotify(String message) {
+        Notification Noti = new Notification(event, control.getCurrentUser(), false, message);
+        for (User allUser:event.getWaitingList()){
+            if (allUser.getNotificationSetting()){
+                allUser.getNotificationList().add(Noti);
+            }
+        }
 
+    }
     private void navigateBackToViewEvent() {
         Intent intent = new Intent(this, ManageEventActivity.class);
         intent.putExtra("eventID", event.getEventID());

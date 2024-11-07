@@ -36,34 +36,26 @@ public class ProfileActivity extends AppCompatActivity implements EditProfileFra
         contactTextView.setText("Contact: " +curUser.getContact());
 
         if ("000-000-0000".equals(curUser.getContact())) {
-            nameTextView.setText(curUser.getName());
-            emailTextView.setText("Email: " +curUser.getEmail());
-            contactTextView.setText("Contact: " +curUser.getContact());
-            openEditProfileFragment();
+            openEditProfileFragment("", "", "");
         } else {
-            nameTextView.setText(curUser.getName());
-            emailTextView.setText("Email: " +curUser.getEmail());
-            contactTextView.setText("Contact: " +curUser.getContact());
+            openEditProfileFragment(curUser.getName(), curUser.getEmail(), curUser.getContact());
         }
 
-        findViewById(R.id.edit_button).setOnClickListener(v -> openEditProfileFragment());
+        findViewById(R.id.edit_button).setOnClickListener(v -> openEditProfileFragment(
+                curUser.getName(), curUser.getEmail(), curUser.getContact()
+        ));
+
 
         ImageButton returnButton = findViewById(R.id.return_button);
         returnButton.setOnClickListener(view -> finish());
 
     }
 
-    private void openEditProfileFragment() {
-        EditProfileFragment editProfileFragment = EditProfileFragment.newInstance(
-                curUser.getName(),
-                curUser.getEmail(),
-                curUser.getContact()
-        );
+    private void openEditProfileFragment(String name, String email, String contact) {
+        EditProfileFragment editProfileFragment = EditProfileFragment.newInstance(name, email, contact);
         editProfileFragment.setOnProfileUpdatedListener(this);
         FragmentManager fragmentManager = getSupportFragmentManager();
         editProfileFragment.show(fragmentManager, "editProfileFragment");
-        editProfileFragment.setOnProfileUpdatedListener(this);
-
     }
 
     @Override
