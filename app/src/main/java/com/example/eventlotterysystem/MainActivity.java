@@ -60,6 +60,8 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 // Set the button visible after 3 seconds
                 checkDeviceButton.setVisibility(View.VISIBLE);
+                Intent intent = new Intent(MainActivity.this, Landing_page.class);
+                startActivity(intent);
             }
         }, 3000); // 3000 milliseconds = 3 seconds
 
