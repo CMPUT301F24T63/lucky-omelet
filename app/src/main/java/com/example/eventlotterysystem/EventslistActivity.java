@@ -1,5 +1,6 @@
 package com.example.eventlotterysystem;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,11 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 
+/**
+ * Activity that displays enrolled and owned events.
+ * A button that navigates to AllEventsActivity is also available.
+ * Event Creation Button is available to the Organizer role
+ */
 public class EventslistActivity extends AppCompatActivity {
 
     private LinearLayout enrolledList;
@@ -33,16 +39,26 @@ public class EventslistActivity extends AppCompatActivity {
         addEventToSection("Owned Event 1", "Event information", ownedList);
         addEventToSection("All Event 1", "Event information", allList);
 
-        findViewById(R.id.create_button).setOnClickListener(v -> {
-            showCreateEventDialog(); // Show the dialog
+        Button createEventButton = findViewById(R.id.create_button);
+        createEventButton.setOnClickListener(v -> {
+            Intent intent = new Intent(EventslistActivity.this, CreateEventActivity.class);
+            startActivity(intent);
+        });
+
+        Button allEventsButton = findViewById(R.id.all_events_button);
+        allEventsButton.setOnClickListener(v -> {
+            Intent intent = new Intent(EventslistActivity.this, AllEventsActivity.class);
+            startActivity(intent);
         });
     }
 
-    private void showCreateEventDialog() {
-        CreateEventDialogFragment dialog = new CreateEventDialogFragment();
-        dialog.show(getSupportFragmentManager(), "CreateEventDialog");
-    }
-
+    /**
+     * Method that helps display events along with Edit and Delete Buttons for each.
+     * Working with mock data so editing and deleting is not done from this activity yet.
+     * @param eventName The name of the event
+     * @param eventInfo The event's description
+     * @param section The section (enrolled, owned) to add the event to
+     */
     private void addEventToSection(String eventName, String eventInfo, LinearLayout section) {
         LayoutInflater inflater = LayoutInflater.from(this);
         View eventView = inflater.inflate(R.layout.event_content, section, false);

@@ -110,7 +110,7 @@ public class FirestoreManager {
             notificationData.put("needAccept", notification.needAccept());
             notificationData.put("isAccepted", notification.getIsAccepted());
             notificationData.put("isDeclined", notification.getIsDeclined());
-            userIDRef.collection(String.valueOf(notification.getEvent().getEventID())).document("info").set(notificationData);
+            userIDRef.collection("Events").document(String.valueOf(notification.getEvent().getEventID())).set(notificationData);
         }
 
 
@@ -432,7 +432,7 @@ public class FirestoreManager {
         Log.i("UserListSize", String.valueOf(control.getUserList().size()));
         for (User user : control.getUserList()) {
             String userID = String.valueOf(user.getUserID());
-            db.collection("notifications").document(userID).collection("events").get()
+            db.collection("notifications").document(userID).collection("Events").get()
                     .addOnSuccessListener(queryDocumentSnapshots -> {
                         for (DocumentSnapshot document : queryDocumentSnapshots) {
                             DocumentReference eventRef = (DocumentReference) document.get("eventRef");

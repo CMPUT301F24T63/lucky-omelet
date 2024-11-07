@@ -1,3 +1,4 @@
+
 /**
  * The {@code User} class represents a user in the event lottery system. All the user operations
  * from the user interface (except checkDevice) are implemented here.
