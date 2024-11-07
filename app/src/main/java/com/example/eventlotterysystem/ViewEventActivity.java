@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CalendarView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -43,6 +44,23 @@ public class ViewEventActivity extends AppCompatActivity {
                 break;
             }
         }
+
+        // set text for join button
+        if (curEvent != null && curUser != null) {
+            boolean enrolled = false;
+            for (Event event : curUser.getEnrolledList()) {
+                if (event.getEventID() == curEvent.getEventID()) {
+                    enrolled = true;
+                    break;
+                }
+            }
+            if (enrolled) {
+                joinbutton.setText("Cancel Event");
+            } else {
+                joinbutton.setText("Join Event");
+            }
+        }
+
         if (!curUser.isAdmin()){
             deleteButton.setVisibility(View.GONE);
         }
@@ -57,9 +75,16 @@ public class ViewEventActivity extends AppCompatActivity {
         // Return button to go back
         returnButton.setOnClickListener(view -> finish());
 
-        // Manage members
         joinbutton.setOnClickListener(v -> {
-//           implement join button
+            if (joinbutton.getText().equals("Join Event")) {
+                Control.getCurrentUser().joinEvent(curEvent);
+                joinbutton.setText("Cancel Event");
+            } else {
+                Control.getCurrentUser().cancelEvent(curEvent);
+                joinbutton.setText("Join Event");
+            }
+            // Save user action
+            FirestoreManager.getInstance().saveControl(Control.getInstance());
         });
     }
 }
