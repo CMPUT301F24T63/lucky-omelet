@@ -9,7 +9,7 @@ package com.example.eventlotterysystem;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Event implements Serializable {
+public class Event {
 
     // Attributes
 

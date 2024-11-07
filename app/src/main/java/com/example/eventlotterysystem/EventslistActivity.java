@@ -8,6 +8,8 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 public class EventslistActivity extends AppCompatActivity {
@@ -82,8 +84,9 @@ public class EventslistActivity extends AppCompatActivity {
         // Set click listener to open ViewEventActivity with the event details
         eventView.setOnClickListener(v -> {
             Intent intent = new Intent(this, ViewEventActivity.class);
-            intent.putExtra("event", event); // Pass the event object
+            intent.putExtra("eventID", event.getEventID()); // Pass the event object
             startActivity(intent);
+
         });
 
         // Set up edit and delete buttons
