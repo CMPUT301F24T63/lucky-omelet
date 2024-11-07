@@ -8,6 +8,7 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -70,6 +71,20 @@ public class FinalListManageActivity extends AppCompatActivity {
         bottomNavigationView.setSelectedItemId(R.id.nav_final);
 
         ImageButton returnButton = findViewById(R.id.return_button);
-        returnButton.setOnClickListener(v -> finish());
+        returnButton.setOnClickListener(v -> navigateBackToViewEvent());
+
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                navigateBackToViewEvent();
+            }
+        });
+    }
+
+    private void navigateBackToViewEvent() {
+        Intent intent = new Intent(this, ViewEventActivity.class);
+        intent.putExtra("eventID", event.getEventID());
+        startActivity(intent);
+        finish();
     }
 }

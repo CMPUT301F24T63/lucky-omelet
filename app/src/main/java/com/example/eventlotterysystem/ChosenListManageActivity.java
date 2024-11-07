@@ -10,6 +10,7 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -74,8 +75,6 @@ public class ChosenListManageActivity extends AppCompatActivity {
             return true;
         });
 
-        ImageButton returnButton = findViewById(R.id.return_button);
-        returnButton.setOnClickListener(v -> finish());
 
         findViewById(R.id.roll_button).setOnClickListener(v -> {
             User organizer = control.getCurrentUser();
@@ -94,6 +93,22 @@ public class ChosenListManageActivity extends AppCompatActivity {
         });
 
         bottomNavigationView.setSelectedItemId(R.id.nav_selected);
+        ImageButton returnButton = findViewById(R.id.return_button);
+        returnButton.setOnClickListener(v -> navigateBackToViewEvent());
+
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                navigateBackToViewEvent();
+            }
+        });
+    }
+
+    private void navigateBackToViewEvent() {
+        Intent intent = new Intent(this, ViewEventActivity.class);
+        intent.putExtra("eventID", event.getEventID());
+        startActivity(intent);
+        finish();
     }
 
     private void showDeleteConfirmationDialog(User user) {
