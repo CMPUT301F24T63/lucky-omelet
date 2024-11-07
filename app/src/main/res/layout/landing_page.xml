@@ -30,7 +30,7 @@
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:paddingBottom="24dp"
-                android:text="Welcome to\nEvent Lottery System\n@username!"
+                android:text="Welcome to\nTeam Omelet's\nEvent Lottery System!"
                 android:textAppearance="@style/TextAppearance.Material3.HeadlineLarge" />
 
             <GridLayout
