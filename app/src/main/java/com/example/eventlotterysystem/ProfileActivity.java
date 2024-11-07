@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageButton;
 import android.widget.TextView;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 
@@ -13,7 +12,6 @@ public class ProfileActivity extends AppCompatActivity implements EditProfileFra
     private TextView emailTextView;
     private TextView contactTextView;
     private User curUser;
-    private Control control;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,9 +20,6 @@ public class ProfileActivity extends AppCompatActivity implements EditProfileFra
         // Test control data
         Log.i("checkControlData", "Profile Activity Control Data Test");
         Utils.checkControlData(control);
-        // try different index here to get different user (this suggest database read is successful)
-        // curUser = control.getUserList().get(0);
-        // curUser = control.getEventList().get(0).getWaitingList().get(0);// Entrant 5 (This confirms database read is successful!)
         curUser = Control.getCurrentUser();
         Log.i("my index", control.getUserList().indexOf(Control.getCurrentUser())+"");
         nameTextView = findViewById(R.id.name);
@@ -38,7 +33,8 @@ public class ProfileActivity extends AppCompatActivity implements EditProfileFra
         if ("000-000-0000".equals(curUser.getContact())) {
             openEditProfileFragment("", "", "");
         } else {
-            openEditProfileFragment(curUser.getName(), curUser.getEmail(), curUser.getContact());
+            // Just display the profile unless the user clicks edit
+            // openEditProfileFragment(curUser.getName(), curUser.getEmail(), curUser.getContact());
         }
 
         findViewById(R.id.edit_button).setOnClickListener(v -> openEditProfileFragment(
