@@ -1,15 +1,22 @@
 package com.example.eventlotterysystem;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class WaitingListManageActivity extends AppCompatActivity {
     private Event event;
     private Control control;
+    private UserAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,10 +34,40 @@ public class WaitingListManageActivity extends AppCompatActivity {
         }
 
         ListView memberList = findViewById(R.id.member_list);
-        ArrayAdapter<User> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, event.getWaitingList());
+        adapter = new UserAdapter(this, event.getWaitingList());
         memberList.setAdapter(adapter);
 
         ImageButton returnButton = findViewById(R.id.return_button);
         returnButton.setOnClickListener(v -> finish());
+
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bot_nav_bar);
+        bottomNavigationView.setOnItemSelectedListener(new BottomNavigationView.OnItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                Intent intent;
+                int itemId = item.getItemId();
+                if (itemId == R.id.nav_waiting) {
+                    // Already in WaitingListManageActivity
+                    return true;
+                } else if (itemId == R.id.nav_selected) {
+                    intent = new Intent(WaitingListManageActivity.this, ChosenListManageActivity.class);
+                    intent.putExtra("eventId", event.getEventID());
+                    startActivity(intent);
+                    return true;
+                } else if (itemId == R.id.nav_cancelled) {
+                    intent = new Intent(WaitingListManageActivity.this, CancelledListManageActivity.class);
+                    intent.putExtra("eventId", event.getEventID());
+                    startActivity(intent);
+                    return true;
+                } else if (itemId == R.id.nav_final) {
+                    intent = new Intent(WaitingListManageActivity.this, FinalListManageActivity.class);
+                    intent.putExtra("eventId", event.getEventID());
+                    startActivity(intent);
+                    return true;
+                }
+                return false;
+            }
+        });
+        bottomNavigationView.setSelectedItemId(R.id.nav_waiting);
     }
 }
