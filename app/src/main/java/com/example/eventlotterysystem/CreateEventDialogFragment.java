@@ -16,42 +16,53 @@ import androidx.fragment.app.DialogFragment;
  */
 public class CreateEventDialogFragment extends DialogFragment {
 
+    private CreateEventListener listener;
+    private Control control;
+    private User curUser;
+
+    public interface CreateEventListener {
+        void onEventCreated(Event newEvent);
+    }
+
+    public void setCreateEventListener(CreateEventListener listener) {
+        this.listener = listener;
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
         View view = inflater.inflate(R.layout.edit_event_fragment, container, false);
+        control = Control.getInstance();
+//        curUser = control.getCurrentUser();
+        curUser = control.getUserList().get(2);
 
-        // Initialize UI components
+
+        Switch locationSwitch = view.findViewById(R.id.location_loc);
         EditText titleEdit = view.findViewById(R.id.firstName);
         EditText descriptionEdit = view.findViewById(R.id.title_edit5);
-        EditText waitingListLimitEdit = view.findViewById(R.id.editTextNumber);
-        EditText eventLimitEdit = view.findViewById(R.id.editTextNumber2);
-        EditText openDateEdit = view.findViewById(R.id.editTextDate3);
-        EditText registerDateEdit = view.findViewById(R.id.editTextDate4);
-        EditText priceEdit = view.findViewById(R.id.editTextNumber3);
-        Switch locationSwitch = view.findViewById(R.id.location_loc);
+        EditText limitChosenEdit = view.findViewById(R.id.editTextNumber);
+        EditText limitWaitingEdit = view.findViewById(R.id.editTextNumber2);
 
         Button finishButton = view.findViewById(R.id.finish_button);
         Button cancelButton = view.findViewById(R.id.cancel_button);
 
-        String eventTitle = titleEdit.getText().toString().trim();
-        String eventDescription = descriptionEdit.getText().toString().trim();
-        String waitingListLimit = waitingListLimitEdit.getText().toString().trim();
-        String eventLimit = eventLimitEdit.getText().toString().trim();
-        String openDate = openDateEdit.getText().toString().trim();
-        String registerDate = registerDateEdit.getText().toString().trim();
-        String price = priceEdit.getText().toString().trim();
-
-        // Set up button click listeners
         finishButton.setOnClickListener(v -> {
-            // Handle the finish action
+            // Create a new Event using user input
+            String eventTitle = titleEdit.getText().toString().trim();
+            String eventDescription = descriptionEdit.getText().toString().trim();
+            int limitChosen = Integer.parseInt(limitChosenEdit.getText().toString().trim());
+            int limitWaiting = Integer.parseInt(limitWaitingEdit.getText().toString().trim());
+
+            Event newEvent = new Event(control.getCurrentEventID(), eventTitle, eventDescription,limitChosen,limitWaiting,curUser);
+
+            // Pass the event to the listener
+            if (listener != null) {
+                listener.onEventCreated(newEvent);
+            }
             dismiss(); // Close the dialog
         });
 
-        cancelButton.setOnClickListener(v -> {
-            dismiss(); // Close the dialog
-        });
+        cancelButton.setOnClickListener(v -> dismiss()); // Close the dialog if canceled
 
         return view;
     }

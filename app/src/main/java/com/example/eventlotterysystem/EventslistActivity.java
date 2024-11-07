@@ -9,23 +9,22 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentTransaction;
 
-/**
- * Activity that displays enrolled and owned events.
- * A button that navigates to AllEventsActivity is also available.
- * Event Creation Button is available to the Organizer role
- */
 public class EventslistActivity extends AppCompatActivity {
 
     private LinearLayout enrolledList;
     private LinearLayout ownedList;
     private LinearLayout allList;
+    private Control control;
+    private User curUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.event_lists_screen);
+
+        control = Control.getInstance();
+        curUser = control.getUserList().get(2); // Example user selection
 
         ImageButton returnButton = findViewById(R.id.return_button);
         returnButton.setOnClickListener(view -> finish());
@@ -34,56 +33,71 @@ public class EventslistActivity extends AppCompatActivity {
         ownedList = findViewById(R.id.ownedList);
         allList = findViewById(R.id.allList);
 
-        // Example data to populate lists
-        addEventToSection("Enrolled Event 1", "Event information", enrolledList);
-        addEventToSection("Owned Event 1", "Event information", ownedList);
-        addEventToSection("All Event 1", "Event information", allList);
+        // Populate enrolled, owned, and all events lists
+        for (Event event : curUser.getEnrolledList()) {
+            addEventToSection(event, enrolledList);
+        }
+
+        for (Event event : curUser.getOrganizedList()) {
+            addEventToSection(event, ownedList);
+        }
+
+        for (Event event : control.getEventList()) {
+            addEventToSection(event, allList);
+        }
 
         Button createEventButton = findViewById(R.id.create_button);
         createEventButton.setOnClickListener(v -> {
-            Intent intent = new Intent(EventslistActivity.this, CreateEventActivity.class);
-            startActivity(intent);
-        });
+            CreateEventDialogFragment dialog = new CreateEventDialogFragment();
+            dialog.setCreateEventListener(newEvent -> {
+                // Add the new event to the control's event list
+                control.getEventList().add(newEvent);
+                curUser.getOrganizedList().add(newEvent);
 
-        Button allEventsButton = findViewById(R.id.all_events_button);
-        allEventsButton.setOnClickListener(v -> {
-            Intent intent = new Intent(EventslistActivity.this, AllEventsActivity.class);
-            startActivity(intent);
+                // Refresh the events list on the screen
+                addEventToSection(newEvent, allList);
+                addEventToSection(newEvent, ownedList);
+                FirestoreManager.getInstance().saveControl(Control.getInstance());
+            });
+            dialog.show(getSupportFragmentManager(), "CreateEventDialogFragment");
         });
     }
 
     /**
-     * Method that helps display events along with Edit and Delete Buttons for each.
-     * Working with mock data so editing and deleting is not done from this activity yet.
-     * @param eventName The name of the event
-     * @param eventInfo The event's description
-     * @param section The section (enrolled, owned) to add the event to
+     * Adds an event to the specified section layout and sets up the click listener
+     * for viewing the event details in ViewEventActivity.
+     *
+     * @param event   The event to display
+     * @param section The section (enrolled, owned, or all) to add the event to
      */
-    private void addEventToSection(String eventName, String eventInfo, LinearLayout section) {
+    private void addEventToSection(Event event, LinearLayout section) {
         LayoutInflater inflater = LayoutInflater.from(this);
         View eventView = inflater.inflate(R.layout.event_content, section, false);
 
-        // Populate event content
         TextView nameTextView = eventView.findViewById(R.id.name);
         TextView statusTextView = eventView.findViewById(R.id.user_status);
-        nameTextView.setText(eventName);
-        statusTextView.setText(eventInfo);
+        nameTextView.setText(event.getName());
+        statusTextView.setText(event.getDescription());
 
-        // Setup buttons
+        // Set click listener to open ViewEventActivity with the event details
+        eventView.setOnClickListener(v -> {
+            Intent intent = new Intent(this, ViewEventActivity.class);
+            intent.putExtra("event", event); // Pass the event object
+            startActivity(intent);
+        });
+
+        // Set up edit and delete buttons
         ImageButton editButton = eventView.findViewById(R.id.button1);
         ImageButton deleteButton = eventView.findViewById(R.id.button2);
 
-        // Set click listeners for buttons (customize as needed)
         editButton.setOnClickListener(v -> {
-            // Code to edit event
+            // Code to edit event (if needed)
         });
 
         deleteButton.setOnClickListener(v -> {
-            // Code to delete event
-            section.removeView(eventView); // Removes the event from the section
+            section.removeView(eventView);
         });
 
-        // Add the event view to the specified section
         section.addView(eventView);
     }
 }
