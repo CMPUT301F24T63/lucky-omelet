@@ -1,5 +1,6 @@
 package com.example.eventlotterysystem;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -57,5 +58,12 @@ public class ViewEventActivity extends AppCompatActivity {
 
         // Return button to go back
         returnButton.setOnClickListener(view -> finish());
+
+        // Manage members
+        buttonManage.setOnClickListener(v -> {
+            Intent intent = new Intent(ViewEventActivity.this, WaitingListManageActivity.class);
+            intent.putExtra("eventId", curEvent.getEventID());  // Pass the eventId
+            startActivity(intent);
+        });
     }
 }
