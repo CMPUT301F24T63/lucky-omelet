@@ -28,7 +28,7 @@ public class EventslistActivity extends AppCompatActivity {
 
         control = Control.getInstance();
 //        control.setCurrentUser(control.getUserList().get(2));
-        curUser = control.getCurrentUser();
+        curUser = Control.getCurrentUser();
 
         ImageButton returnButton = findViewById(R.id.return_button);
         returnButton.setOnClickListener(view -> finish());

@@ -56,7 +56,10 @@ public class ManageEventActivity extends AppCompatActivity {
         }
 
         // Return button to go back
-        returnButton.setOnClickListener(view -> finish());
+        returnButton.setOnClickListener(v -> {
+            Intent intent = new Intent(ManageEventActivity.this, Landing_page.class);
+            startActivity(intent);
+        });
 
         // Manage members
         buttonManage.setOnClickListener(v -> {
