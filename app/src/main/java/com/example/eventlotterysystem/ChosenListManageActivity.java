@@ -84,6 +84,8 @@ public class ChosenListManageActivity extends AppCompatActivity implements Notif
                 if (remainingSpots > 0) {
                     organizer.reRoll(event);
                     adapter.notifyDataSetChanged();
+                    // Save user action
+                    FirestoreManager.getInstance().saveControl(Control.getInstance());
                     Toast.makeText(this, "Replacement applicant(s) drawn", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(this, "No entrants added as Selected list is full", Toast.LENGTH_SHORT).show();
