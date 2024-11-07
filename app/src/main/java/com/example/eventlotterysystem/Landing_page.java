@@ -109,6 +109,7 @@ public class Landing_page extends AppCompatActivity {
             // FirestoreManager.getInstance().saveControl(control);
             // FirestoreManager.getInstance().saveUser(me);
         }
+
         Log.i("checkDevice", "After checkDevice function Control Data Test");
         Utils.checkControlData(control);
         FirestoreManager.getInstance().saveControl(control);
