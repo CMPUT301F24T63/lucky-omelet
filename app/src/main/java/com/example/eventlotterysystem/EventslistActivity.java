@@ -27,7 +27,7 @@ public class EventslistActivity extends AppCompatActivity {
         setContentView(R.layout.event_lists_screen);
 
         control = Control.getInstance();
-        control.setCurrentUser(control.getUserList().get(2));
+//        control.setCurrentUser(control.getUserList().get(2));
         curUser = control.getCurrentUser();
 
         ImageButton returnButton = findViewById(R.id.return_button);
