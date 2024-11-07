@@ -55,7 +55,7 @@ public class QRCodeDialogFragment extends DialogFragment {
 
         Button buttonPublish = view.findViewById(R.id.buttonPublish);
         buttonPublish.setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(), ViewEventActivity.class);
+            Intent intent = new Intent(getActivity(), ManageEventActivity.class);
             intent.putExtra("eventId", eventId);
             startActivity(intent);
             dismiss();

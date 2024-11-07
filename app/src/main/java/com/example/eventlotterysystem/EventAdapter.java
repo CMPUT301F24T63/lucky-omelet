@@ -3,6 +3,7 @@ package com.example.eventlotterysystem;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -28,7 +29,10 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
     public void onBindViewHolder(@NonNull EventViewHolder holder, int position) {
         Event event = eventsList.get(position);
         holder.titleTextView.setText(event.getName());
-        holder.descriptionTextView.setText(event.getDescription());;
+        holder.descriptionTextView.setText(event.getDescription());
+
+        holder.editButton.setVisibility(View.INVISIBLE);
+        holder.deleteButton.setVisibility(View.INVISIBLE);
     }
 
     @Override
@@ -38,11 +42,14 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
 
     class EventViewHolder extends RecyclerView.ViewHolder {
         TextView titleTextView, descriptionTextView;
+        ImageButton editButton, deleteButton;
 
         public EventViewHolder(@NonNull View itemView) {
             super(itemView);
             titleTextView = itemView.findViewById(R.id.eventTitle);
             descriptionTextView = itemView.findViewById(R.id.eventDescription);
+            editButton = itemView.findViewById(R.id.button1);
+            deleteButton = itemView.findViewById(R.id.button2);
         }
     }
 }

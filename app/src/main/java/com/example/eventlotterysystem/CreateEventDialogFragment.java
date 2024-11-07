@@ -33,8 +33,7 @@ public class CreateEventDialogFragment extends DialogFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.edit_event_fragment, container, false);
         control = Control.getInstance();
-//        curUser = control.getCurrentUser();
-        curUser = control.getUserList().get(2);
+        curUser = control.getCurrentUser();
 
 
         Switch locationSwitch = view.findViewById(R.id.location_loc);
@@ -53,7 +52,7 @@ public class CreateEventDialogFragment extends DialogFragment {
             int limitChosen = Integer.parseInt(limitChosenEdit.getText().toString().trim());
             int limitWaiting = Integer.parseInt(limitWaitingEdit.getText().toString().trim());
 
-            Event newEvent = new Event(control.getCurrentEventID(), eventTitle, eventDescription,limitChosen,limitWaiting,curUser);
+            Event newEvent = new Event(control.getEventIDForEventCreation(), eventTitle, eventDescription,limitChosen,limitWaiting,curUser);
 
             // Pass the event to the listener
             if (listener != null) {
