@@ -58,16 +58,6 @@
         tools:layout_editor_absoluteY="16dp" />
 
 
-    <Button
-        android:id="@+id/all_events_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:text="All Events"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/searchView"
-        tools:layout_editor_absoluteY="16dp" />
-
     <ScrollView
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
