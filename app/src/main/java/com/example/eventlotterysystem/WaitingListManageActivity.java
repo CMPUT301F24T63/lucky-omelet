@@ -81,7 +81,7 @@ public class WaitingListManageActivity extends AppCompatActivity {
     }
 
     private void navigateBackToViewEvent() {
-        Intent intent = new Intent(this, ViewEventActivity.class);
+        Intent intent = new Intent(this, ManageEventActivity.class);
         intent.putExtra("eventID", event.getEventID());
         startActivity(intent);
         finish();
