@@ -91,8 +91,8 @@ public class Utils {
         // CancelledList
         control.getUserList().get(2).cancelEvent(control.getEventList().get(0));
         control.getUserList().get(3).cancelEvent(control.getEventList().get(0));
-//        control.getEventList().get(0).getCancelledList().add(control.getUserList().get(2));
-//        control.getEventList().get(0).getCancelledList().add(control.getUserList().get(3));
+        control.getEventList().get(0).getCancelledList().add(control.getUserList().get(2));
+        control.getEventList().get(0).getCancelledList().add(control.getUserList().get(3));
         // FinalList
         control.getEventList().get(0).getFinalList().add(control.getUserList().get(0));
         control.getEventList().get(0).getFinalList().add(control.getUserList().get(1));

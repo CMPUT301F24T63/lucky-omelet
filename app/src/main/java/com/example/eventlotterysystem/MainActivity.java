@@ -23,9 +23,6 @@ import com.google.firebase.installations.FirebaseInstallations;
 
 
 public class MainActivity extends AppCompatActivity {
-    private FirestoreManager fm;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 

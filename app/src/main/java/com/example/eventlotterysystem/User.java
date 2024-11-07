@@ -325,8 +325,10 @@ public class User {
             event.getChosenList().remove(this);
             event.getCancelledList().add(this);
         }
-        event.getFinalList().remove(this);
-        enrolledList.remove(event);
+        if (event.getFinalList().contains(this)) {
+            event.getFinalList().remove(this);
+            event.getCancelledList().add(this);
+        }
     }
 
     /**
