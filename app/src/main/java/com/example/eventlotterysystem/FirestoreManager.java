@@ -247,7 +247,7 @@ public class FirestoreManager {
                         if (creator != null) {
                             Facility facility = new Facility(
                                     document.getString("name"),
-                                    document.getString("location"),
+                                    document.getString("description"),
                                     creator
                             );
                             control.getFacilityList().add(facility);
