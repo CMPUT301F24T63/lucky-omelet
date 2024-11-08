@@ -51,19 +51,18 @@ public class NotificationActivity extends AppCompatActivity {
         Button AcceptButton = NotifiView.findViewById(R.id.btnAccept);
         Button DeclineButton = NotifiView.findViewById(R.id.btnDecline);
         Button DeleteButton = NotifiView.findViewById(R.id.btnRemove);
-//
-//
-//        if (noti.needAccept()) {
-//            AcceptButton.setVisibility(View.INVISIBLE);
-//            DeclineButton.setVisibility(View.INVISIBLE);
-//        }
-//
-//        AcceptButton.setOnClickListener(v -> {
-//        });
-//
-//        DeclineButton.setOnClickListener(v -> {
-//
-//        });
+
+
+        if (noti.needAccept() == false) {
+            AcceptButton.setVisibility(View.INVISIBLE);
+            DeclineButton.setVisibility(View.INVISIBLE);
+        }
+
+        AcceptButton.setOnClickListener(v -> {
+        });
+
+        DeclineButton.setOnClickListener(v -> {
+        });
         section.addView(NotifiView);
     }
 }
