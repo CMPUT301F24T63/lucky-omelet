@@ -194,4 +194,102 @@ public class EventTest {
         assertEquals(1, event.getCancelledList().size());
         assertEquals(3-1-2, event.getChosenList().size());
     }
+    @Test
+    public void testViewWaitingList() {
+        // US 02.02.01
+        User organizer = control.getUserList().get(0);
+        User user1 = new User(control.getUserIDForUserCreation(), "User1", "user1@example.com", "1234567891", false);
+        User user2 = new User(control.getUserIDForUserCreation(), "User2", "user2@example.com", "1234567892", false);
+        organizer.createEvent(control, "Test Event Name", "Test Event Description", 10, 20);
+        Event event = organizer.getOrganizedList().get(0);
+        user1.joinEvent(event);
+        user2.joinEvent(event);
+        assertEquals(2, event.getWaitingList().size());
+        assertTrue(event.getWaitingList().contains(user1));
+        assertTrue(event.getWaitingList().contains(user2));
+    }
+
+    @Test
+    public void testViewChosenList() {
+        // US 02.06.01
+        User organizer = control.getUserList().get(0);
+        User user1 = new User(control.getUserIDForUserCreation(), "User1", "user1@example.com", "1234567891", false);
+        User user2 = new User(control.getUserIDForUserCreation(), "User2", "user2@example.com", "1234567892", false);
+        organizer.createEvent(control, "Test Event Name", "Test Event Description", 10, 20);
+        Event event = organizer.getOrganizedList().get(0);
+        event.getChosenList().add(user1);
+        event.getChosenList().add(user2);
+        assertEquals(2, event.getChosenList().size());
+        assertTrue(event.getChosenList().contains(user1));
+        assertTrue(event.getChosenList().contains(user2));
+    }
+
+    @Test
+    public void testViewCancelledList() {
+        // US 02.06.02
+        User organizer = control.getUserList().get(0);
+        User user1 = new User(control.getUserIDForUserCreation(), "User1", "user1@example.com", "1234567891", false);
+        User user2 = new User(control.getUserIDForUserCreation(), "User2", "user2@example.com", "1234567892", false);
+        organizer.createEvent(control, "Test Event Name", "Test Event Description", 10, 20);
+        Event event = organizer.getOrganizedList().get(0);
+        event.getCancelledList().add(user1);
+        event.getCancelledList().add(user2);
+        assertEquals(2, event.getCancelledList().size());
+        assertTrue(event.getCancelledList().contains(user1));
+        assertTrue(event.getCancelledList().contains(user2));
+    }
+
+    @Test
+    public void testViewFinalList() {
+        // US 02.06.03
+        User organizer = control.getUserList().get(0);
+        User user1 = new User(control.getUserIDForUserCreation(), "User1", "user1@example.com", "1234567891", false);
+        User user2 = new User(control.getUserIDForUserCreation(), "User2", "user2@example.com", "1234567892", false);
+        organizer.createEvent(control, "Test Event Name", "Test Event Description", 10, 20);
+        Event event = organizer.getOrganizedList().get(0);
+        event.getFinalList().add(user1);
+        event.getFinalList().add(user2);
+        assertEquals(2, event.getFinalList().size());
+        assertTrue(event.getFinalList().contains(user1));
+        assertTrue(event.getFinalList().contains(user2));
+    }
+
+    @Test
+    public void testDrawReplacementApplicant() {
+        // US 02.05.03
+        User organizer = control.getUserList().get(0);
+        User user1 = new User(control.getUserIDForUserCreation(), "User1", "user1@example.com", "1234567891", false);
+        User user2 = new User(control.getUserIDForUserCreation(), "User2", "user2@example.com", "1234567892", false);
+        organizer.createEvent(control, "Test Event Name", "Test Event Description", 10, 20);
+        Event event = organizer.getOrganizedList().get(0);
+        event.getWaitingList().add(user1);
+        event.getWaitingList().add(user2);
+
+        int initialChosenSize = event.getChosenList().size();
+        organizer.reRoll(event);
+
+        int newChosenSize = event.getChosenList().size();
+        assertTrue(newChosenSize > initialChosenSize);
+        assertTrue(event.getChosenList().contains(user1) || event.getChosenList().contains(user2));
+        assertTrue(!user1.getNotificationList().isEmpty() || !user2.getNotificationList().isEmpty());
+    }
+
+    @Test
+    public void testCancelEntrants() {
+        // US 02.06.04
+        User organizer = control.getUserList().get(0);
+        User user1 = new User(control.getUserIDForUserCreation(), "User1", "user1@example.com", "1234567891", false);
+        User user2 = new User(control.getUserIDForUserCreation(), "User2", "user2@example.com", "1234567892", false);
+        organizer.createEvent(control, "Test Event Name", "Test Event Description", 10, 20);
+        Event event = organizer.getOrganizedList().get(0);
+        event.getChosenList().add(user1);
+        event.getChosenList().add(user2);
+        event.getChosenList().remove(user1);
+        event.getCancelledList().add(user1);
+        assertEquals(1, event.getChosenList().size());
+        assertFalse(event.getChosenList().contains(user1));
+        assertTrue(event.getChosenList().contains(user2));
+        assertEquals(1, event.getCancelledList().size());
+        assertTrue(event.getCancelledList().contains(user1));
+    }
 }
