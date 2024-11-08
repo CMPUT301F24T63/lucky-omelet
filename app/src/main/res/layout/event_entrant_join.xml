@@ -53,10 +53,11 @@
 
     <TextView
         android:id="@+id/Event_detail"
-        android:layout_width="280dp"
-        android:layout_height="175dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         android:text="Detailed Information"
+        android:paddingHorizontal="24dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
@@ -64,15 +65,12 @@
 
     <Button
         android:id="@+id/Entrant_join_button"
-        android:layout_width="234dp"
-        android:layout_height="51dp"
-        android:layout_marginTop="12dp"
+        android:layout_width="164dp"
+        android:layout_height="wrap_content"
         android:text="Join Event"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:padding="16dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Event_detail"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/Event_detail" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

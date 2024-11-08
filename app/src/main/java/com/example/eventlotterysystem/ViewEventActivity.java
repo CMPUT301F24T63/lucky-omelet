@@ -91,8 +91,8 @@ public class ViewEventActivity extends AppCompatActivity {
         if (curEvent != null) {
             eventTitle.setText(curEvent.getName());
             eventDetail.setText("Description: " + curEvent.getDescription() + "\n"
-                    + "Capacity of Event: (0/" + curEvent.getLimitChosenList() + ")\n"
-                    + "Capacity of Waiting List: (" + curEvent.getLimitWaitinglList() + ")");
+                    + "Capacity of Event: (" + (curEvent.getChosenList().size() + curEvent.getFinalList().size()) + "/" + curEvent.getLimitChosenList() + ")\n"
+                    + "Capacity of Waiting List: (" + curEvent.getWaitingList().size() + "/" + curEvent.getLimitWaitinglList() + ")");
         }
 
         // Set up the return button to go back to the Events list

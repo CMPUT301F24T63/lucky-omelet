@@ -3,6 +3,8 @@
  * in the event lottery system. A facility includes details such as its name, location,
  * description, open time, creator, and an optional poster image.
  * An entrant can only create an event after creating a facility. Then the entrant becomes an organizer.
+ *
+ * Problem: poster upload not implemented yet
  */
 package com.example.eventlotterysystem;
 
