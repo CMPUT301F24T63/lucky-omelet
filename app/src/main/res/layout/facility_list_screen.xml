@@ -55,7 +55,7 @@
                 android:textStyle="bold" />
 
             <LinearLayout
-                android:id="@+id/enrolledList"
+                android:id="@+id/org"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
@@ -73,7 +73,7 @@
                 android:textStyle="bold" />
 
             <LinearLayout
-                android:id="@+id/ownedList"
+                android:id="@+id/wait"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
