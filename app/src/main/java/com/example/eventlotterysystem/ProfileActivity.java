@@ -9,6 +9,8 @@ import androidx.fragment.app.FragmentManager;
 
 /**
  * An Activity that displays the user's profile information and allows editing of the profile.
+ *
+ * Problem: User profile picture is not implemented.
  */
 public class ProfileActivity extends AppCompatActivity implements EditProfileFragment.OnProfileUpdatedListener {
     private TextView nameTextView;

@@ -1,3 +1,7 @@
+/**
+ * This class represents a picture in the event lottery system. Picture upload is not supported in this release.
+ */
+
 package com.example.eventlotterysystem;
 
 public class Picture {

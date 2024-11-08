@@ -3,6 +3,8 @@
  * Each event has a unique ID, name, description, creator, and various user lists
  * representing participants, including chosen, waiting, cancelled, and finalized lists.
  * It also includes attributes for the event's poster and a QR code hash.
+ *
+ * Problem: post and QR code not implemented yet
  */
 package com.example.eventlotterysystem;
 
