@@ -62,8 +62,8 @@ public class ManageEventActivity extends AppCompatActivity {
             // Populate the UI with event data
             eventTitle.setText(curEvent.getName());
             eventDetail.setText("Description: " + curEvent.getDescription() + "\n"
-                    + "Capacity of Event: (0/" + curEvent.getLimitChosenList() + ")\n"
-                    + "Capacity of Waiting List: (" + curEvent.getLimitWaitinglList() + ")");
+                    + "Capacity of Event: (" + (curEvent.getChosenList().size() + curEvent.getFinalList().size()) + "/" + curEvent.getLimitChosenList() + ")\n"
+                    + "Capacity of Waiting List: (" + curEvent.getWaitingList().size() + "/" + curEvent.getLimitWaitinglList() + ")");
         }
 
         // Return button to go back
