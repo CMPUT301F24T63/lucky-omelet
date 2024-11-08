@@ -73,12 +73,16 @@ public class ViewEventActivity extends AppCompatActivity {
         }
 
         // Return button to go back
-        returnButton.setOnClickListener(view -> finish());
+        returnButton.setOnClickListener(v -> {
+            Intent intent = new Intent(ViewEventActivity.this, EventslistActivity.class);
+            startActivity(intent);
+        });
 
         joinbutton.setOnClickListener(v -> {
             if (joinbutton.getText().equals("Join Event")) {
                 Control.getCurrentUser().joinEvent(curEvent);
                 joinbutton.setText("Cancel Event");
+
             } else {
                 Control.getCurrentUser().cancelEvent(curEvent);
                 joinbutton.setText("Join Event");
