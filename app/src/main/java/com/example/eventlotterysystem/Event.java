@@ -6,6 +6,7 @@
  */
 package com.example.eventlotterysystem;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Event {
@@ -26,6 +27,22 @@ public class Event {
     private ArrayList<User> finalList; // List of users confirmed to participate
 
     // Constructor
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setLimitChosenList(int limitChosenList) {
+        this.limitChosenList = limitChosenList;
+    }
+
+    public void setLimitWaitinglList(int limitWaitinglList) {
+        this.limitWaitinglList = limitWaitinglList;
+    }
 
     /**
      * Constructs a new {@code Event} instance with the specified ID, name, description,

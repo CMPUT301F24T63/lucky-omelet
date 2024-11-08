@@ -23,9 +23,6 @@ import com.google.firebase.installations.FirebaseInstallations;
 
 
 public class MainActivity extends AppCompatActivity {
-    private FirestoreManager fm;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -62,9 +59,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 // Set the button visible after 3 seconds
-                checkDeviceButton.setVisibility(View.VISIBLE);
+                // checkDeviceButton.setVisibility(View.VISIBLE);
+                // Automatically go to the next page
+                Intent intent = new Intent(MainActivity.this, Landing_page.class);
+                startActivity(intent);
             }
-        }, 3000); // 3000 milliseconds = 3 seconds
+        }, 2500); // change this to 2.5 seconds to match the animation of the Loading... dialog
 
         checkDeviceButton.setOnClickListener(new View.OnClickListener() {
             @Override

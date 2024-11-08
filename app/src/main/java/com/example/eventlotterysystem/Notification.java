@@ -106,7 +106,10 @@ public class Notification {
      * Accepts the notification if acceptance is required. Adds the user to the event's final list.
      */
     public void accept(){
-        if (this.needAccept) {isAccepted = true;}
+        if (this.needAccept) {
+            isAccepted = true;
+            needAccept = false;
+        }
         event.getChosenList().remove(user);
         event.getFinalList().add(user);
         // Do not remove from waiting list (otherwise more users will be invited if click "Reroll")
@@ -117,7 +120,10 @@ public class Notification {
      * adds them to the event's cancelled list.
      */
     public void decline() {
-        if (this.needAccept) {isDeclined = false;}
+        if (this.needAccept) {
+            isDeclined = true;
+            needAccept = false;
+        }
         event.getChosenList().remove(user);
         event.getCancelledList().add(user);
     }

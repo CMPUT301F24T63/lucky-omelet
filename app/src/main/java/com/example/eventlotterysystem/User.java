@@ -325,8 +325,10 @@ public class User {
             event.getChosenList().remove(this);
             event.getCancelledList().add(this);
         }
-        event.getFinalList().remove(this);
-        enrolledList.remove(event);
+        if (event.getFinalList().contains(this)) {
+            event.getFinalList().remove(this);
+            event.getCancelledList().add(this);
+        }
     }
 
     /**
@@ -381,12 +383,10 @@ public class User {
             List<Integer> result = Utils.drawRandomNumbers(remainingSpot, event.getWaitingList().size()-1);
             for (int i = 0; i < result.size(); i++) {
                 event.getChosenList().add(event.getWaitingList().get(result.get(i))); // add the winner to chosen list
+                // add notifications to the new winner
+                event.getWaitingList().get(result.get(i)).getNotificationList().add(new Notification(event, event.getWaitingList().get(result.get(i)), true, automaticMessage));
                 event.getWaitingList().remove((int)result.get(i)); // remove the winner from waiting list
                 // this operation is done from high index to low index, so this should not cause the index of the winners to change
-            }
-            // add notifications to winners
-            for (int i = 0; i < event.getChosenList().size(); i++) {
-                event.getChosenList().get(i).getNotificationList().add(new Notification(event, event.getChosenList().get(i), true,automaticMessage));
             }
         }
 

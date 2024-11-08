@@ -91,8 +91,8 @@ public class Utils {
         // CancelledList
         control.getUserList().get(2).cancelEvent(control.getEventList().get(0));
         control.getUserList().get(3).cancelEvent(control.getEventList().get(0));
-//        control.getEventList().get(0).getCancelledList().add(control.getUserList().get(2));
-//        control.getEventList().get(0).getCancelledList().add(control.getUserList().get(3));
+        control.getEventList().get(0).getCancelledList().add(control.getUserList().get(2));
+        control.getEventList().get(0).getCancelledList().add(control.getUserList().get(3));
         // FinalList
         control.getEventList().get(0).getFinalList().add(control.getUserList().get(0));
         control.getEventList().get(0).getFinalList().add(control.getUserList().get(1));
@@ -120,20 +120,6 @@ public class Utils {
         Log.i("U10 OrganizedEventsize", String.valueOf(control.getUserList().get(2).getOrganizedList().size()));
         Log.i("Local FID", Control.getLocalFID());
 
-
-        /**********************  You should see something like this in your logcat  ******************************
-         * 2024-11-04 18:49:51.100  4392-4392  CurrentUserID           com.example.eventlotterysystem       I  3
-         * 2024-11-04 18:49:51.100  4392-4392  CurrentEventID          com.example.eventlotterysystem       I  3
-         * 2024-11-02 16:28:28.695 12295-12295 UserListSize            com.example.eventlotterysystem       I  12
-         * 2024-11-02 16:28:28.695 12295-12295 FacilityListSize        com.example.eventlotterysystem       I  1
-         * 2024-11-02 16:28:28.695 12295-12295 EventListSize           com.example.eventlotterysystem       I  3
-         * 2024-11-02 16:28:28.695 12295-12295 Event 0 Wa... List Size com.example.eventlotterysystem       I  5
-         * 2024-11-02 16:28:28.695 12295-12295 Event 0 Ch... List Size com.example.eventlotterysystem       I  3
-         * 2024-11-02 16:28:28.695 12295-12295 Event 0 Ca... List Size com.example.eventlotterysystem       I  2
-         * 2024-11-02 16:28:28.695 12295-12295 Event 0 FinalList size  com.example.eventlotterysystem       I  2
-         * 2024-11-02 16:28:28.695 12295-12295 User 0 not... list size com.example.eventlotterysystem       I  2
-         * 2024-11-04 20:36:35.074  7458-7458  Local FID               com.example.eventlotterysystem       I  fwNYuvlkT1GoJ9NkI_zFQw
-         **********************************************************************************************************/
 
     }
 }

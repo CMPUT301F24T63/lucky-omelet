@@ -1,89 +1,117 @@
 package com.example.eventlotterysystem;
+
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 /**
- * Activity that displays event name, details and navigates to different functionalities
- * associated with an event
- * @Button manage_member_button opens ManageEventMembersDialogFragment, which allows user to navigate to
- * different user-containing lists
- * @Button event_edit_button opens EditEventActivity, which allows user to edit event details
- * @Button  qr_code_button opens QRCodeDialogFragment, which displays event's QR Code (currently placeholder)
- * @Button show_map_button opens MapDialogFragment, which displays a map of entrant's join locations (currently placeholder)
+ * ViewEventActivity displays the details of a selected event and allows the user to join or cancel their participation.
+ * Admin users can also delete the event.
  */
 public class ViewEventActivity extends AppCompatActivity {
 
+    /** TextView for displaying the event title */
     private TextView eventTitle;
+
+    /** TextView for displaying the event details */
     private TextView eventDetail;
 
+    /** ImageView for displaying the event poster */
+    private ImageView eventPoster;
+
+    /** Button for joining or canceling participation in the event */
+    private Button joinbutton;
+
+    /** ImageView for deleting the event, visible only to admin users */
+    private ImageView deleteButton;
+
+    /** ImageView for returning to the previous activity */
+    private ImageView returnButton;
+
+    /** The current event being viewed */
+    private Event curEvent;
+
+    /** The currently logged-in user */
+    private User curUser;
+
+    /**
+     * Called when the activity is first created. Initializes the view elements, retrieves the
+     * Event object and user details, and sets up the UI with event data.
+     *
+     * @param savedInstanceState If the activity is being re-initialized after previously being shut down,
+     *                           this Bundle contains the data it most recently supplied in onSaveInstanceState.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.event_org_manage);
+        setContentView(R.layout.event_entrant_join);
 
+        curUser = Control.getCurrentUser();
+
+        // Initialize views
         eventTitle = findViewById(R.id.name);
-        eventDetail = findViewById(R.id.event_detail);
+        eventDetail = findViewById(R.id.Event_detail);
+        eventPoster = findViewById(R.id.poster);
+        deleteButton = findViewById(R.id.del_button);
+        returnButton = findViewById(R.id.return_button);
+        joinbutton = findViewById(R.id.Entrant_join_button);
 
-        Button buttonManage = findViewById(R.id.manage_member_button);
-        Button buttonEdit = findViewById(R.id.event_edit_button);
-        Button buttonQRCode = findViewById(R.id.qr_code_button);
-        Button buttonMap = findViewById(R.id.show_map_button);
+        // Retrieve the Event object passed via intent
+        int id = (int) getIntent().getSerializableExtra("eventID");
+        for (Event event : Control.getInstance().getEventList()) {
+            if (event.getEventID() == id) {
+                curEvent = event;
+                break;
+            }
+        }
 
-        int eventId = getIntent().getIntExtra("eventId", -1);
+        // Set text for join button based on user's enrollment status
+        if (curEvent != null && curUser != null) {
+            boolean enrolled = false;
+            for (Event event : curUser.getEnrolledList()) {
+                if (event.getEventID() == curEvent.getEventID()) {
+                    enrolled = true;
+                    break;
+                }
+            }
+            joinbutton.setText(enrolled ? "Cancel Event" : "Join Event");
+        }
 
-        Control control = Control.getInstance();
-        Event event = control.getEventList().get(eventId);
-        String name = event.getName();
-        String description = event.getDescription();
-        String limitChosen = String.valueOf(event.getLimitChosenList());
-        String limitWaiting = String.valueOf(event.getLimitWaitinglList());
+        // Hide delete button if user is not an admin
+        if (!curUser.isAdmin()) {
+            deleteButton.setVisibility(View.GONE);
+        }
 
-        eventTitle.setText(name);
+        // Populate the UI with event data
+        if (curEvent != null) {
+            eventTitle.setText(curEvent.getName());
+            eventDetail.setText("Description: " + curEvent.getDescription() + "\n"
+                    + "Capacity of Event: (0/" + curEvent.getLimitChosenList() + ")\n"
+                    + "Capacity of Waiting List: (" + curEvent.getLimitWaitinglList() + ")");
+        }
 
-        String details =
-                "Description: " + description + "\n"
-                + "Event Size: (0/" + limitChosen + ")" + "\n"
-                + "Waiting List Size: (" + limitWaiting + ")" + "\n";
-
-        eventDetail.setText(details);
-
-        buttonMap.setOnClickListener(view -> {
-            showMapDialog();
+        // Set up the return button to go back to the Events list
+        returnButton.setOnClickListener(v -> {
+            Intent intent = new Intent(ViewEventActivity.this, EventslistActivity.class);
+            startActivity(intent);
         });
 
-        buttonManage.setOnClickListener(view -> {
-            showManageMemberDialog();
+        // Join or cancel participation in the event based on current status
+        joinbutton.setOnClickListener(v -> {
+            if (joinbutton.getText().equals("Join Event")) {
+                Control.getCurrentUser().joinEvent(curEvent);
+                joinbutton.setText("Cancel Event");
+            } else {
+                Control.getCurrentUser().cancelEvent(curEvent);
+                joinbutton.setText("Join Event");
+            }
+            // Save user action to Firestore
+            FirestoreManager.getInstance().saveControl(Control.getInstance());
         });
-
-        buttonQRCode.setOnClickListener(view -> {
-            showQRCodeDialog();
-        });
-
-    }
-
-    /**
-     * Function that opens the ManageEventMembersDialogFragment
-     */
-    private void showManageMemberDialog() {
-        ManageEventMembersDialogFragment dialog = new ManageEventMembersDialogFragment();
-        dialog.show(getSupportFragmentManager(), "ManageMemberDialog");
-    }
-
-    /**
-     * Function that opens the QRCodeDialogFragment
-     */
-    private void showQRCodeDialog() {
-        QRCodeDialogFragment dialog = QRCodeDialogFragment.newInstance(true, 0);
-        dialog.show(getSupportFragmentManager(), "QRCodeDialog");
-    }
-
-    /**
-     * Function that opens the MapDialogFragment
-     */
-    private void showMapDialog() {
-        MapDialogFragment dialog = new MapDialogFragment();
-        dialog.show(getSupportFragmentManager(), "MapDialog");
     }
 }
