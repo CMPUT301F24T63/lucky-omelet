@@ -31,7 +31,11 @@ public class EventslistActivity extends AppCompatActivity {
         curUser = Control.getCurrentUser();
 
         ImageButton returnButton = findViewById(R.id.return_button);
-        returnButton.setOnClickListener(view -> finish());
+        // Return button to go back
+        returnButton.setOnClickListener(v -> {
+            Intent intent = new Intent(EventslistActivity.this, Landing_page.class);
+            startActivity(intent);
+        });
 
         enrolledList = findViewById(R.id.enrolledList);
         ownedList = findViewById(R.id.ownedList);
