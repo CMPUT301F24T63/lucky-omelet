@@ -16,7 +16,6 @@ public class facilityActivity extends AppCompatActivity implements EditFacilityF
     private TextView nameTextView;
     private TextView descriptionTextView;
     private User curUser;
-    private Control control;
 
     /**
      * Called when the activity is first created. Initializes the UI and sets up event listeners.
@@ -27,8 +26,7 @@ public class facilityActivity extends AppCompatActivity implements EditFacilityF
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.facility_profile);
-        control = Control.getInstance();
-        curUser = control.getCurrentUser();
+        curUser = Control.getCurrentUser();
 
         // Initialize UI elements
         nameTextView = findViewById(R.id.name);
@@ -76,7 +74,7 @@ public class facilityActivity extends AppCompatActivity implements EditFacilityF
         if (curUser.getFacility() == null) {
             Facility newFacility = new Facility(name, description, curUser); // Assuming curUser is the creator
             curUser.setFacility(newFacility);
-            control.getFacilityList().add(newFacility);
+            Control.getInstance().getFacilityList().add(newFacility);
         } else {
             curUser.getFacility().setName(name);
             curUser.getFacility().setDescription(description);
@@ -92,7 +90,7 @@ public class facilityActivity extends AppCompatActivity implements EditFacilityF
         if (curUser.getFacility() != null) {
             nameTextView.setText(curUser.getFacility().getName());
             descriptionTextView.setText(curUser.getFacility().getDescription());
-            FirestoreManager.getInstance().saveControl(control);
+            FirestoreManager.getInstance().saveControl(Control.getInstance());
         }
     }
 

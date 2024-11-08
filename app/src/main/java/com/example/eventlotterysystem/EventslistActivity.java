@@ -39,9 +39,6 @@ public class EventslistActivity extends AppCompatActivity {
     /** Layout for displaying other events */
     private LinearLayout otherlist;
 
-    /** Control instance for accessing events and user information */
-    private Control control;
-
     /** Currently logged-in user */
     private User curUser;
 
@@ -58,7 +55,6 @@ public class EventslistActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.event_lists_screen);
 
-        control = Control.getInstance();
         curUser = Control.getCurrentUser();
 
         ImageButton returnButton = findViewById(R.id.return_button);
@@ -75,7 +71,7 @@ public class EventslistActivity extends AppCompatActivity {
         otherlist = findViewById(R.id.other);
 
         // Populate enrolled, owned, and all events lists
-        for (Event event : control.getEventList()) {
+        for (Event event : Control.getInstance().getEventList()) {
             if (event.getCreator().getUserID() == curUser.getUserID()) {
                 addEventToSection(event, orglist);
             } else if (inList(event.getWaitingList(), curUser)) {
@@ -104,7 +100,7 @@ public class EventslistActivity extends AppCompatActivity {
                 // Show event creation dialog if user has a facility
                 CreateEventDialogFragment dialog = new CreateEventDialogFragment();
                 dialog.setCreateEventListener(newEvent -> {
-                    control.getEventList().add(newEvent);
+                    Control.getInstance().getEventList().add(newEvent);
                     curUser.getOrganizedList().add(newEvent);
                     addEventToSection(newEvent, orglist);
                     FirestoreManager.getInstance().saveControl(Control.getInstance());

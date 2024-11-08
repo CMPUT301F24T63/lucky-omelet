@@ -36,9 +36,6 @@ public class ViewEventActivity extends AppCompatActivity {
     /** The current event being viewed */
     private Event curEvent;
 
-    /** Control instance for accessing event list and user data */
-    private Control control;
-
     /** The currently logged-in user */
     private User curUser;
 
@@ -54,8 +51,7 @@ public class ViewEventActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.event_entrant_join);
 
-        control = Control.getInstance();
-        curUser = control.getCurrentUser();
+        curUser = Control.getCurrentUser();
 
         // Initialize views
         eventTitle = findViewById(R.id.name);
@@ -67,7 +63,7 @@ public class ViewEventActivity extends AppCompatActivity {
 
         // Retrieve the Event object passed via intent
         int id = (int) getIntent().getSerializableExtra("eventID");
-        for (Event event : control.getEventList()) {
+        for (Event event : Control.getInstance().getEventList()) {
             if (event.getEventID() == id) {
                 curEvent = event;
                 break;

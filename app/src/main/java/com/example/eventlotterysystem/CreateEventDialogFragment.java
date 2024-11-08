@@ -19,7 +19,6 @@ import androidx.fragment.app.DialogFragment;
 public class CreateEventDialogFragment extends DialogFragment {
 
     private CreateEventListener listener;
-    private Control control;
     private User curUser;
 
     public interface CreateEventListener {
@@ -34,8 +33,7 @@ public class CreateEventDialogFragment extends DialogFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.edit_event_fragment, container, false);
-        control = Control.getInstance();
-        curUser = control.getCurrentUser();
+        curUser = Control.getCurrentUser();
 
 
         Switch locationSwitch = view.findViewById(R.id.location_loc);
@@ -72,7 +70,7 @@ public class CreateEventDialogFragment extends DialogFragment {
                 return;
             }
 
-            Event newEvent = new Event(control.getEventIDForEventCreation(), eventTitle, eventDescription,limitChosen,limitWaiting,curUser);
+            Event newEvent = new Event(Control.getInstance().getEventIDForEventCreation(), eventTitle, eventDescription,limitChosen,limitWaiting,curUser);
 
             // Pass the event to the listener
             if (listener != null) {
