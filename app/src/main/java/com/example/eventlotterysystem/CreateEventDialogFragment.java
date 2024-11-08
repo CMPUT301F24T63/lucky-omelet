@@ -39,8 +39,8 @@ public class CreateEventDialogFragment extends DialogFragment {
         Switch locationSwitch = view.findViewById(R.id.location_loc);
         EditText titleEdit = view.findViewById(R.id.firstName);
         EditText descriptionEdit = view.findViewById(R.id.title_edit5);
-        EditText limitChosenEdit = view.findViewById(R.id.editTextNumber);
-        EditText limitWaitingEdit = view.findViewById(R.id.editTextNumber2);
+        EditText limitChosenEdit = view.findViewById(R.id.editTextNumber2);
+        EditText limitWaitingEdit = view.findViewById(R.id.editTextNumber);
 
         Button finishButton = view.findViewById(R.id.finish_button);
         Button cancelButton = view.findViewById(R.id.cancel_button);
