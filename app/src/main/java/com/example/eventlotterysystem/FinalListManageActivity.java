@@ -15,12 +15,22 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-
+/**
+ * Activity to manage the final list of an event.
+ * This activity allows the user to view and manage the list of final participants for a specific event.
+ * It also provides navigation to other list management activities and the ability to send notifications.
+ */
 public class FinalListManageActivity extends AppCompatActivity implements NotifyFragment.NotificationListener{
     private Event event;
     private Control control;
     private UserAdapter adapter;
 
+    /**
+     * Called when the activity is first created.
+     * Initializes the activity, sets up the UI components, and handles navigation and button clicks.
+     *
+     * @param savedInstanceState If the activity is being re-initialized after previously being shut down then this Bundle contains the data it most recently supplied in onSaveInstanceState(Bundle).
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,6 +98,13 @@ public class FinalListManageActivity extends AppCompatActivity implements Notify
             }
         });
     }
+
+    /**
+     * Called when a notification is sent from the NotifyFragment.
+     * Adds the notification to the notification list of all users in the waiting list who have notifications enabled.
+     *
+     * @param message The notification message to be sent.
+     */
     @Override
     public void onNotify(String message) {
         Notification Noti = new Notification(event, control.getCurrentUser(), false, message);
@@ -98,6 +115,11 @@ public class FinalListManageActivity extends AppCompatActivity implements Notify
         }
 
     }
+
+    /**
+     * Navigates back to the ViewEventActivity.
+     * This method is called when the return button is clicked or the back button is pressed.
+     */
     private void navigateBackToViewEvent() {
         Intent intent = new Intent(this, ManageEventActivity.class);
         intent.putExtra("eventID", event.getEventID());
