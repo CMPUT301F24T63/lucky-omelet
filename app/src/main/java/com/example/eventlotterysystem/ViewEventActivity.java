@@ -95,7 +95,7 @@ public class ViewEventActivity extends AppCompatActivity {
         if (curEvent != null) {
             eventTitle.setText(curEvent.getName());
             eventDetail.setText("Description: " + curEvent.getDescription() + "\n"
-                    + "Capacity of Event: (" + curEvent.getLimitChosenList() + ")\n"
+                    + "Capacity of Event: (0/" + curEvent.getLimitChosenList() + ")\n"
                     + "Capacity of Waiting List: (" + curEvent.getLimitWaitinglList() + ")");
         }
 
