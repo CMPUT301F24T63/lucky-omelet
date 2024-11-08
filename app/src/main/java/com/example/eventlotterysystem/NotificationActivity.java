@@ -16,7 +16,6 @@ import androidx.appcompat.app.AppCompatActivity;
  * An Activity that displays a list of notifications for the current user.
  */
 public class NotificationActivity extends AppCompatActivity {
-    private Control control;
     private User curUser;
     private LinearLayout List;
 
@@ -31,9 +30,7 @@ public class NotificationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.notifications_screen);
 
-        control = Control.getInstance();
-//        control.setCurrentUser(control.getUserList().get(0)); //just for testing
-        curUser = control.getCurrentUser();
+        curUser = Control.getCurrentUser();
 
         // Set up return button listener
         ImageButton returnButton = findViewById(R.id.return_button);
@@ -77,7 +74,7 @@ public class NotificationActivity extends AppCompatActivity {
             AcceptButton.setEnabled(false);
             DeclineButton.setEnabled(false);
             curUser.acceptInvitation(noti);
-            FirestoreManager.getInstance().saveControl(control);
+            FirestoreManager.getInstance().saveControl(Control.getInstance());
         });
 
         // handle decline button
@@ -85,14 +82,14 @@ public class NotificationActivity extends AppCompatActivity {
             AcceptButton.setEnabled(false);
             DeclineButton.setEnabled(false);
             curUser.declineInvitation(noti);
-            FirestoreManager.getInstance().saveControl(control);
+            FirestoreManager.getInstance().saveControl(Control.getInstance());
         });
 
         // handle delete button
         DeleteButton.setOnClickListener(v -> {
             section.removeView(NotifiView);
             curUser.removeNotification(noti);
-            FirestoreManager.getInstance().saveControl(control);
+            FirestoreManager.getInstance().saveControl(Control.getInstance());
         });
 
         section.addView(NotifiView);

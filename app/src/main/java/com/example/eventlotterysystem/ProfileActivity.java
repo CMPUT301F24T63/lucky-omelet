@@ -25,12 +25,11 @@ public class ProfileActivity extends AppCompatActivity implements EditProfileFra
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_profile);
-        Control control = Control.getInstance();
         // Test control data
         Log.i("checkControlData", "Profile Activity Control Data Test");
-        Utils.checkControlData(control);
+        Utils.checkControlData(Control.getInstance());
         curUser = Control.getCurrentUser();
-        Log.i("my index", control.getUserList().indexOf(Control.getCurrentUser())+"");
+        Log.i("my index", Control.getInstance().getUserList().indexOf(Control.getCurrentUser())+"");
         nameTextView = findViewById(R.id.name);
         emailTextView = findViewById(R.id.email);
         contactTextView = findViewById(R.id.contact);

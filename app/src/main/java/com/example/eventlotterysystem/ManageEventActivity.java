@@ -25,7 +25,6 @@ public class ManageEventActivity extends AppCompatActivity {
     private ImageView deleteButton;
     private ImageView returnButton;
     private Event curEvent;
-    private Control control;
 
     /**
      * Called when the activity is first created. Initializes the view elements, retrieves the
@@ -37,8 +36,6 @@ public class ManageEventActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.event_org_manage);  // Using the provided layout
-
-        control = Control.getInstance();
 
         // Initialize views
         eventTitle = findViewById(R.id.name);
@@ -53,7 +50,7 @@ public class ManageEventActivity extends AppCompatActivity {
 
         // Retrieve the Event object passed via intent
         int id = (int) getIntent().getSerializableExtra("eventID");
-        for (Event event : control.getEventList()) {
+        for (Event event : Control.getInstance().getEventList()) {
             if (event.getEventID() == id) {
                 curEvent = event;
                 break;

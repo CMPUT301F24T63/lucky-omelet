@@ -25,7 +25,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
  */
 public class ChosenListManageActivity extends AppCompatActivity implements NotifyFragment.NotificationListener{
     private Event event;
-    private Control control;
     private UserAdapter adapter;
 
     /**
@@ -39,9 +38,8 @@ public class ChosenListManageActivity extends AppCompatActivity implements Notif
         super.onCreate(savedInstanceState);
         setContentView(R.layout.chosenlist_manage);
 
-        control = Control.getInstance();
         int eventId = getIntent().getIntExtra("eventId", -1);
-        event = control.getEventById(eventId);
+        event = Control.getInstance().getEventById(eventId);
 
         if (event == null) {
             Toast.makeText(this, "Event not found", Toast.LENGTH_SHORT).show();
@@ -90,7 +88,7 @@ public class ChosenListManageActivity extends AppCompatActivity implements Notif
 
 
         findViewById(R.id.roll_button).setOnClickListener(v -> {
-            User organizer = control.getCurrentUser();
+            User organizer = Control.getCurrentUser();
             if (organizer != null) {
                 int remainingSpots = event.getLimitChosenList() - event.getChosenList().size() - event.getFinalList().size();
                 if (remainingSpots > 0) {
@@ -145,7 +143,7 @@ public class ChosenListManageActivity extends AppCompatActivity implements Notif
      */
     @Override
     public void onNotify(String message) {
-        Notification Noti = new Notification(event, control.getCurrentUser(), true, message);
+        Notification Noti = new Notification(event, Control.getCurrentUser(), true, message);
         for (User allUser:event.getWaitingList()){
             if (allUser.getNotificationSetting()){
                 allUser.getNotificationList().add(Noti);

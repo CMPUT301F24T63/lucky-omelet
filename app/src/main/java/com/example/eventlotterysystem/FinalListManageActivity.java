@@ -22,7 +22,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
  */
 public class FinalListManageActivity extends AppCompatActivity implements NotifyFragment.NotificationListener{
     private Event event;
-    private Control control;
     private UserAdapter adapter;
 
     /**
@@ -36,9 +35,8 @@ public class FinalListManageActivity extends AppCompatActivity implements Notify
         super.onCreate(savedInstanceState);
         setContentView(R.layout.finallist_manage);
 
-        control = Control.getInstance();
         int eventId = getIntent().getIntExtra("eventId", -1);
-        event = control.getEventById(eventId);
+        event = Control.getInstance().getEventById(eventId);
 
         if (event == null) {
             Toast.makeText(this, "Event not found", Toast.LENGTH_SHORT).show();
@@ -107,7 +105,7 @@ public class FinalListManageActivity extends AppCompatActivity implements Notify
      */
     @Override
     public void onNotify(String message) {
-        Notification Noti = new Notification(event, control.getCurrentUser(), false, message);
+        Notification Noti = new Notification(event, Control.getCurrentUser(), false, message);
         for (User allUser:event.getWaitingList()){
             if (allUser.getNotificationSetting()){
                 allUser.getNotificationList().add(Noti);

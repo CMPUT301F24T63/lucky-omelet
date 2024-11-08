@@ -14,9 +14,6 @@ public class SettingActivity extends AppCompatActivity {
     /** Switch to toggle notifications on or off */
     private MaterialSwitch notiSwitch;
 
-    /** Control instance for accessing current user and application state */
-    private Control control;
-
     /** Currently logged-in user */
     private User curUser;
 
@@ -32,8 +29,7 @@ public class SettingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.setting_screen);
 
-        control = Control.getInstance();
-        curUser = control.getCurrentUser();
+        curUser = Control.getCurrentUser();
 
         // Initialize notification switch and set its initial state based on user preference
         notiSwitch = findViewById(R.id.noti_switch);
@@ -42,7 +38,7 @@ public class SettingActivity extends AppCompatActivity {
         // Listener to handle changes in notification setting
         notiSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
             curUser.setNotificationSetting(isChecked);
-            FirestoreManager.getInstance().saveControl(control);
+            FirestoreManager.getInstance().saveControl(Control.getInstance());
         });
 
         // Return button to go back to the previous screen
