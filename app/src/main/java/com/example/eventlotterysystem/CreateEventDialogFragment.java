@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Switch;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
@@ -49,8 +51,21 @@ public class CreateEventDialogFragment extends DialogFragment {
             // Create a new Event using user input
             String eventTitle = titleEdit.getText().toString().trim();
             String eventDescription = descriptionEdit.getText().toString().trim();
-            int limitChosen = Integer.parseInt(limitChosenEdit.getText().toString().trim());
-            int limitWaiting = Integer.parseInt(limitWaitingEdit.getText().toString().trim());
+            String limitChosenString = limitChosenEdit.getText().toString().trim();
+            String limitWaitingString = limitWaitingEdit.getText().toString().trim();
+
+            if (eventTitle.isEmpty() || eventDescription.isEmpty() || limitChosenString.isEmpty() || limitWaitingString.isEmpty()) {
+                Toast.makeText(getContext(), "All fields are required.", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            int limitChosen = Integer.parseInt(limitChosenString);
+            int limitWaiting = Integer.parseInt(limitWaitingString);
+
+            if (limitChosen <= 0 || limitWaiting <= 0) {
+                Toast.makeText(getContext(), "Limits must be greater than zero.", Toast.LENGTH_SHORT).show();
+                return;
+            }
 
             Event newEvent = new Event(control.getEventIDForEventCreation(), eventTitle, eventDescription,limitChosen,limitWaiting,curUser);
 
