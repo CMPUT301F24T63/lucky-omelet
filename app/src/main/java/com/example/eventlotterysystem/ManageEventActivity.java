@@ -8,6 +8,11 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+/**
+ * ManageEventActivity is responsible for displaying and managing event details.
+ * It allows the user to view event information, edit event details, manage members,
+ * view the QR code, show the event on a map, and delete the event.
+ */
 public class ManageEventActivity extends AppCompatActivity {
 
     private TextView eventTitle;
@@ -21,13 +26,20 @@ public class ManageEventActivity extends AppCompatActivity {
     private ImageView returnButton;
     private Event curEvent;
     private Control control;
+
+    /**
+     * Called when the activity is first created. Initializes the view elements, retrieves the
+     * Event object based on the event ID passed via intent, and sets up the UI with event data.
+     * @param savedInstanceState If the activity is being re-initialized after previously being shut down,
+     *                           this Bundle contains the data it most recently supplied in onSaveInstanceState.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.event_org_manage);  // Using the provided layout
 
         control = Control.getInstance();
-//        Toast.makeText(this, "Event clicked", Toast.LENGTH_SHORT).show();
+
         // Initialize views
         eventTitle = findViewById(R.id.name);
         eventDetail = findViewById(R.id.event_detail);
@@ -42,7 +54,7 @@ public class ManageEventActivity extends AppCompatActivity {
         // Retrieve the Event object passed via intent
         int id = (int) getIntent().getSerializableExtra("eventID");
         for (Event event : control.getEventList()) {
-            if (event.getEventID() == id){
+            if (event.getEventID() == id) {
                 curEvent = event;
                 break;
             }
@@ -51,13 +63,13 @@ public class ManageEventActivity extends AppCompatActivity {
             // Populate the UI with event data
             eventTitle.setText(curEvent.getName());
             eventDetail.setText("Description: " + curEvent.getDescription() + "\n"
-                    + "Event Size: (0/" + curEvent.getLimitChosenList() + ")\n"
-                    + "Waiting List Size: (" + curEvent.getLimitWaitinglList() + ")");
+                    + "Capacity of Event" + curEvent.getLimitChosenList() + ")\n"
+                    + "Capacity of Waiting List" + curEvent.getLimitWaitinglList() + ")");
         }
 
         // Return button to go back
         returnButton.setOnClickListener(v -> {
-            Intent intent = new Intent(ManageEventActivity.this, Landing_page.class);
+            Intent intent = new Intent(ManageEventActivity.this, EventslistActivity.class);
             startActivity(intent);
         });
 

@@ -11,14 +11,34 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 
+/**
+ * NotifyFragment is a dialog fragment that prompts the user to input a notification message.
+ * The message is sent to an implementing listener when the user confirms the action.
+ */
 public class NotifyFragment extends DialogFragment {
 
+    /**
+     * Listener interface for notifying when the user submits a message.
+     */
     public interface NotificationListener {
+        /**
+         * Called when the user submits a notification message.
+         *
+         * @param message The notification message entered by the user.
+         */
         void onNotify(String message);
     }
 
+    /** Listener for handling the notification action */
     private NotificationListener listener;
 
+    /**
+     * Called when the fragment is attached to the context.
+     * Ensures the hosting activity or fragment implements NotificationListener.
+     *
+     * @param context The context to which the fragment is attached.
+     * @throws ClassCastException if the context does not implement NotificationListener.
+     */
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
@@ -29,6 +49,13 @@ public class NotifyFragment extends DialogFragment {
         }
     }
 
+    /**
+     * Creates the dialog view and handles user input for the notification message.
+     * Sets up the "Notify" button to send the message to the listener and the "Cancel" button to dismiss the dialog.
+     *
+     * @param savedInstanceState If the fragment is being re-created from a previous saved state, this is the state.
+     * @return A new AlertDialog instance with a custom view for message input.
+     */
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {

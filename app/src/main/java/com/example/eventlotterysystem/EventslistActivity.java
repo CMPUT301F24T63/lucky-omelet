@@ -62,10 +62,7 @@ public class EventslistActivity extends AppCompatActivity {
         curUser = Control.getCurrentUser();
 
         ImageButton returnButton = findViewById(R.id.return_button);
-        returnButton.setOnClickListener(v -> {
-            Intent intent = new Intent(EventslistActivity.this, Landing_page.class);
-            startActivity(intent);
-        });
+        returnButton.setOnClickListener(view -> finish());
 
         orglist = findViewById(R.id.org);
         waitlist = findViewById(R.id.wait);
