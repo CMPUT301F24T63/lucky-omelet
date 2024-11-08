@@ -12,11 +12,19 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+/**
+ * An Activity that displays a list of notifications for the current user.
+ */
 public class NotificationActivity extends AppCompatActivity {
     private Control control;
     private User curUser;
     private LinearLayout List;
 
+    /**
+     * Called when the activity is first created. Initializes the UI and populates notifications.
+     *
+     * @param savedInstanceState If the activity is being re-initialized after previously being shut down then this Bundle contains the data it most recently supplied.
+     */
     @SuppressLint({"WrongViewCast", "MissingInflatedId"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +35,7 @@ public class NotificationActivity extends AppCompatActivity {
 //        control.setCurrentUser(control.getUserList().get(0)); //just for testing
         curUser = control.getCurrentUser();
 
+        // Set up return button listener
         ImageButton returnButton = findViewById(R.id.return_button);
         returnButton.setOnClickListener(view -> finish());
 
@@ -38,6 +47,12 @@ public class NotificationActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Adds a single notification view to the specified section.
+     *
+     * @param noti    The notification to display.
+     * @param section The LinearLayout section where the notification view will be added.
+     */
     private void addNotiToSection(Notification noti, LinearLayout section) {
         LayoutInflater inflater = LayoutInflater.from(this);
         View NotifiView = inflater.inflate(R.layout.notification_content, section, false);
