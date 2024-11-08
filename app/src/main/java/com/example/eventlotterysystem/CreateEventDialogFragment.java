@@ -44,8 +44,13 @@ public class CreateEventDialogFragment extends DialogFragment {
         EditText limitChosenEdit = view.findViewById(R.id.editTextNumber2);
         EditText limitWaitingEdit = view.findViewById(R.id.editTextNumber);
 
+        Button uploadImageButton = view.findViewById(R.id.uploadImage_button);
         Button finishButton = view.findViewById(R.id.finish_button);
         Button cancelButton = view.findViewById(R.id.cancel_button);
+
+        uploadImageButton.setOnClickListener(v -> {
+                    Toast.makeText(getContext(), "Coming soon in part 4!", Toast.LENGTH_SHORT).show();
+                });
 
         finishButton.setOnClickListener(v -> {
             // Create a new Event using user input
@@ -54,13 +59,13 @@ public class CreateEventDialogFragment extends DialogFragment {
             String limitChosenString = limitChosenEdit.getText().toString().trim();
             String limitWaitingString = limitWaitingEdit.getText().toString().trim();
 
-            if (eventTitle.isEmpty() || eventDescription.isEmpty() || limitChosenString.isEmpty() || limitWaitingString.isEmpty()) {
-                Toast.makeText(getContext(), "All fields are required.", Toast.LENGTH_SHORT).show();
+            if (eventTitle.isEmpty() || eventDescription.isEmpty() || limitChosenString.isEmpty()) {
+                Toast.makeText(getContext(), "Please fill in required fields", Toast.LENGTH_SHORT).show();
                 return;
             }
 
             int limitChosen = Integer.parseInt(limitChosenString);
-            int limitWaiting = Integer.parseInt(limitWaitingString);
+            int limitWaiting = limitWaitingString.isEmpty() ? 9999 : Integer.parseInt(limitWaitingString);
 
             if (limitChosen <= 0 || limitWaiting <= 0) {
                 Toast.makeText(getContext(), "Limits must be greater than zero.", Toast.LENGTH_SHORT).show();
