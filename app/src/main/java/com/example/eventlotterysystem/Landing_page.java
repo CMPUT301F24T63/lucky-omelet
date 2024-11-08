@@ -2,10 +2,14 @@ package com.example.eventlotterysystem;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
+import androidx.activity.OnBackPressedDispatcher;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -13,10 +17,16 @@ import androidx.core.view.WindowInsetsCompat;
 
 public class Landing_page extends AppCompatActivity {
 
+    private static final int DOUBLE_BACK_TIME = 2000; // Time in milliseconds
+    private long lastBackPressedTime = 0;
+    private Handler handler = new Handler();
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.landing_page);
+
 
         FirestoreManager.getInstance().loadNotifications(Control.getInstance());
 
@@ -35,6 +45,25 @@ public class Landing_page extends AppCompatActivity {
 //                }
 //            }
 //        }
+
+        // Set up the OnBackPressedCallback
+        OnBackPressedDispatcher dispatcher = this.getOnBackPressedDispatcher();
+        dispatcher.addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                if (lastBackPressedTime + DOUBLE_BACK_TIME > System.currentTimeMillis()) {
+                    finishAffinity(); // Exit the app
+                } else {
+                    Toast.makeText(Landing_page.this, "Press back again to exit", Toast.LENGTH_SHORT).show();
+                    lastBackPressedTime = System.currentTimeMillis();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {setEnabled(true);}
+                    }, DOUBLE_BACK_TIME);
+                }
+            }
+        });
+
 
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.landing_page), (v, insets) -> {
@@ -89,6 +118,12 @@ public class Landing_page extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        handler.removeCallbacksAndMessages(null); // Clean up any pending callbacks
+        super.onDestroy();
     }
 
     protected void checkDevice(Control control){
