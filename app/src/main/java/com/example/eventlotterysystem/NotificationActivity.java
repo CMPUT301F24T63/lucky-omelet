@@ -32,8 +32,6 @@ public class NotificationActivity extends AppCompatActivity {
 //
         List = findViewById(R.id.notificationList);
 
-//        Toast.makeText(this, "aaaaaaa", Toast.LENGTH_SHORT).show();
-//        Toast.makeText(this, curUser.getNotificationList().get(0).getCustomMessage(), Toast.LENGTH_SHORT).show();
 
         for (Notification noti : curUser.getNotificationList()) {
             addNotiToSection(noti, List);
@@ -66,6 +64,6 @@ public class NotificationActivity extends AppCompatActivity {
 //        DeclineButton.setOnClickListener(v -> {
 //
 //        });
-
+        section.addView(NotifiView);
     }
 }
