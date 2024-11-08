@@ -1,6 +1,6 @@
-/*
-To do:
-    1. Notifications load function
+/**
+ * This java class is used to save and read data from the firestore database.
+ * Problem: only allow one notification for one user:event pair.
  */
 
 package com.example.eventlotterysystem;
@@ -34,6 +34,7 @@ public class FirestoreManager {
         db = FirebaseFirestore.getInstance();
     }
 
+    // Save Control data
     public void saveControl(Control control) {
         Map<String, Object> controlData = new HashMap<>();
         controlData.put("currentUserID", control.getCurrentUserID());

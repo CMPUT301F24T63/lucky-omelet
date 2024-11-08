@@ -12,6 +12,8 @@ import androidx.appcompat.app.AppCompatActivity;
  * ManageEventActivity is responsible for displaying and managing event details.
  * It allows the user to view event information, edit event details, manage members,
  * view the QR code, show the event on a map, and delete the event.
+ *
+ * Problem: delete event has not been implemented yet.
  */
 public class ManageEventActivity extends AppCompatActivity {
 
