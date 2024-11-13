@@ -90,8 +90,11 @@ public class ManageEventActivity extends AppCompatActivity {
             dialog.show(getSupportFragmentManager(), "QRCodeDialogFragment");
         });
         buttonMap.setOnClickListener(v -> {
-            MapDialogFragment mapDialogFragment = new MapDialogFragment();
-//            mapDialogFragment.setEvent(curEvent);  // Pass the event to the map dialog
+            curEvent.getLatitudeList().add(53.5461);
+            curEvent.getLongitudeList().add(-113.4937);
+            curEvent.getLatitudeList().add(51.0447);
+            curEvent.getLongitudeList().add(-114.0719);
+            MapDialogFragment mapDialogFragment = new MapDialogFragment(curEvent);
             mapDialogFragment.show(getSupportFragmentManager(), "MapDialogFragment");
         });
 

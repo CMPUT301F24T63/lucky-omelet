@@ -3,6 +3,7 @@ package com.example.eventlotterysystem;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -11,21 +12,14 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 import android.location.Location;
-import android.location.Location;
-import android.os.Bundle;
-import android.widget.Button;
-import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 
 /**
  * ViewEventActivity displays the details of a selected event and allows the user to join or cancel their participation.
@@ -121,7 +115,7 @@ public class ViewEventActivity extends AppCompatActivity {
             intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
             startActivity(intent);
         });
-
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         // Join or cancel participation in the event based on current status
         joinbutton.setOnClickListener(v -> {
             if (joinbutton.getText().equals("Join Event")) {
@@ -138,7 +132,7 @@ public class ViewEventActivity extends AppCompatActivity {
                                         + "Capacity of Event: (" + (curEvent.getChosenList().size() + curEvent.getFinalList().size()) + "/" + curEvent.getLimitChosenList() + ")\n"
                                         + "Capacity of Waiting List: (" + curEvent.getWaitingList().size() + "/" + curEvent.getLimitWaitinglList() + ")");
 
-                                fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+
                                 if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                                     // TODO: Consider calling
                                     //    ActivityCompat#requestPermissions
@@ -147,6 +141,10 @@ public class ViewEventActivity extends AppCompatActivity {
                                     //                                          int[] grantResults)
                                     // to handle the case where the user grants the permission. See the documentation
                                     // for ActivityCompat#requestPermissions for more details.
+                                    Toast.makeText(getApplicationContext(),
+                                            "________________",
+                                            Toast.LENGTH_SHORT).show();
+
                                     return;
                                 }
                                 fusedLocationClient.getLastLocation()
@@ -160,11 +158,16 @@ public class ViewEventActivity extends AppCompatActivity {
                                                     double longitude = location.getLongitude();
 
                                                     // Store geo-location in Firestore
-                                                    curEvent.getGeoList().add(latitude);
-                                                    curEvent.getGeoList().add(longitude);
+                                                    curEvent.getLatitudeList().add(latitude);
+                                                    curEvent.getLongitudeList().add(longitude);
+                                                    Toast.makeText(getApplicationContext(),
+                                                            "Latitude: " + latitude + ", Longitude: " + longitude,
+                                                            Toast.LENGTH_SHORT).show();
+                                                    Log.d("LocationInfo", "Latitude: " + latitude + ", Longitude: " + longitude);
                                                 }
                                             }
                                         });
+
 
 
                                 // Save user action to Firestore
