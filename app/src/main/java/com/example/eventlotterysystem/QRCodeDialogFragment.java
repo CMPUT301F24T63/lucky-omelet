@@ -1,38 +1,32 @@
 package com.example.eventlotterysystem;
-import android.content.Intent;
+
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.WriterException;
+import com.google.zxing.qrcode.QRCodeWriter;
 
-/**
- * Dialog Fragment for displaying a QR Code
- * @param "fromViewEvent" if the QR Code is displayed from ViewEventActivity,
- * hides hash code and buttons that only appear when the event is first created
- * @param "eventId" the ID of the event that is then passed to ViewEventActivity
- * Code to generate QR and Hash codes not yet implemented, so there are placeholders
- */
 public class QRCodeDialogFragment extends DialogFragment {
-    private static final String viewEventArg = "fromViewEvent";
-    private static final String eventIdArg = "eventId";
+
+    private static final String ARG_HASH_CODE = "hashCodeQR";
 
     /**
-     * Factory method to create a new instance of QRCodeDialogFragment
-     * @param fromViewEvent check if the dialog is displayed from ViewEventActivity
-     * @param eventId the ID of the event that is then passed to ViewEventActivity
-     * @return the fragment with the correct arguments
+     * Factory method to create a new instance of QRCodeDialogFragment with the event's hash code.
+     * @param hashCodeQR the QR code hash string of the event
+     * @return an instance of QRCodeDialogFragment
      */
-    public static QRCodeDialogFragment newInstance(boolean fromViewEvent, int eventId) {
+    public static QRCodeDialogFragment newInstance(String hashCodeQR) {
         QRCodeDialogFragment fragment = new QRCodeDialogFragment();
         Bundle args = new Bundle();
-        args.putBoolean(viewEventArg, fromViewEvent);
-        args.putInt(eventIdArg, eventId); // Pass eventId as an argument
+        args.putString(ARG_HASH_CODE, hashCodeQR);
         fragment.setArguments(args);
         return fragment;
     }
@@ -43,30 +37,49 @@ public class QRCodeDialogFragment extends DialogFragment {
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.dialog_qrcode, container, false);
 
-        //assert getArguments() != null;
-        boolean fromViewEvent = getArguments().getBoolean(viewEventArg, false);
-        int eventId = getArguments().getInt(eventIdArg, -1);
+        // Retrieve the QR code hash from arguments
+        String hashCodeQR = getArguments().getString(ARG_HASH_CODE);
 
-        Button buttonCancel = view.findViewById(R.id.buttonCancel);
-        buttonCancel.setOnClickListener(v -> dismiss());
-
+        // Find UI components
+        ImageView imageViewQRCode = view.findViewById(R.id.imageViewQRCode);
         TextView textViewHash = view.findViewById(R.id.textViewHash);
-        TextView textViewStore = view.findViewById(R.id.textViewStore);
 
-        Button buttonPublish = view.findViewById(R.id.buttonPublish);
-        buttonPublish.setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(), ManageEventActivity.class);
-            intent.putExtra("eventId", eventId);
-            startActivity(intent);
-            dismiss();
-        });
+        // Display hash code in the text view
+        textViewHash.setText("Hash data of your QR code:\n" + hashCodeQR);
 
-        if (fromViewEvent) {
-            textViewHash.setVisibility(View.GONE);
-            textViewStore.setVisibility(View.GONE);
-            buttonPublish.setVisibility(View.GONE);
+        // Generate and display QR code based on hashCodeQR
+        Bitmap qrCodeBitmap = generateQRCode(hashCodeQR);
+        if (qrCodeBitmap != null) {
+            imageViewQRCode.setImageBitmap(qrCodeBitmap);
         }
 
         return view;
+    }
+
+    /**
+     * Generates a QR code bitmap from the given data string.
+     * @param data the data to encode in the QR code
+     * @return a Bitmap representing the QR code, or null if generation fails
+     */
+    private Bitmap generateQRCode(String data) {
+        QRCodeWriter writer = new QRCodeWriter();
+        try {
+            // Define QR code dimensions
+            int width = 200;
+            int height = 200;
+            // Generate QR code bit matrix
+            com.google.zxing.common.BitMatrix bitMatrix = writer.encode(data, BarcodeFormat.QR_CODE, width, height);
+            // Create a bitmap from the bit matrix
+            Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
+            for (int x = 0; x < width; x++) {
+                for (int y = 0; y < height; y++) {
+                    bitmap.setPixel(x, y, bitMatrix.get(x, y) ? 0xFF000000 : 0xFFFFFFFF);
+                }
+            }
+            return bitmap;
+        } catch (WriterException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

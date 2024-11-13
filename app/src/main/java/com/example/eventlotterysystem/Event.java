@@ -8,8 +8,13 @@
  */
 package com.example.eventlotterysystem;
 
+import android.os.Build;
+
 import java.io.Serializable;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Base64;
 
 public class Event {
 
@@ -44,6 +49,28 @@ public class Event {
 
     public void setLimitWaitinglList(int limitWaitinglList) {
         this.limitWaitinglList = limitWaitinglList;
+    }
+
+    public void generateQR() {
+        try {
+            // Convert the eventID to a string to hash it
+            String input = Integer.toString(eventID);
+
+            // Get an instance of the SHA-256 hash function
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+
+            // Perform the hash and store the result as bytes
+            byte[] hashedBytes = digest.digest(input.getBytes());
+
+            // Encode the hashed bytes to a Base64 string for readability
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                this.hashCodeQR = Base64.getEncoder().encodeToString(hashedBytes);
+            }
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+            // Handle the exception, possibly setting hashCodeQR to an error message
+            this.hashCodeQR = "Error generating QR hash";
+        }
     }
 
     /**
