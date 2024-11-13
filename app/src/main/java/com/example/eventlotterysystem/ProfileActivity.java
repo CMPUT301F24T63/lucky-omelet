@@ -1,8 +1,12 @@
 package com.example.eventlotterysystem;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
@@ -16,6 +20,7 @@ public class ProfileActivity extends AppCompatActivity implements EditProfileFra
     private TextView nameTextView;
     private TextView emailTextView;
     private TextView contactTextView;
+    private ImageView profileImageView;
     private User curUser;
 
     /**
@@ -35,6 +40,8 @@ public class ProfileActivity extends AppCompatActivity implements EditProfileFra
         nameTextView = findViewById(R.id.name);
         emailTextView = findViewById(R.id.email);
         contactTextView = findViewById(R.id.contact);
+        profileImageView = findViewById(R.id.poster);
+
 
         // Set initial profile information
         nameTextView.setText(curUser.getName());
@@ -57,6 +64,8 @@ public class ProfileActivity extends AppCompatActivity implements EditProfileFra
         // Set up return button listener
         ImageButton returnButton = findViewById(R.id.return_button);
         returnButton.setOnClickListener(view -> finish());
+
+        findViewById(R.id.generate_button).setOnClickListener(v -> generateProfilePicture());
 
     }
 
@@ -99,5 +108,30 @@ public class ProfileActivity extends AppCompatActivity implements EditProfileFra
         contactTextView.setText("Contact: " + curUser.getContact());
         Utils.checkControlData(Control.getInstance());
         FirestoreManager.getInstance().saveControl(Control.getInstance());
+    }
+
+    private void generateProfilePicture() {
+        // Generate picture for the user
+        curUser.generate_picture();  // This calls the generate_picture method in the User class
+
+        // After the picture is generated, update the ImageView with the new profile picture
+        Picture generatedPicture = curUser.getPicture();
+        if (generatedPicture != null) {
+            Bitmap pictureBitmap = decodeBitmap(generatedPicture.getContent());  // Assuming decodeBitmap method to convert String to Bitmap
+            profileImageView.setImageBitmap(pictureBitmap);  // Set the generated bitmap as the ImageView source
+        } else {
+            Log.e("ProfileActivity", "Failed to generate profile picture.");
+        }
+    }
+
+    /**
+     * Decodes a Base64 encoded string back to a Bitmap.
+     *
+     * @param encodedImage The Base64 encoded image content.
+     * @return The decoded Bitmap.
+     */
+    private Bitmap decodeBitmap(String encodedImage) {
+        byte[] decodedString = Base64.decode(encodedImage, Base64.DEFAULT);
+        return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
     }
 }
