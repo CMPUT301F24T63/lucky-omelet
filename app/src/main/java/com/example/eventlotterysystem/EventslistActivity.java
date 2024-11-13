@@ -60,6 +60,7 @@ public class EventslistActivity extends AppCompatActivity {
         ImageButton returnButton = findViewById(R.id.return_button);
         returnButton.setOnClickListener(v -> {
             Intent intent = new Intent(EventslistActivity.this, Landing_page.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
             startActivity(intent);
         });
 
@@ -165,5 +166,32 @@ public class EventslistActivity extends AppCompatActivity {
         deleteButton.setVisibility(View.INVISIBLE);
 
         section.addView(eventView);
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        orglist.removeAllViews();
+        waitlist.removeAllViews();
+        cancellist.removeAllViews();
+        chosenlist.removeAllViews();
+        finallist.removeAllViews();
+        otherlist.removeAllViews();
+
+        // Repopulate each section with the updated event list
+        for (Event event : Control.getInstance().getEventList()) {
+            if (event.getCreator().getUserID() == curUser.getUserID()) {
+                addEventToSection(event, orglist);
+            } else if (inList(event.getWaitingList(), curUser)) {
+                addEventToSection(event, waitlist);
+            } else if (inList(event.getCancelledList(), curUser)) {
+                addEventToSection(event, cancellist);
+            } else if (inList(event.getChosenList(), curUser)) {
+                addEventToSection(event, chosenlist);
+            } else if (inList(event.getFinalList(), curUser)) {
+                addEventToSection(event, finallist);
+            } else {
+                addEventToSection(event, otherlist);
+            }
+        }
     }
 }
