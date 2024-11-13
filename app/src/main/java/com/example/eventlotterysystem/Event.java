@@ -64,7 +64,7 @@ public class Event {
 
             // Encode the hashed bytes to a Base64 string for readability
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                this.hashCodeQR = Base64.getEncoder().encodeToString(hashedBytes);
+                this.hashCodeQR = "5";
             }
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
