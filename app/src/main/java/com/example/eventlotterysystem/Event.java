@@ -15,6 +15,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.Random;
 
 public class Event {
 
@@ -52,25 +53,22 @@ public class Event {
     }
 
     public void generateQR() {
-        try {
-            // Convert the eventID to a string to hash it
-            String input = Integer.toString(eventID);
+        int key = 19467382;
+        int enc = eventID^key;
+        this.hashCodeQR = generateRandomHex(12)+Integer.toHexString(enc).toUpperCase()+generateRandomHex(12);
+    }
 
-            // Get an instance of the SHA-256 hash function
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+    private String generateRandomHex(int length) {
+        Random random = new Random();
+        StringBuilder sb = new StringBuilder(length);
 
-            // Perform the hash and store the result as bytes
-            byte[] hashedBytes = digest.digest(input.getBytes());
-
-            // Encode the hashed bytes to a Base64 string for readability
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                this.hashCodeQR = "5";
-            }
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-            // Handle the exception, possibly setting hashCodeQR to an error message
-            this.hashCodeQR = "Error generating QR hash";
+        for (int i = 0; i < length; i++) {
+            // Generate a random hex digit (0-9, A-F)
+            int hexDigit = random.nextInt(16);
+            sb.append(Integer.toHexString(hexDigit).toUpperCase());
         }
+
+        return sb.toString();
     }
 
     /**
