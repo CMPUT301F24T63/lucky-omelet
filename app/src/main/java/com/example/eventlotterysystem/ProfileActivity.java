@@ -42,6 +42,12 @@ public class ProfileActivity extends AppCompatActivity implements EditProfileFra
         contactTextView = findViewById(R.id.contact);
         profileImageView = findViewById(R.id.poster);
 
+        Picture picture = curUser.getPicture();  // Get the current picture from the user object
+        if (picture != null) {
+            // If a picture exists, decode the Base64 content and set it to the ImageView
+            Bitmap pictureBitmap = decodeBitmap(picture.getContent());  // Assuming decodeBitmap method to convert String to Bitmap
+            profileImageView.setImageBitmap(pictureBitmap);  // Set the generated bitmap as the ImageView source
+        }
 
         // Set initial profile information
         nameTextView.setText(curUser.getName());
@@ -122,6 +128,7 @@ public class ProfileActivity extends AppCompatActivity implements EditProfileFra
         } else {
             Log.e("ProfileActivity", "Failed to generate profile picture.");
         }
+        FirestoreManager.getInstance().saveControl(Control.getInstance());
     }
 
     /**
