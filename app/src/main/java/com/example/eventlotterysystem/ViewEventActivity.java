@@ -113,6 +113,11 @@ public class ViewEventActivity extends AppCompatActivity {
             }
             // Save user action to Firestore
             FirestoreManager.getInstance().saveControl(Control.getInstance());
+
+            eventDetail.setText("Description: " + curEvent.getDescription() + "\n"
+                + "Capacity of Event: (" + (curEvent.getChosenList().size() + curEvent.getFinalList().size()) + "/" + curEvent.getLimitChosenList() + ")\n"
+                + "Capacity of Waiting List: (" + curEvent.getWaitingList().size() + "/" + curEvent.getLimitWaitinglList() + ")");
+
         });
     }
 }
