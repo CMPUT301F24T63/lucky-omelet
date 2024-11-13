@@ -59,6 +59,7 @@ public class ChosenListManageActivity extends AppCompatActivity implements Notif
                 int itemId = item.getItemId();
                 if (itemId == R.id.nav_waiting) {
                     intent = new Intent(ChosenListManageActivity.this, WaitingListManageActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                     intent.putExtra("eventId", event.getEventID());
                     startActivity(intent);
                     return true;
@@ -67,12 +68,14 @@ public class ChosenListManageActivity extends AppCompatActivity implements Notif
                     return true;
                 } else if (itemId == R.id.nav_cancelled) {
                     intent = new Intent(ChosenListManageActivity.this, CancelledListManageActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                     intent.putExtra("eventId", event.getEventID());
                     startActivity(intent);
                     return true;
                 } else if (itemId == R.id.nav_final) {
                     intent = new Intent(ChosenListManageActivity.this, FinalListManageActivity.class);
                     intent.putExtra("eventId", event.getEventID());
+                    intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                     startActivity(intent);
                     return true;
                 }
@@ -131,6 +134,7 @@ public class ChosenListManageActivity extends AppCompatActivity implements Notif
     private void navigateBackToViewEvent() {
         Intent intent = new Intent(this, ManageEventActivity.class);
         intent.putExtra("eventID", event.getEventID());
+        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         startActivity(intent);
         finish();
     }

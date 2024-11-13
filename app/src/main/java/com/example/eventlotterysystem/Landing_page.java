@@ -78,6 +78,7 @@ public class Landing_page extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Landing_page.this, EventslistActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 startActivity(intent);
             }
         });
@@ -86,7 +87,7 @@ public class Landing_page extends AppCompatActivity {
         SettingIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Landing_page.this, SettingActivity.class); // have not done
+                Intent intent = new Intent(Landing_page.this, SettingActivity.class);
                 startActivity(intent);
             }
         });
@@ -113,7 +114,7 @@ public class Landing_page extends AppCompatActivity {
         facilityIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Landing_page.this, facilityActivity.class); // have not done
+                Intent intent = new Intent(Landing_page.this, facilityActivity.class);
                 startActivity(intent);
             }
         });

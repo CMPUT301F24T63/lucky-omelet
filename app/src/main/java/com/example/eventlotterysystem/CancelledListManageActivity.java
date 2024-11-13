@@ -57,11 +57,13 @@ public class CancelledListManageActivity extends AppCompatActivity implements No
                 if (itemId == R.id.nav_waiting) {
                     intent = new Intent(CancelledListManageActivity.this, WaitingListManageActivity.class);
                     intent.putExtra("eventId", event.getEventID());
+                    intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                     startActivity(intent);
                     return true;
                 } else if (itemId == R.id.nav_selected) {
                     intent = new Intent(CancelledListManageActivity.this, ChosenListManageActivity.class);
                     intent.putExtra("eventId", event.getEventID());
+                    intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                     startActivity(intent);
                     return true;
                 } else if (itemId == R.id.nav_cancelled) {
@@ -70,6 +72,7 @@ public class CancelledListManageActivity extends AppCompatActivity implements No
                 } else if (itemId == R.id.nav_final) {
                     intent = new Intent(CancelledListManageActivity.this, FinalListManageActivity.class);
                     intent.putExtra("eventId", event.getEventID());
+                    intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                     startActivity(intent);
                     return true;
                 }
@@ -121,6 +124,7 @@ public class CancelledListManageActivity extends AppCompatActivity implements No
     private void navigateBackToViewEvent() {
         Intent intent = new Intent(this, ManageEventActivity.class);
         intent.putExtra("eventID", event.getEventID());
+        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         startActivity(intent);
         finish();
     }

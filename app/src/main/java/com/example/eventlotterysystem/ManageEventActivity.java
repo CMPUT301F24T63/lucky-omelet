@@ -69,6 +69,7 @@ public class ManageEventActivity extends AppCompatActivity {
         // Return button to go back
         returnButton.setOnClickListener(v -> {
             Intent intent = new Intent(ManageEventActivity.this, EventslistActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
             startActivity(intent);
         });
 
@@ -76,7 +77,22 @@ public class ManageEventActivity extends AppCompatActivity {
         buttonManage.setOnClickListener(v -> {
             Intent intent = new Intent(ManageEventActivity.this, WaitingListManageActivity.class);
             intent.putExtra("eventId", curEvent.getEventID());  // Pass the eventId
+            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
             startActivity(intent);
         });
+        buttonEdit.setOnClickListener(v -> {
+            EditEventDialogFragment dialog = new EditEventDialogFragment(curEvent);
+            dialog.show(getSupportFragmentManager(), "EditEventDialogFragment");
+        });
+    }
+
+    public void onEventUpdated() {
+        if (curEvent != null) {
+            eventTitle.setText(curEvent.getName());
+            eventDetail.setText("Description: " + curEvent.getDescription() + "\n"
+                    + "Capacity of Event: (" + (curEvent.getChosenList().size() + curEvent.getFinalList().size()) + "/" + curEvent.getLimitChosenList() + ")\n"
+                    + "Capacity of Waiting List: (" + curEvent.getWaitingList().size() + "/" + curEvent.getLimitWaitinglList() + ")");
+        }
+        FirestoreManager.getInstance().saveControl(Control.getInstance());
     }
 }
