@@ -35,7 +35,7 @@ public class ScanQRActivity extends AppCompatActivity {
             } else {
                 int key = 19467382;
                 String eventIDString = result.getContents();
-                String enc = eventIDString.substring(6, eventIDString.length() - 6); // Remove first 6 and last 6 characters
+                String enc = eventIDString.substring(12, eventIDString.length() - 12); // Remove first 6 and last 6 characters
                 int eventID = Integer.parseInt(enc, 16)^key;
                 try {
                     // Try to parse the event ID from the QR code contents
