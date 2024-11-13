@@ -105,19 +105,56 @@ public class ViewEventActivity extends AppCompatActivity {
         // Join or cancel participation in the event based on current status
         joinbutton.setOnClickListener(v -> {
             if (joinbutton.getText().equals("Join Event")) {
-                Control.getCurrentUser().joinEvent(curEvent);
-                joinbutton.setText("Cancel Event");
+                if (curEvent.getGeoSetting()) {
+                    // Create a dialog if geolocation is required
+                    new android.app.AlertDialog.Builder(ViewEventActivity.this)
+                            .setMessage("This event requires geo information. Do you want to join?")
+                            .setPositiveButton("Confirm", (dialog, which) -> {
+                                // User confirmed, proceed with joining the event
+                                Control.getCurrentUser().joinEvent(curEvent);
+                                joinbutton.setText("Cancel Event");
+
+                                // Update event details
+                                eventDetail.setText("Description: " + curEvent.getDescription() + "\n"
+                                        + "Capacity of Event: (" + (curEvent.getChosenList().size() + curEvent.getFinalList().size()) + "/" + curEvent.getLimitChosenList() + ")\n"
+                                        + "Capacity of Waiting List: (" + curEvent.getWaitingList().size() + "/" + curEvent.getLimitWaitinglList() + ")");
+
+                                // Save user action to Firestore
+                                FirestoreManager.getInstance().saveControl(Control.getInstance());
+                            })
+                            .setNegativeButton("Cancel", (dialog, which) -> {
+                                // User canceled, don't join the event
+                                dialog.dismiss();
+                            })
+                            .create()
+                            .show();
+                } else {
+                    // No geo requirement, join the event directly
+                    Control.getCurrentUser().joinEvent(curEvent);
+                    joinbutton.setText("Cancel Event");
+
+                    // Update event details
+                    eventDetail.setText("Description: " + curEvent.getDescription() + "\n"
+                            + "Capacity of Event: (" + (curEvent.getChosenList().size() + curEvent.getFinalList().size()) + "/" + curEvent.getLimitChosenList() + ")\n"
+                            + "Capacity of Waiting List: (" + curEvent.getWaitingList().size() + "/" + curEvent.getLimitWaitinglList() + ")");
+
+                    // Save user action to Firestore
+                    FirestoreManager.getInstance().saveControl(Control.getInstance());
+                }
             } else {
+                // User clicked to cancel event
                 Control.getCurrentUser().cancelEvent(curEvent);
                 joinbutton.setText("Join Event");
+
+                // Update event details
+                eventDetail.setText("Description: " + curEvent.getDescription() + "\n"
+                        + "Capacity of Event: (" + (curEvent.getChosenList().size() + curEvent.getFinalList().size()) + "/" + curEvent.getLimitChosenList() + ")\n"
+                        + "Capacity of Waiting List: (" + curEvent.getWaitingList().size() + "/" + curEvent.getLimitWaitinglList() + ")");
+
+                // Save user action to Firestore
+                FirestoreManager.getInstance().saveControl(Control.getInstance());
             }
-            // Save user action to Firestore
-            FirestoreManager.getInstance().saveControl(Control.getInstance());
-
-            eventDetail.setText("Description: " + curEvent.getDescription() + "\n"
-                + "Capacity of Event: (" + (curEvent.getChosenList().size() + curEvent.getFinalList().size()) + "/" + curEvent.getLimitChosenList() + ")\n"
-                + "Capacity of Waiting List: (" + curEvent.getWaitingList().size() + "/" + curEvent.getLimitWaitinglList() + ")");
-
         });
+
     }
 }

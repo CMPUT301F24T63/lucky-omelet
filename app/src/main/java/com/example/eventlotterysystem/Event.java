@@ -33,6 +33,7 @@ public class Event {
     private ArrayList<User> cancelledList; // List of users who cancelled their participation
     private ArrayList<User> chosenList; // List of users selected to participate
     private ArrayList<User> finalList; // List of users confirmed to participate
+    private Boolean GeoSetting;
 
     // Constructor
 
@@ -71,6 +72,14 @@ public class Event {
         return sb.toString();
     }
 
+    public Boolean getGeoSetting() {
+        return GeoSetting;
+    }
+
+    public void setGeoSetting(Boolean geoSetting) {
+        GeoSetting = geoSetting;
+    }
+
     /**
      * Constructs a new {@code Event} instance with the specified ID, name, description,
      * participant limits, and creator.
@@ -95,6 +104,23 @@ public class Event {
         this.cancelledList = new ArrayList<>();
         this.chosenList = new ArrayList<>();
         this.finalList = new ArrayList<>();
+        this.GeoSetting = false;
+    }
+
+    public Event(int eventID, String name, String description, int limitChosenList, int limitWaitingList, User creator, Boolean geo) {
+        this.eventID = eventID;
+        this.name = name;
+        this.description = description;
+        this.limitChosenList = limitChosenList;
+        this.limitWaitinglList = limitWaitingList;
+        this.creator = creator;
+        this.poster = null;
+        this.hashCodeQR = "";
+        this.waitingList = new ArrayList<>();
+        this.cancelledList = new ArrayList<>();
+        this.chosenList = new ArrayList<>();
+        this.finalList = new ArrayList<>();
+        this.GeoSetting = geo;
     }
 
     // Getters
