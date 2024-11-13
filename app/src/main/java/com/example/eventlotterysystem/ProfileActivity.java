@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -22,6 +23,7 @@ public class ProfileActivity extends AppCompatActivity implements EditProfileFra
     private TextView contactTextView;
     private ImageView profileImageView;
     private User curUser;
+    private Button gen;
 
     /**
      * Called when the activity is first created. Initializes the UI and sets up event listeners.
@@ -41,12 +43,13 @@ public class ProfileActivity extends AppCompatActivity implements EditProfileFra
         emailTextView = findViewById(R.id.email);
         contactTextView = findViewById(R.id.contact);
         profileImageView = findViewById(R.id.poster);
-
+        gen = findViewById(R.id.generate_button);
         Picture picture = curUser.getPicture();  // Get the current picture from the user object
         if (picture != null) {
             // If a picture exists, decode the Base64 content and set it to the ImageView
             Bitmap pictureBitmap = decodeBitmap(picture.getContent());  // Assuming decodeBitmap method to convert String to Bitmap
             profileImageView.setImageBitmap(pictureBitmap);  // Set the generated bitmap as the ImageView source
+            gen.setText("Replace Image");
         }
 
         // Set initial profile information
@@ -71,7 +74,7 @@ public class ProfileActivity extends AppCompatActivity implements EditProfileFra
         ImageButton returnButton = findViewById(R.id.return_button);
         returnButton.setOnClickListener(view -> finish());
 
-        findViewById(R.id.generate_button).setOnClickListener(v -> generateProfilePicture());
+        gen.setOnClickListener(v -> generateProfilePicture());
 
     }
 
@@ -125,6 +128,7 @@ public class ProfileActivity extends AppCompatActivity implements EditProfileFra
         if (generatedPicture != null) {
             Bitmap pictureBitmap = decodeBitmap(generatedPicture.getContent());  // Assuming decodeBitmap method to convert String to Bitmap
             profileImageView.setImageBitmap(pictureBitmap);  // Set the generated bitmap as the ImageView source
+            gen.setText("Replace Image");
         } else {
             Log.e("ProfileActivity", "Failed to generate profile picture.");
         }
