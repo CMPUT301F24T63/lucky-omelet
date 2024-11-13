@@ -34,6 +34,7 @@ public class Event {
     private ArrayList<User> chosenList; // List of users selected to participate
     private ArrayList<User> finalList; // List of users confirmed to participate
     private Boolean GeoSetting;
+    private ArrayList<Double> geoList;
 
     // Constructor
 
@@ -104,7 +105,12 @@ public class Event {
         this.cancelledList = new ArrayList<>();
         this.chosenList = new ArrayList<>();
         this.finalList = new ArrayList<>();
-        this.GeoSetting = false;
+        this.GeoSetting = true;
+        this.geoList = new ArrayList<>();
+    }
+
+    public ArrayList<Double> getGeoList() {
+        return geoList;
     }
 
     public Event(int eventID, String name, String description, int limitChosenList, int limitWaitingList, User creator, Boolean geo) {
@@ -121,6 +127,7 @@ public class Event {
         this.chosenList = new ArrayList<>();
         this.finalList = new ArrayList<>();
         this.GeoSetting = geo;
+        this.geoList = new ArrayList<>();
     }
 
     // Getters

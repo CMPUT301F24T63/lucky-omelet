@@ -10,17 +10,16 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:paddingBottom="8dp"
-        android:text="Entrant Location Map"
+        android:text="World Map"
         android:textSize="18sp"
         android:textStyle="bold" />
 
-    <ImageView
-        android:id="@+id/mapImageView"
+    <!-- FrameLayout for the map -->
+    <FrameLayout
+        android:id="@+id/mapFrame"
         android:layout_width="match_parent"
         android:layout_height="400dp"
-        android:layout_marginBottom="16dp"
-        android:contentDescription="Map placeholder image"
-        android:src="@drawable/map_placeholder" />
+        android:layout_marginBottom="16dp"/>
 
     <Button
         android:id="@+id/cancelButton"

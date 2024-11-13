@@ -88,7 +88,11 @@ public class ManageEventActivity extends AppCompatActivity {
         buttonQRCode.setOnClickListener(v -> {
             QRCodeDialogFragment dialog = QRCodeDialogFragment.newInstance(curEvent.getHashCodeQR());
             dialog.show(getSupportFragmentManager(), "QRCodeDialogFragment");
-
+        });
+        buttonMap.setOnClickListener(v -> {
+            MapDialogFragment mapDialogFragment = new MapDialogFragment();
+//            mapDialogFragment.setEvent(curEvent);  // Pass the event to the map dialog
+            mapDialogFragment.show(getSupportFragmentManager(), "MapDialogFragment");
         });
 
     }
