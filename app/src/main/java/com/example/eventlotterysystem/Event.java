@@ -106,7 +106,7 @@ public class Event {
         this.cancelledList = new ArrayList<>();
         this.chosenList = new ArrayList<>();
         this.finalList = new ArrayList<>();
-        this.GeoSetting = true;
+        this.GeoSetting = false;
         this.latitudeList = new ArrayList<>();
         this.longitudeList = new ArrayList<>();
     }
