@@ -34,37 +34,10 @@
         android:textColor="@color/black"
         android:textSize="14sp" />
 
-    <TextView
-        android:id="@+id/textViewStore"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:gravity="center"
-        android:text="Would you like to store it and publish?"
-        android:textAlignment="center"
-        android:textColor="@color/black"
-        android:textSize="14sp" />
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:gravity="center"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/buttonCancel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:text="Cancel"
-            android:textColor="@android:color/white" />
-
-        <Button
-            android:id="@+id/buttonPublish"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Save Code and Publish"
-            android:textColor="@android:color/white" />
-    </LinearLayout>
+        android:orientation="horizontal"/>
 </LinearLayout>

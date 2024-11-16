@@ -39,11 +39,12 @@ public class EditEventDialogFragment extends DialogFragment {
         // Initialize fields
         nameEditText = dialogView.findViewById(R.id.edit_event_name);
         descriptionEditText = dialogView.findViewById(R.id.edit_event_description);
+        geolocationSwitch = dialogView.findViewById(R.id.switch1);
 
         // Populate fields with current event data
         nameEditText.setText(curEvent.getName());
         descriptionEditText.setText(curEvent.getDescription());
-
+        geolocationSwitch.setChecked(curEvent.getGeoSetting());
 
         builder.setView(dialogView)
                 .setTitle("Edit Event")
@@ -57,6 +58,8 @@ public class EditEventDialogFragment extends DialogFragment {
     private void saveChanges() {
         String newName = nameEditText.getText().toString();
         String newDescription = descriptionEditText.getText().toString();
+        boolean newGeoRequirement = geolocationSwitch.isChecked();
+
 
         if (TextUtils.isEmpty(newName) || TextUtils.isEmpty(newDescription)) {
             Toast.makeText(getActivity(), "Invalid input, nothing is saved", Toast.LENGTH_SHORT).show();
@@ -66,6 +69,7 @@ public class EditEventDialogFragment extends DialogFragment {
         // Update the event details
         curEvent.setName(newName);
         curEvent.setDescription(newDescription);
+        curEvent.setGeoSetting(newGeoRequirement);
 
         // Call the activity's method to update the event details
         if (getActivity() instanceof ManageEventActivity) {

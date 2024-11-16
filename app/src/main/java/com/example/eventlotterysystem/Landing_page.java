@@ -119,6 +119,15 @@ public class Landing_page extends AppCompatActivity {
             }
         });
 
+        ImageView qrIcon = findViewById(R.id.scanQRIcon);
+        qrIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Landing_page.this, ScanQRActivity.class);
+                startActivity(intent);
+            }
+        });
+
     }
 
     @Override

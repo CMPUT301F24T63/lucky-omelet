@@ -84,6 +84,20 @@ public class ManageEventActivity extends AppCompatActivity {
             EditEventDialogFragment dialog = new EditEventDialogFragment(curEvent);
             dialog.show(getSupportFragmentManager(), "EditEventDialogFragment");
         });
+
+        buttonQRCode.setOnClickListener(v -> {
+            QRCodeDialogFragment dialog = QRCodeDialogFragment.newInstance(curEvent.getHashCodeQR());
+            dialog.show(getSupportFragmentManager(), "QRCodeDialogFragment");
+        });
+        buttonMap.setOnClickListener(v -> {
+//            curEvent.getLatitudeList().add(53.5461);
+//            curEvent.getLongitudeList().add(-113.4937);
+//            curEvent.getLatitudeList().add(51.0447);
+//            curEvent.getLongitudeList().add(-114.0719);
+            MapDialogFragment mapDialogFragment = new MapDialogFragment(curEvent);
+            mapDialogFragment.show(getSupportFragmentManager(), "MapDialogFragment");
+        });
+
     }
 
     public void onEventUpdated() {

@@ -34,7 +34,14 @@ android {
 }
 
 dependencies {
-
+    implementation("com.google.mlkit:barcode-scanning:17.0.3")
+    implementation("androidx.camera:camera-camera2:1.1.0")
+    implementation("androidx.camera:camera-lifecycle:1.1.0")
+    implementation("androidx.camera:camera-view:1.1.0")
+    implementation("com.google.zxing:core:3.4.1")
+    implementation("com.journeyapps:zxing-android-embedded:4.3.0")
+    implementation("com.google.android.gms:play-services-location:17.0.0")
+    implementation("com.google.android.gms:play-services-maps:18.0.2")
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
@@ -46,6 +53,7 @@ dependencies {
     implementation(libs.firebase.firestore)
     implementation(platform("com.google.firebase:firebase-bom:33.5.1"))
     implementation(libs.firebase.installations)
+    implementation(libs.play.services.location)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)

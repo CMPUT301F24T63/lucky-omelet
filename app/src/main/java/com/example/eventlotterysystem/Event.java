@@ -8,8 +8,14 @@
  */
 package com.example.eventlotterysystem;
 
+import android.os.Build;
+
 import java.io.Serializable;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Base64;
+import java.util.Random;
 
 public class Event {
 
@@ -27,6 +33,9 @@ public class Event {
     private ArrayList<User> cancelledList; // List of users who cancelled their participation
     private ArrayList<User> chosenList; // List of users selected to participate
     private ArrayList<User> finalList; // List of users confirmed to participate
+    private Boolean GeoSetting;
+    private ArrayList<Double> latitudeList;
+    private ArrayList<Double> longitudeList;
 
     // Constructor
 
@@ -44,6 +53,33 @@ public class Event {
 
     public void setLimitWaitinglList(int limitWaitinglList) {
         this.limitWaitinglList = limitWaitinglList;
+    }
+
+    public void generateQR() {
+        int key = 19467382;
+        int enc = eventID^key;
+        this.hashCodeQR = generateRandomHex(12)+Integer.toHexString(enc).toUpperCase()+generateRandomHex(12);
+    }
+
+    private String generateRandomHex(int length) {
+        Random random = new Random();
+        StringBuilder sb = new StringBuilder(length);
+
+        for (int i = 0; i < length; i++) {
+            // Generate a random hex digit (0-9, A-F)
+            int hexDigit = random.nextInt(16);
+            sb.append(Integer.toHexString(hexDigit).toUpperCase());
+        }
+
+        return sb.toString();
+    }
+
+    public Boolean getGeoSetting() {
+        return GeoSetting;
+    }
+
+    public void setGeoSetting(Boolean geoSetting) {
+        GeoSetting = geoSetting;
     }
 
     /**
@@ -70,6 +106,36 @@ public class Event {
         this.cancelledList = new ArrayList<>();
         this.chosenList = new ArrayList<>();
         this.finalList = new ArrayList<>();
+        this.GeoSetting = false;
+        this.latitudeList = new ArrayList<>();
+        this.longitudeList = new ArrayList<>();
+    }
+
+
+    public ArrayList<Double> getLongitudeList() {
+        return longitudeList;
+    }
+
+    public ArrayList<Double> getLatitudeList() {
+        return latitudeList;
+    }
+
+    public Event(int eventID, String name, String description, int limitChosenList, int limitWaitingList, User creator, Boolean geo) {
+        this.eventID = eventID;
+        this.name = name;
+        this.description = description;
+        this.limitChosenList = limitChosenList;
+        this.limitWaitinglList = limitWaitingList;
+        this.creator = creator;
+        this.poster = null;
+        this.hashCodeQR = "";
+        this.waitingList = new ArrayList<>();
+        this.cancelledList = new ArrayList<>();
+        this.chosenList = new ArrayList<>();
+        this.finalList = new ArrayList<>();
+        this.GeoSetting = geo;
+        this.latitudeList = new ArrayList<>();
+        this.longitudeList = new ArrayList<>();
     }
 
     // Getters
