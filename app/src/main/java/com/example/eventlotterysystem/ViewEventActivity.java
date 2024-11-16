@@ -143,13 +143,23 @@ public class ViewEventActivity extends AppCompatActivity {
 
                                 LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
-                                if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) &&
-                                        !locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
-                                    Toast.makeText(this, "Please enable location services", Toast.LENGTH_LONG).show();
-                                    // Optionally, direct the user to settings:
-                                    Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                                    startActivity(intent);
+
+                                if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
+                                        != PackageManager.PERMISSION_GRANTED
+                                        && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION)
+                                        != PackageManager.PERMISSION_GRANTED) {
+
+                                    // Request location permissions from the user
+                                    ActivityCompat.requestPermissions(this,
+                                            new String[]{
+                                                    android.Manifest.permission.ACCESS_FINE_LOCATION,
+                                                    android.Manifest.permission.ACCESS_COARSE_LOCATION
+                                            },
+                                            1001); // Request code (unique identifier)
+                                    return; // Exit the current method to wait for the user's response
                                 }
+
+// Permission is already granted; proceed with location access
                                 fusedLocationClient.getLastLocation()
                                         .addOnCompleteListener(this, new OnCompleteListener<Location>() {
                                             @Override
@@ -166,7 +176,6 @@ public class ViewEventActivity extends AppCompatActivity {
                                                     Toast.makeText(getApplicationContext(),
                                                             "Latitude: " + latitude + ", Longitude: " + longitude,
                                                             Toast.LENGTH_SHORT).show();
-//                                                    Log.d("LocationInfo", "Latitude: " + latitude + ", Longitude: " + longitude);
                                                 }
                                             }
                                         });
@@ -209,6 +218,23 @@ public class ViewEventActivity extends AppCompatActivity {
                 FirestoreManager.getInstance().saveControl(Control.getInstance());
             }
         });
+
+//        @Override
+//        public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+//            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+//
+//            if (requestCode == 1001) { // Match the request code
+//                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//                    // Permission granted
+//                    Toast.makeText(this, "Location permission granted.", Toast.LENGTH_SHORT).show();
+//                    initializeGPS(); // Call your GPS initialization method here
+//                } else {
+//                    // Permission denied
+//                    Toast.makeText(this, "Location permission denied. Cannot access GPS.", Toast.LENGTH_LONG).show();
+//                }
+//            }
+//        }
+
 
     }
 }
