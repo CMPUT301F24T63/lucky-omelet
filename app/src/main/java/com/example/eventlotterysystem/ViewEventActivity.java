@@ -163,29 +163,24 @@ public class ViewEventActivity extends AppCompatActivity {
                                                     Location location = task.getResult();
                                                     double latitude = location.getLatitude();
                                                     double longitude = location.getLongitude();
-                                                    // User confirmed, proceed with joining the event
-                                                    Control.getCurrentUser().joinEvent(curEvent);
-                                                    joinbutton.setText("Cancel Event");
-                                                    // Update event details
-                                                    eventDetail.setText("Description: " + curEvent.getDescription() + "\n"
-                                                            + "Capacity of Event: (" + (curEvent.getChosenList().size() + curEvent.getFinalList().size()) + "/" + curEvent.getLimitChosenList() + ")\n"
-                                                            + "Capacity of Waiting List: (" + curEvent.getWaitingList().size() + "/" + curEvent.getLimitWaitinglList() + ")");
-
                                                     // Store geo-location in Firestore
                                                     curEvent.getLatitudeList().add(latitude);
                                                     curEvent.getLongitudeList().add(longitude);
                                                     Toast.makeText(getApplicationContext(),
                                                             "Latitude: " + latitude + ", Longitude: " + longitude,
                                                             Toast.LENGTH_SHORT).show();
-                                                    FirestoreManager.getInstance().saveControl(Control.getInstance());
                                                 }
                                             }
                                         });
-
-
+                                // User confirmed, proceed with joining the event
+                                Control.getCurrentUser().joinEvent(curEvent);
+                                joinbutton.setText("Cancel Event");
+                                // Update event details
+                                eventDetail.setText("Description: " + curEvent.getDescription() + "\n"
+                                        + "Capacity of Event: (" + (curEvent.getChosenList().size() + curEvent.getFinalList().size()) + "/" + curEvent.getLimitChosenList() + ")\n"
+                                        + "Capacity of Waiting List: (" + curEvent.getWaitingList().size() + "/" + curEvent.getLimitWaitinglList() + ")");
                                 // Save user action to Firestore
                                 FirestoreManager.getInstance().saveControl(Control.getInstance());
-
                             })
                             .setNegativeButton("Cancel", (dialog, which) -> {
                                 // User canceled, don't join the event
