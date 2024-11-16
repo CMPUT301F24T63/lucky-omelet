@@ -99,6 +99,16 @@ public class CancelledListManageActivity extends AppCompatActivity implements No
             }
         });
     }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        ListView memberList = findViewById(R.id.member_list);
+        adapter = new UserAdapter(this, event.getCancelledList());
+        memberList.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bot_nav_bar);
+        bottomNavigationView.setSelectedItemId(R.id.nav_cancelled);
+    }
 
     /**
      * Called when a notification is sent from the NotifyFragment.

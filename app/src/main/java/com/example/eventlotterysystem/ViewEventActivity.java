@@ -1,8 +1,11 @@
 package com.example.eventlotterysystem;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -138,15 +141,14 @@ public class ViewEventActivity extends AppCompatActivity {
                                         + "Capacity of Event: (" + (curEvent.getChosenList().size() + curEvent.getFinalList().size()) + "/" + curEvent.getLimitChosenList() + ")\n"
                                         + "Capacity of Waiting List: (" + curEvent.getWaitingList().size() + "/" + curEvent.getLimitWaitinglList() + ")");
 
-                                if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                                    // TODO: Consider calling
-                                    //    ActivityCompat#requestPermissions
-                                    // here to request the missing permissions, and then overriding
-                                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                                    //                                          int[] grantResults)
-                                    // to handle the case where the user grants the permission. See the documentation
-                                    // for ActivityCompat#requestPermissions for more details.
-                                    return;
+                                LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+                                if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) &&
+                                        !locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+                                    Toast.makeText(this, "Please enable location services", Toast.LENGTH_LONG).show();
+                                    // Optionally, direct the user to settings:
+                                    Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                                    startActivity(intent);
                                 }
                                 fusedLocationClient.getLastLocation()
                                         .addOnCompleteListener(this, new OnCompleteListener<Location>() {
@@ -161,9 +163,9 @@ public class ViewEventActivity extends AppCompatActivity {
                                                     // Store geo-location in Firestore
                                                     curEvent.getLatitudeList().add(latitude);
                                                     curEvent.getLongitudeList().add(longitude);
-//                                                    Toast.makeText(getApplicationContext(),
-//                                                            "Latitude: " + latitude + ", Longitude: " + longitude,
-//                                                            Toast.LENGTH_SHORT).show();
+                                                    Toast.makeText(getApplicationContext(),
+                                                            "Latitude: " + latitude + ", Longitude: " + longitude,
+                                                            Toast.LENGTH_SHORT).show();
 //                                                    Log.d("LocationInfo", "Latitude: " + latitude + ", Longitude: " + longitude);
                                                 }
                                             }

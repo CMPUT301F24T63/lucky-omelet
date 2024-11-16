@@ -100,6 +100,17 @@ public class FinalListManageActivity extends AppCompatActivity implements Notify
         });
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        ListView memberList = findViewById(R.id.member_list);
+        adapter = new UserAdapter(this, event.getFinalList());
+        memberList.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bot_nav_bar);
+        bottomNavigationView.setSelectedItemId(R.id.nav_final);
+    }
+
     /**
      * Called when a notification is sent from the NotifyFragment.
      * Adds the notification to the notification list of all users in the waiting list who have notifications enabled.

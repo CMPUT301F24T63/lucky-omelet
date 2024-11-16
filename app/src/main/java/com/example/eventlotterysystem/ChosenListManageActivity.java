@@ -127,6 +127,17 @@ public class ChosenListManageActivity extends AppCompatActivity implements Notif
         });
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        ListView memberList = findViewById(R.id.member_list);
+        adapter = new UserAdapter(this, event.getChosenList());
+        memberList.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bot_nav_bar);
+        bottomNavigationView.setSelectedItemId(R.id.nav_selected);
+    }
+
     /**
      * Navigates back to the ViewEventActivity.
      * This method is called when the return button is clicked or the back button is pressed.
