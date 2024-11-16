@@ -177,6 +177,7 @@ public class ViewEventActivity extends AppCompatActivity {
                                                     Toast.makeText(getApplicationContext(),
                                                             "Latitude: " + latitude + ", Longitude: " + longitude,
                                                             Toast.LENGTH_SHORT).show();
+                                                    FirestoreManager.getInstance().saveControl(Control.getInstance());
                                                 }
                                             }
                                         });
