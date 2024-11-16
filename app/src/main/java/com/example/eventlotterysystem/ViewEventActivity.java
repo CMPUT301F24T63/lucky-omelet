@@ -163,6 +163,13 @@ public class ViewEventActivity extends AppCompatActivity {
                                                     Location location = task.getResult();
                                                     double latitude = location.getLatitude();
                                                     double longitude = location.getLongitude();
+                                                    // User confirmed, proceed with joining the event
+                                                    Control.getCurrentUser().joinEvent(curEvent);
+                                                    joinbutton.setText("Cancel Event");
+                                                    // Update event details
+                                                    eventDetail.setText("Description: " + curEvent.getDescription() + "\n"
+                                                            + "Capacity of Event: (" + (curEvent.getChosenList().size() + curEvent.getFinalList().size()) + "/" + curEvent.getLimitChosenList() + ")\n"
+                                                            + "Capacity of Waiting List: (" + curEvent.getWaitingList().size() + "/" + curEvent.getLimitWaitinglList() + ")");
 
                                                     // Store geo-location in Firestore
                                                     curEvent.getLatitudeList().add(latitude);
@@ -174,13 +181,6 @@ public class ViewEventActivity extends AppCompatActivity {
                                             }
                                         });
 
-                                // User confirmed, proceed with joining the event
-                                Control.getCurrentUser().joinEvent(curEvent);
-                                joinbutton.setText("Cancel Event");
-                                // Update event details
-                                eventDetail.setText("Description: " + curEvent.getDescription() + "\n"
-                                        + "Capacity of Event: (" + (curEvent.getChosenList().size() + curEvent.getFinalList().size()) + "/" + curEvent.getLimitChosenList() + ")\n"
-                                        + "Capacity of Waiting List: (" + curEvent.getWaitingList().size() + "/" + curEvent.getLimitWaitinglList() + ")");
 
                                 // Save user action to Firestore
                                 FirestoreManager.getInstance().saveControl(Control.getInstance());
