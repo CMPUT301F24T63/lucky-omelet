@@ -1,5 +1,6 @@
 package com.example.eventlotterysystem;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -24,6 +25,8 @@ import androidx.core.app.ActivityCompat;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
+import java.util.ArrayList;
+
 /**
  * ViewEventActivity displays the details of a selected event and allows the user to join or cancel their participation.
  * Admin users can also delete the event.
@@ -40,7 +43,7 @@ public class ViewEventActivity extends AppCompatActivity {
     private ImageView eventPoster;
 
     /** Button for joining or canceling participation in the event */
-    private Button joinbutton;
+    private Button joinbutton, declinebutton;
 
     /** ImageView for deleting the event, visible only to admin users */
     private ImageView deleteButton;
@@ -63,6 +66,7 @@ public class ViewEventActivity extends AppCompatActivity {
      * @param savedInstanceState If the activity is being re-initialized after previously being shut down,
      *                           this Bundle contains the data it most recently supplied in onSaveInstanceState.
      */
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,6 +81,7 @@ public class ViewEventActivity extends AppCompatActivity {
         deleteButton = findViewById(R.id.del_button);
         returnButton = findViewById(R.id.return_button);
         joinbutton = findViewById(R.id.Entrant_join_button);
+        declinebutton = findViewById(R.id.decline);
 
         // Retrieve the Event object passed via intent
         int id = (int) getIntent().getSerializableExtra("eventID");
@@ -87,17 +92,24 @@ public class ViewEventActivity extends AppCompatActivity {
             }
         }
 
-        // Set text for join button based on user's enrollment status
-        if (curEvent != null && curUser != null) {
-            boolean enrolled = false;
-            for (Event event : curUser.getEnrolledList()) {
-                if (event.getEventID() == curEvent.getEventID()) {
-                    enrolled = true;
-                    break;
-                }
-            }
-            joinbutton.setText(enrolled ? "Cancel Event" : "Join Event");
+
+        if(inList(curEvent.getWaitingList(), curUser)){
+            joinbutton.setText("Cancel Event");
+            declinebutton.setVisibility(View.GONE);
+        }else if(inList(curEvent.getChosenList(), curUser)){
+            joinbutton.setText("Accept Invitation");
+            declinebutton.setText("Decline Invitation");
+        }else if(inList(curEvent.getFinalList(), curUser)){
+            joinbutton.setVisibility(View.GONE);
+            declinebutton.setVisibility(View.GONE);
+        }else if(inList(curEvent.getCancelledList(), curUser)){
+            joinbutton.setVisibility(View.GONE);
+            declinebutton.setVisibility(View.GONE);
+        }else {
+            joinbutton.setText("Join Event");
+            declinebutton.setVisibility(View.GONE);
         }
+
 
         // Hide delete button if user is not an admin
         if (!curUser.isAdmin()) {
@@ -123,7 +135,7 @@ public class ViewEventActivity extends AppCompatActivity {
         if ((curEvent.getChosenList().size() + curEvent.getFinalList().size())>=curEvent.getLimitChosenList() || curEvent.getWaitingList().size() >= curEvent.getLimitWaitinglList()){
             joinbutton.setEnabled(false);
         }
-        
+
         // Join or cancel participation in the event based on current status
         joinbutton.setOnClickListener(v -> {
             if (joinbutton.getText().equals("Join Event")) {
@@ -196,6 +208,11 @@ public class ViewEventActivity extends AppCompatActivity {
                     // Save user action to Firestore
                     FirestoreManager.getInstance().saveControl(Control.getInstance());
                 }
+            } else if (joinbutton.getText().equals("Accept Invitation")) {
+                curEvent.getChosenList().remove(curUser);
+                curEvent.getFinalList().add(curUser);
+                joinbutton.setVisibility(View.GONE);
+                declinebutton.setVisibility(View.GONE);
             } else {
                 // User clicked to cancel event
                 Control.getCurrentUser().cancelEvent(curEvent);
@@ -210,5 +227,19 @@ public class ViewEventActivity extends AppCompatActivity {
                 FirestoreManager.getInstance().saveControl(Control.getInstance());
             }
         });
+        declinebutton.setOnClickListener(v -> {
+            curEvent.getChosenList().remove(curUser);
+            curEvent.getCancelledList().add(curUser);
+            joinbutton.setVisibility(View.GONE);
+            declinebutton.setVisibility(View.GONE);
+        });
+    }
+    private boolean inList(ArrayList<User> l, User u) {
+        for (User user : l) {
+            if (user.getUserID() == u.getUserID()) {
+                return true;
+            }
+        }
+        return false;
     }
 }
