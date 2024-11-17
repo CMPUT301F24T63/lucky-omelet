@@ -67,10 +67,21 @@
         android:id="@+id/Entrant_join_button"
         android:layout_width="164dp"
         android:layout_height="wrap_content"
-        android:text="Join Event"
         android:padding="16dp"
+        android:text="Join Event"
+        app:layout_constraintBottom_toTopOf="@+id/decline"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Event_detail" />
+        app:layout_constraintTop_toBottomOf="@+id/Event_detail"
+        app:layout_constraintVertical_bias="0.275" />
+
+    <Button
+        android:id="@+id/decline"
+        android:layout_width="169dp"
+        android:layout_height="wrap_content"
+        android:text="Decline"
+        tools:layout_editor_absoluteX="118dp"
+        tools:layout_editor_absoluteY="550dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

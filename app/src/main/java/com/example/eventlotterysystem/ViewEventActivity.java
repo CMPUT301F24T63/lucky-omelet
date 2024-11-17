@@ -1,8 +1,12 @@
 package com.example.eventlotterysystem;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -21,6 +25,8 @@ import androidx.core.app.ActivityCompat;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
+import java.util.ArrayList;
+
 /**
  * ViewEventActivity displays the details of a selected event and allows the user to join or cancel their participation.
  * Admin users can also delete the event.
@@ -37,7 +43,7 @@ public class ViewEventActivity extends AppCompatActivity {
     private ImageView eventPoster;
 
     /** Button for joining or canceling participation in the event */
-    private Button joinbutton;
+    private Button joinbutton, declinebutton;
 
     /** ImageView for deleting the event, visible only to admin users */
     private ImageView deleteButton;
@@ -60,6 +66,7 @@ public class ViewEventActivity extends AppCompatActivity {
      * @param savedInstanceState If the activity is being re-initialized after previously being shut down,
      *                           this Bundle contains the data it most recently supplied in onSaveInstanceState.
      */
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,6 +81,7 @@ public class ViewEventActivity extends AppCompatActivity {
         deleteButton = findViewById(R.id.del_button);
         returnButton = findViewById(R.id.return_button);
         joinbutton = findViewById(R.id.Entrant_join_button);
+        declinebutton = findViewById(R.id.decline);
 
         // Retrieve the Event object passed via intent
         int id = (int) getIntent().getSerializableExtra("eventID");
@@ -84,17 +92,24 @@ public class ViewEventActivity extends AppCompatActivity {
             }
         }
 
-        // Set text for join button based on user's enrollment status
-        if (curEvent != null && curUser != null) {
-            boolean enrolled = false;
-            for (Event event : curUser.getEnrolledList()) {
-                if (event.getEventID() == curEvent.getEventID()) {
-                    enrolled = true;
-                    break;
-                }
-            }
-            joinbutton.setText(enrolled ? "Cancel Event" : "Join Event");
+
+        if(inList(curEvent.getWaitingList(), curUser)){
+            joinbutton.setText("Cancel Event");
+            declinebutton.setVisibility(View.GONE);
+        }else if(inList(curEvent.getChosenList(), curUser)){
+            joinbutton.setText("Accept Invitation");
+            declinebutton.setText("Decline Invitation");
+        }else if(inList(curEvent.getFinalList(), curUser)){
+            joinbutton.setVisibility(View.GONE);
+            declinebutton.setVisibility(View.GONE);
+        }else if(inList(curEvent.getCancelledList(), curUser)){
+            joinbutton.setVisibility(View.GONE);
+            declinebutton.setVisibility(View.GONE);
+        }else {
+            joinbutton.setText("Join Event");
+            declinebutton.setVisibility(View.GONE);
         }
+
 
         // Hide delete button if user is not an admin
         if (!curUser.isAdmin()) {
@@ -121,7 +136,6 @@ public class ViewEventActivity extends AppCompatActivity {
             joinbutton.setEnabled(false);
         }
 
-
         // Join or cancel participation in the event based on current status
         joinbutton.setOnClickListener(v -> {
             if (joinbutton.getText().equals("Join Event")) {
@@ -130,24 +144,23 @@ public class ViewEventActivity extends AppCompatActivity {
                     new android.app.AlertDialog.Builder(ViewEventActivity.this)
                             .setMessage("This event requires geo information. Do you want to join?")
                             .setPositiveButton("Confirm", (dialog, which) -> {
-                                // User confirmed, proceed with joining the event
-                                Control.getCurrentUser().joinEvent(curEvent);
-                                joinbutton.setText("Cancel Event");
-                                // Update event details
-                                eventDetail.setText("Description: " + curEvent.getDescription() + "\n"
-                                        + "Capacity of Event: (" + (curEvent.getChosenList().size() + curEvent.getFinalList().size()) + "/" + curEvent.getLimitChosenList() + ")\n"
-                                        + "Capacity of Waiting List: (" + curEvent.getWaitingList().size() + "/" + curEvent.getLimitWaitinglList() + ")");
+                                LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+                                if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
+                                        != PackageManager.PERMISSION_GRANTED
+                                        && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION)
+                                        != PackageManager.PERMISSION_GRANTED) {
 
-                                if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                                    // TODO: Consider calling
-                                    //    ActivityCompat#requestPermissions
-                                    // here to request the missing permissions, and then overriding
-                                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                                    //                                          int[] grantResults)
-                                    // to handle the case where the user grants the permission. See the documentation
-                                    // for ActivityCompat#requestPermissions for more details.
-                                    return;
+                                    // Request location permissions from the user
+                                    ActivityCompat.requestPermissions(this,
+                                            new String[]{
+                                                    android.Manifest.permission.ACCESS_FINE_LOCATION,
+                                                    android.Manifest.permission.ACCESS_COARSE_LOCATION
+                                            },
+                                            1001); // Request code (unique identifier)
+                                    return; // Exit the current method to wait for the user's response
                                 }
+
+                                // Permission is already granted; proceed with location access
                                 fusedLocationClient.getLastLocation()
                                         .addOnCompleteListener(this, new OnCompleteListener<Location>() {
                                             @Override
@@ -157,20 +170,22 @@ public class ViewEventActivity extends AppCompatActivity {
                                                     Location location = task.getResult();
                                                     double latitude = location.getLatitude();
                                                     double longitude = location.getLongitude();
-
                                                     // Store geo-location in Firestore
                                                     curEvent.getLatitudeList().add(latitude);
                                                     curEvent.getLongitudeList().add(longitude);
-//                                                    Toast.makeText(getApplicationContext(),
-//                                                            "Latitude: " + latitude + ", Longitude: " + longitude,
-//                                                            Toast.LENGTH_SHORT).show();
-//                                                    Log.d("LocationInfo", "Latitude: " + latitude + ", Longitude: " + longitude);
+                                                    Toast.makeText(getApplicationContext(),
+                                                            "Latitude: " + latitude + ", Longitude: " + longitude,
+                                                            Toast.LENGTH_SHORT).show();
                                                 }
                                             }
                                         });
-
-
-
+                                // User confirmed, proceed with joining the event
+                                Control.getCurrentUser().joinEvent(curEvent);
+                                joinbutton.setText("Cancel Event");
+                                // Update event details
+                                eventDetail.setText("Description: " + curEvent.getDescription() + "\n"
+                                        + "Capacity of Event: (" + (curEvent.getChosenList().size() + curEvent.getFinalList().size()) + "/" + curEvent.getLimitChosenList() + ")\n"
+                                        + "Capacity of Waiting List: (" + curEvent.getWaitingList().size() + "/" + curEvent.getLimitWaitinglList() + ")");
                                 // Save user action to Firestore
                                 FirestoreManager.getInstance().saveControl(Control.getInstance());
                             })
@@ -193,6 +208,11 @@ public class ViewEventActivity extends AppCompatActivity {
                     // Save user action to Firestore
                     FirestoreManager.getInstance().saveControl(Control.getInstance());
                 }
+            } else if (joinbutton.getText().equals("Accept Invitation")) {
+                curEvent.getChosenList().remove(curUser);
+                curEvent.getFinalList().add(curUser);
+                joinbutton.setVisibility(View.GONE);
+                declinebutton.setVisibility(View.GONE);
             } else {
                 // User clicked to cancel event
                 Control.getCurrentUser().cancelEvent(curEvent);
@@ -207,6 +227,19 @@ public class ViewEventActivity extends AppCompatActivity {
                 FirestoreManager.getInstance().saveControl(Control.getInstance());
             }
         });
-
+        declinebutton.setOnClickListener(v -> {
+            curEvent.getChosenList().remove(curUser);
+            curEvent.getCancelledList().add(curUser);
+            joinbutton.setVisibility(View.GONE);
+            declinebutton.setVisibility(View.GONE);
+        });
+    }
+    private boolean inList(ArrayList<User> l, User u) {
+        for (User user : l) {
+            if (user.getUserID() == u.getUserID()) {
+                return true;
+            }
+        }
+        return false;
     }
 }

@@ -104,6 +104,17 @@ public class WaitingListManageActivity extends AppCompatActivity implements Noti
         });
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        ListView memberList = findViewById(R.id.member_list);
+        adapter = new UserAdapter(this, event.getWaitingList());
+        memberList.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bot_nav_bar);
+        bottomNavigationView.setSelectedItemId(R.id.nav_waiting);
+    }
+
     /**
      * Called when a notification is sent from the NotifyFragment.
      * Adds the notification to the notification list of all users in the waiting list who have notifications enabled.
