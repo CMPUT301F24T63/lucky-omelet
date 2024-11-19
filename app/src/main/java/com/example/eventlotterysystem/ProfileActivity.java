@@ -1,5 +1,6 @@
 package com.example.eventlotterysystem;
 
+import android.app.AlertDialog;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -24,6 +25,7 @@ public class ProfileActivity extends AppCompatActivity implements EditProfileFra
     private ImageView profileImageView;
     private User curUser;
     private Button gen;
+    private ImageView deleteButton;
 
     /**
      * Called when the activity is first created. Initializes the UI and sets up event listeners.
@@ -44,6 +46,8 @@ public class ProfileActivity extends AppCompatActivity implements EditProfileFra
         contactTextView = findViewById(R.id.contact);
         profileImageView = findViewById(R.id.poster);
         gen = findViewById(R.id.generate_button);
+        deleteButton = findViewById(R.id.del_button);
+
         Picture picture = curUser.getPicture();  // Get the current picture from the user object
         if (picture != null) {
             // If a picture exists, decode the Base64 content and set it to the ImageView
@@ -75,6 +79,26 @@ public class ProfileActivity extends AppCompatActivity implements EditProfileFra
         returnButton.setOnClickListener(view -> finish());
 
         gen.setOnClickListener(v -> generateProfilePicture());
+
+        deleteButton.setOnClickListener(v -> {
+            new AlertDialog.Builder(ProfileActivity.this)
+                    .setTitle("Delete Profile Information")
+                    .setMessage("Are you sure you want to delete this profile?")
+                    .setPositiveButton("Delete", (dialog, which) -> {
+
+                        curUser.setName("Default Name");
+                        curUser.setEmail("user@example.com");
+                        curUser.setContact("000-000-0000");
+
+                        nameTextView.setText(curUser.getName());
+                        emailTextView.setText("Email: " + curUser.getEmail());
+                        contactTextView.setText("Contact: " + curUser.getContact());
+
+                        FirestoreManager.getInstance().saveControl(Control.getInstance());
+                    })
+                    .setNegativeButton("Cancel", null)
+                    .show();
+        });
 
     }
 

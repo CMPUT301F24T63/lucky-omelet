@@ -6,6 +6,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 /**
@@ -97,6 +98,25 @@ public class ManageEventActivity extends AppCompatActivity {
             MapDialogFragment mapDialogFragment = new MapDialogFragment(curEvent);
             mapDialogFragment.show(getSupportFragmentManager(), "MapDialogFragment");
         });
+
+        deleteButton.setOnClickListener(v -> {
+            new AlertDialog.Builder(ManageEventActivity.this)
+                    .setTitle("Delete Event")
+                    .setMessage("Are you sure you want to delete your event?")
+                    .setPositiveButton("Delete", (dialog, which) -> {
+                        User currentUser = Control.getCurrentUser();
+                        if (curEvent != null && currentUser != null) {
+                            currentUser.deleteEvent(Control.getInstance(), curEvent);
+                            FirestoreManager.getInstance().saveControl(Control.getInstance());
+                            finish();
+
+                        }
+                    })
+                    .setNegativeButton("Cancel", null)
+                    .show();
+        });
+
+
 
     }
 

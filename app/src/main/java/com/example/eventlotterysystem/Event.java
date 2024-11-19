@@ -16,6 +16,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Random;
+import java.util.Date;
 
 public class Event {
 
@@ -36,6 +37,10 @@ public class Event {
     private Boolean GeoSetting;
     private ArrayList<Double> latitudeList;
     private ArrayList<Double> longitudeList;
+
+    private TimePeriod regPeriod;
+
+    private TimePeriod eventPeriod;
 
     // Constructor
 
@@ -137,6 +142,26 @@ public class Event {
         this.latitudeList = new ArrayList<>();
         this.longitudeList = new ArrayList<>();
     }
+
+//    public Event(int eventID, String name, String description, int limitChosenList, int limitWaitingList, User creator, Boolean geo, Date regPeriod, Date eventPeriod) {
+//        this.eventID = eventID;
+//        this.name = name;
+//        this.description = description;
+//        this.limitChosenList = limitChosenList;
+//        this.limitWaitinglList = limitWaitingList;
+//        this.creator = creator;
+//        this.poster = null;
+//        this.hashCodeQR = "";
+//        this.waitingList = new ArrayList<>();
+//        this.cancelledList = new ArrayList<>();
+//        this.chosenList = new ArrayList<>();
+//        this.finalList = new ArrayList<>();
+//        this.GeoSetting = geo;
+//        this.latitudeList = new ArrayList<>();
+//        this.longitudeList = new ArrayList<>();
+//        this.regPeriod = regPeriod;
+//        this.eventPeriod = eventPeriod;
+//    }
 
     // Getters
 
@@ -244,4 +269,23 @@ public class Event {
         this.poster = poster;
     }
 
+    public TimePeriod getRegPeriod() {
+        return regPeriod;
+    }
+
+    public void setRegPeriod(TimePeriod regPeriod) {
+        this.regPeriod = regPeriod;
+    }
+
+    public TimePeriod getEventPeriod() {
+        return eventPeriod;
+    }
+
+    public void setEventPeriod(TimePeriod eventPeriod) {
+        this.eventPeriod = eventPeriod;
+    }
+
+    public boolean isRegistrationOpen(Date currentDate) {
+        return regPeriod.isInPeriod(currentDate);
+    }
 }
