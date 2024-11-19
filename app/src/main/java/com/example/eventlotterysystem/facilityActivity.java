@@ -6,6 +6,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 
@@ -45,6 +46,22 @@ public class facilityActivity extends AppCompatActivity implements EditFacilityF
         // Set up return button listener
         ImageButton returnButton = findViewById(R.id.return_button);
         returnButton.setOnClickListener(view -> finish());
+
+        ImageButton deleteButton = findViewById(R.id.del_button);
+        deleteButton.setOnClickListener(v -> {
+            if (curUser.getFacility() != null) {
+                new AlertDialog.Builder(facilityActivity.this)
+                        .setTitle("Delete Facility")
+                        .setMessage("Are you sure you want to delete your facility?")
+                        .setPositiveButton("Delete", (dialog, which) -> {
+                            curUser.deleteFacility(Control.getInstance());
+                            FirestoreManager.getInstance().saveControl(Control.getInstance()); // Save changes
+                            finish();
+                        })
+                        .setNegativeButton("Cancel", null)
+                        .show();
+            }
+        });
     }
 
     /**
