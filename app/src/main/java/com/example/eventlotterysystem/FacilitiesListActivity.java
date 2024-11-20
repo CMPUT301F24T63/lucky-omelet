@@ -8,7 +8,9 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
@@ -48,6 +50,31 @@ public class FacilitiesListActivity extends AppCompatActivity {
                 intent.putExtra("facility", selectedFacility);
                 startActivity(intent);
             }
+        });
+
+        facilitiesListView.setOnItemLongClickListener((parent, view, position, id) -> {
+            String selectedFacilityName = filteredFacilitiesList.get(position);
+            Facility selectedFacility = facilities.stream().filter(facility -> facility.getName()
+                    .equals(selectedFacilityName)).findFirst().orElse(null);
+
+            if (selectedFacility != null) {
+                new AlertDialog.Builder(FacilitiesListActivity.this)
+                        .setTitle("Delete Facility")
+                        .setMessage("Are you sure you want to delete this facility?")
+                        .setPositiveButton("Delete", (dialog, which) -> {
+                            User currentUser = Control.getCurrentUser();
+                            if (currentUser != null) {
+                                currentUser.adminDeleteFacility(Control.getInstance(), selectedFacility);
+                                FirestoreManager.getInstance().saveControl(Control.getInstance());
+                                filteredFacilitiesList.remove(position);
+                                adapter.notifyDataSetChanged();
+                                Toast.makeText(FacilitiesListActivity.this, "Facility deleted successfully", Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .setNegativeButton("Cancel", null)
+                        .show();
+            }
+            return true;
         });
 
         fetchFacilities();
