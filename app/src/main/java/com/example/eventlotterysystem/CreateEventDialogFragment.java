@@ -3,11 +3,13 @@ package com.example.eventlotterysystem;
 import android.app.ProgressDialog;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.Toast;
@@ -19,6 +21,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import com.bumptech.glide.Glide;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 
 /**
@@ -30,6 +33,7 @@ public class CreateEventDialogFragment extends DialogFragment {
     private User curUser;
 
     private ImageView imagePreview;
+    private ImageButton removeImageButton;
     private Button uploadImageButton;
     private Uri selectedImageUri;
 
@@ -57,6 +61,7 @@ public class CreateEventDialogFragment extends DialogFragment {
         EditText limitChosenEdit = view.findViewById(R.id.editTextNumber2);
         EditText limitWaitingEdit = view.findViewById(R.id.editTextNumber);
         ImageView imagePreview = view.findViewById(R.id.imagePreview);
+        ImageButton removeImageButton = view.findViewById(R.id.removeImageButton);
         Button uploadImageButton = view.findViewById(R.id.uploadImage_button);
         Button finishButton = view.findViewById(R.id.finish_button);
         Button cancelButton = view.findViewById(R.id.cancel_button);
@@ -68,6 +73,7 @@ public class CreateEventDialogFragment extends DialogFragment {
                     if (uri != null) {
                         selectedImageUri = uri;
                         imagePreview.setVisibility(View.VISIBLE);
+                        removeImageButton.setVisibility(View.VISIBLE);
                         Glide.with(this)
                                 .load(uri)
                                 .into(imagePreview);
@@ -81,9 +87,13 @@ public class CreateEventDialogFragment extends DialogFragment {
             pickImageLauncher.launch("image/*");
         });
 
-//        uploadImageButton.setOnClickListener(v -> {
-//                    Toast.makeText(getContext(), "Coming soon in part 4!", Toast.LENGTH_SHORT).show();
-//                });
+        removeImageButton.setOnClickListener(v -> {
+            selectedImageUri = null;
+            imagePreview.setVisibility(View.GONE);
+            removeImageButton.setVisibility(View.GONE);
+            imagePreview.setImageDrawable(null);
+            Toast.makeText(getContext(), "Image removed", Toast.LENGTH_SHORT).show();
+        });
 
         finishButton.setOnClickListener(v -> {
             // Create a new Event using user input
