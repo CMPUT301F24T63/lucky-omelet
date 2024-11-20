@@ -77,6 +77,16 @@
             android:layout_height="wrap_content"
             android:text="Geolocation requirement" />
 
+        <ImageView
+            android:id="@+id/imagePreview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+            android:visibility="gone"
+            android:contentDescription="Selected Image Preview" />
+
         <Button
             android:id="@+id/uploadImage_button"
             android:layout_width="match_parent"

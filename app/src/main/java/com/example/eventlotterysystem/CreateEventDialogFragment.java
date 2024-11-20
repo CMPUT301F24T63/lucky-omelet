@@ -1,17 +1,25 @@
 package com.example.eventlotterysystem;
 
+import android.app.ProgressDialog;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+import com.bumptech.glide.Glide;
+import java.util.UUID;
+
 
 /**
  * Previous UI approach to creating an event
@@ -20,6 +28,13 @@ public class CreateEventDialogFragment extends DialogFragment {
 
     private CreateEventListener listener;
     private User curUser;
+
+    private ImageView imagePreview;
+    private Button uploadImageButton;
+    private Uri selectedImageUri;
+
+    // ActivityResultLauncher for image selection
+    private ActivityResultLauncher<String> pickImageLauncher;
 
     public interface CreateEventListener {
         void onEventCreated(Event newEvent);
@@ -41,14 +56,34 @@ public class CreateEventDialogFragment extends DialogFragment {
         EditText descriptionEdit = view.findViewById(R.id.title_edit5);
         EditText limitChosenEdit = view.findViewById(R.id.editTextNumber2);
         EditText limitWaitingEdit = view.findViewById(R.id.editTextNumber);
-
+        ImageView imagePreview = view.findViewById(R.id.imagePreview);
         Button uploadImageButton = view.findViewById(R.id.uploadImage_button);
         Button finishButton = view.findViewById(R.id.finish_button);
         Button cancelButton = view.findViewById(R.id.cancel_button);
 
+        // Initialize ActivityResultLauncher
+        pickImageLauncher = registerForActivityResult(
+                new ActivityResultContracts.GetContent(),
+                uri -> {
+                    if (uri != null) {
+                        selectedImageUri = uri;
+                        imagePreview.setVisibility(View.VISIBLE);
+                        Glide.with(this)
+                                .load(uri)
+                                .into(imagePreview);
+                    }
+                }
+        );
+
+        // Set Upload Image Button Listener
         uploadImageButton.setOnClickListener(v -> {
-                    Toast.makeText(getContext(), "Coming soon in part 4!", Toast.LENGTH_SHORT).show();
-                });
+            // Launch the image picker
+            pickImageLauncher.launch("image/*");
+        });
+
+//        uploadImageButton.setOnClickListener(v -> {
+//                    Toast.makeText(getContext(), "Coming soon in part 4!", Toast.LENGTH_SHORT).show();
+//                });
 
         finishButton.setOnClickListener(v -> {
             // Create a new Event using user input
@@ -72,10 +107,12 @@ public class CreateEventDialogFragment extends DialogFragment {
             boolean geo = locationSwitch.isChecked();
             Event newEvent = new Event(Control.getInstance().getEventIDForEventCreation(), eventTitle, eventDescription,limitChosen,limitWaiting,curUser,geo);
 
-            // Pass the event to the listener
-            if (listener != null) {
-                listener.onEventCreated(newEvent);
-            }
+            // Show a Progress Dialog
+            ProgressDialog progressDialog = new ProgressDialog(getContext());
+            progressDialog.setMessage("Creating event...");
+            progressDialog.setCancelable(false);
+            progressDialog.show();
+
             dismiss(); // Close the dialog
         });
 
