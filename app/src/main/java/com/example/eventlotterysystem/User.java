@@ -14,6 +14,7 @@
 package com.example.eventlotterysystem;
 
 import java.io.ByteArrayOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import android.graphics.Bitmap;
@@ -23,7 +24,7 @@ import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.util.Base64;
 
-public class User {
+public class User implements Serializable {
 
     // Attributes
 

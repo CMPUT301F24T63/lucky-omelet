@@ -420,6 +420,31 @@ public class FirestoreManager {
             }
         }
     }
+    public interface FacilitiesCallback {
+        void onCallback(ArrayList<Facility> facilities);
+        void onFailure(Exception e);
+    }
+
+    public void loadFacilities(Control control, FacilitiesCallback callback) {
+        db.collection("facilities").get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    ArrayList<Facility> facilities = new ArrayList<>();
+                    for (DocumentSnapshot document : queryDocumentSnapshots) {
+                        DocumentReference creatorRef = (DocumentReference) document.get("creatorRef");
+                        User creator = findUserById(control, Integer.parseInt(creatorRef.getId()));
+                        if (creator != null) {
+                            Facility facility = new Facility(
+                                    document.getString("name"),
+                                    document.getString("description"),
+                                    creator
+                            );
+                            facilities.add(facility);
+                        }
+                    }
+                    callback.onCallback(facilities);
+                })
+                .addOnFailureListener(e -> callback.onFailure(e));
+    }
 
     private User findUserById(Control control, int userId) {
         for (User user : control.getUserList()) {
@@ -441,4 +466,5 @@ public class FirestoreManager {
         }
         return null;
     }
+
 }

@@ -4,7 +4,9 @@
 
 package com.example.eventlotterysystem;
 
-public class Picture {
+import java.io.Serializable;
+
+public class Picture implements Serializable {
     // Attributes
     private String content; //encoded
     private User uploader;

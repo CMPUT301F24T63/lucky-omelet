@@ -119,6 +119,20 @@ public class Landing_page extends AppCompatActivity {
             }
         });
 
+        facilityIcon.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if (Control.getCurrentUser() != null && Control.getCurrentUser().isAdmin()) {
+                    Intent intent = new Intent(Landing_page.this, FacilitiesListActivity.class);
+                    startActivity(intent);
+                    return true;
+                } else {
+                    Toast.makeText(Landing_page.this, "Only admins can view all facilities", Toast.LENGTH_SHORT).show();
+                    return false;
+                }
+            }
+        });
+
         ImageView qrIcon = findViewById(R.id.scanQRIcon);
         qrIcon.setOnClickListener(new View.OnClickListener() {
             @Override

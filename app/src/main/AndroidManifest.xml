@@ -48,6 +48,8 @@
         <activity android:name=".FinalListManageActivity" />
         <activity android:name=".ViewEventActivity" />
         <activity android:name=".ScanQRActivity" />
+        <activity android:name=".FacilitiesListActivity" />
+        <activity android:name=".AdminViewFacilityActivity" />
 
     </application>
 

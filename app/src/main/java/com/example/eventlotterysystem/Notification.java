@@ -5,7 +5,9 @@
  */
 package com.example.eventlotterysystem;
 
-public class Notification {
+import java.io.Serializable;
+
+public class Notification implements Serializable {
     // Attributes
     private Event event; // The event associated with this notification
     private User user; // The user to whom the notification is directed

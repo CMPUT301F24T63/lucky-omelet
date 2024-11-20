@@ -8,7 +8,9 @@
  */
 package com.example.eventlotterysystem;
 
-public class Facility {
+import java.io.Serializable;
+
+public class Facility implements Serializable {
 
     // Attributes
 
