@@ -445,6 +445,31 @@ public class FirestoreManager {
                 })
                 .addOnFailureListener(e -> callback.onFailure(e));
     }
+    public interface UsersCallback {
+        void onCallback(ArrayList<User> users);
+        void onFailure(Exception e);
+    }
+
+    public void loadUsers(Control control, UsersCallback callback) {
+        db.collection("users").get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    ArrayList<User> users = new ArrayList<>();
+                    for (DocumentSnapshot document : queryDocumentSnapshots) {
+                        User user = new User(
+                                document.getLong("userID").intValue(),
+                                document.getString("name"),
+                                document.getString("email"),
+                                document.getString("contact"),
+                                document.getBoolean("isAdmin")
+                        );
+                        user.setNotificationSetting(document.getBoolean("notificationSetting"));
+                        user.setFID(document.getString("FID"));
+                        users.add(user);
+                    }
+                    callback.onCallback(users);
+                })
+                .addOnFailureListener(e -> callback.onFailure(e));
+    }
 
     private User findUserById(Control control, int userId) {
         for (User user : control.getUserList()) {

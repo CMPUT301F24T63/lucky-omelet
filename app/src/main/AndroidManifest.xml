@@ -50,6 +50,8 @@
         <activity android:name=".ScanQRActivity" />
         <activity android:name=".FacilitiesListActivity" />
         <activity android:name=".AdminViewFacilityActivity" />
+        <activity android:name=".UsersListActivity" />
+        <activity android:name=".AdminViewUserActivity" />
 
     </application>
 

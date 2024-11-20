@@ -12,6 +12,7 @@ import android.widget.SearchView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class FacilitiesListActivity extends AppCompatActivity {
 
@@ -34,10 +35,19 @@ public class FacilitiesListActivity extends AppCompatActivity {
         facilitiesListView.setAdapter(adapter);
 
         facilitiesListView.setOnItemClickListener((parent, view, position, id) -> {
-            Facility selectedFacility = facilities.get(position);
-            Intent intent = new Intent(FacilitiesListActivity.this, AdminViewFacilityActivity.class);
-            intent.putExtra("facility", selectedFacility);
-            startActivity(intent);
+            String selectedFacilityName = filteredFacilitiesList.get(position);
+            Facility selectedFacility = null;
+            for (Facility facility : facilities) {
+                if (facility.getName().equals(selectedFacilityName)) {
+                    selectedFacility = facility;
+                    break;
+                }
+            }
+            if (selectedFacility != null) {
+                Intent intent = new Intent(FacilitiesListActivity.this, AdminViewFacilityActivity.class);
+                intent.putExtra("facility", selectedFacility);
+                startActivity(intent);
+            }
         });
 
         fetchFacilities();
@@ -73,6 +83,7 @@ public class FacilitiesListActivity extends AppCompatActivity {
                 for (Facility facility : facilities) {
                     facilitiesList.add(facility.getName());
                 }
+                Collections.sort(facilitiesList); // Sort facilities list alphabetically
                 filterFacilities(""); // Initialize the filtered list with all facilities
             }
 
