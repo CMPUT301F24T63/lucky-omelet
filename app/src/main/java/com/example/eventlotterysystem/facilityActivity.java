@@ -54,8 +54,8 @@ public class facilityActivity extends AppCompatActivity implements EditFacilityF
                         .setTitle("Delete Facility")
                         .setMessage("Are you sure you want to delete your facility?")
                         .setPositiveButton("Delete", (dialog, which) -> {
+                            FirestoreManager.getInstance().deleteFacilityFromDatabase(curUser.getFacility());
                             curUser.deleteFacility(Control.getInstance());
-                            FirestoreManager.getInstance().saveControl(Control.getInstance()); // Save changes
                             finish();
                         })
                         .setNegativeButton("Cancel", null)

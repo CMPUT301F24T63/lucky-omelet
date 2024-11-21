@@ -106,8 +106,8 @@ public class ManageEventActivity extends AppCompatActivity {
                     .setPositiveButton("Delete", (dialog, which) -> {
                         User currentUser = Control.getCurrentUser();
                         if (curEvent != null && currentUser != null) {
+                            FirestoreManager.getInstance().deleteEventFromDatabase(curEvent);
                             currentUser.deleteEvent(Control.getInstance(), curEvent);
-                            FirestoreManager.getInstance().saveControl(Control.getInstance());
                             finish();
 
                         }
