@@ -441,4 +441,44 @@ public class FirestoreManager {
         }
         return null;
     }
+
+    // delete functions: these functions will only delete data from database, not delete in ram or frontend
+    public void deleteEventFromDatabase(Event event) {
+        db.collection("events").document(String.valueOf(event.getEventID())).delete()
+                .addOnSuccessListener(aVoid -> {
+                    Log.i("Database Success", "Event deleted: " + event.getEventID());
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("Database Error", "Error deleting event: " + e);
+                });
+    }
+
+    // Here is an example:
+    // FirestoreManager.getInstance().deleteFacilityFromDatabase(Control.getCurrentUser().getFacility());
+    public void deleteFacilityFromDatabase(Facility facility) {
+        db.collection("facilities").document(String.valueOf(facility.getCreator().getUserID())).delete()
+                .addOnSuccessListener(aVoid -> {
+                    Log.i("Database Success", "Facility deleted: " + facility.getCreator().getUserID());
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("Database Error", "Error deleting facility: " + e);
+                });
+    }
+
+    public void deletePictureFromDatabase(Picture picture) {
+        // will be implemented later
+    }
+
+    public void deleteNotificationFromDatabase(Notification notification) {
+        db.collection("notifications").document(String.valueOf(notification.getUser().getUserID()))
+                .collection("Events").document(String.valueOf(notification.getEvent().getEventID())).delete()
+                .addOnSuccessListener(aVoid -> {
+                    Log.i("Database Success", "Notification Delete successful");
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("Database Error", "Error deleting notification: " + e);
+                });
+    }
+
+
 }
