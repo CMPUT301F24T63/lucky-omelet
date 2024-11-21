@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(MainActivity.this, Landing_page.class);
                 startActivity(intent);
             }
-        }, 2500); // change this to 2.5 seconds to match the animation of the Loading... dialog
+        }, 7500); // change this to 2.5 seconds to match the animation of the Loading... dialog
 
         checkDeviceButton.setOnClickListener(new View.OnClickListener() {
             @Override

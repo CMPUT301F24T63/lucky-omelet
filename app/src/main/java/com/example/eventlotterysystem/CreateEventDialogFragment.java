@@ -42,6 +42,11 @@ public class CreateEventDialogFragment extends DialogFragment {
         EditText limitChosenEdit = view.findViewById(R.id.editTextNumber2);
         EditText limitWaitingEdit = view.findViewById(R.id.editTextNumber);
 
+        EditText registrationStartEdit = view.findViewById(R.id.registration_start);
+        EditText registrationEndEdit = view.findViewById(R.id.registration_end);
+        EditText eventStartEdit = view.findViewById(R.id.event_start);
+        EditText eventEndEdit = view.findViewById(R.id.event_end);
+
         Button uploadImageButton = view.findViewById(R.id.uploadImage_button);
         Button finishButton = view.findViewById(R.id.finish_button);
         Button cancelButton = view.findViewById(R.id.cancel_button);
@@ -57,7 +62,13 @@ public class CreateEventDialogFragment extends DialogFragment {
             String limitChosenString = limitChosenEdit.getText().toString().trim();
             String limitWaitingString = limitWaitingEdit.getText().toString().trim();
 
-            if (eventTitle.isEmpty() || eventDescription.isEmpty() || limitChosenString.isEmpty()) {
+            String registrationStart = registrationStartEdit.getText().toString().trim();
+            String registrationEnd = registrationEndEdit.getText().toString().trim();
+            String eventStart = eventStartEdit.getText().toString().trim();
+            String eventEnd = eventEndEdit.getText().toString().trim();
+
+            if (eventTitle.isEmpty() || eventDescription.isEmpty() || limitChosenString.isEmpty() ||
+                registrationStart.isEmpty() || registrationEnd.isEmpty() || eventStart.isEmpty() || eventEnd.isEmpty()) {
                 Toast.makeText(getContext(), "Please fill in required fields", Toast.LENGTH_SHORT).show();
                 return;
             }
