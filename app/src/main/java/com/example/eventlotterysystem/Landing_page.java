@@ -137,8 +137,6 @@ public class Landing_page extends AppCompatActivity {
     }
 
     protected void checkDevice(Control control){
-        Log.i("checkDevice", "checkDevice function Control Data Test");
-        Utils.checkControlData(Control.getInstance());
         for (User user : Control.getInstance().getUserList()) {
             if (user.getFID().equals(Control.getLocalFID())) {
                 Control.setCurrentUser(user);
@@ -150,16 +148,9 @@ public class Landing_page extends AppCompatActivity {
             me.setFID(Control.getLocalFID());
             Control.getInstance().getUserList().add(me);
             Control.setCurrentUser(me);
-            // Just don't save... Saving is causing the app to crash
-            // FirestoreManager.getInstance().saveControl(control);
-            // FirestoreManager.getInstance().saveUser(me);
         }
 
-        Log.i("checkDevice", "After checkDevice function Control Data Test");
-        Utils.checkControlData(Control.getInstance());
         FirestoreManager.getInstance().saveControl(Control.getInstance());
-        // Or set user by using index: 0: entrant   10: organizer   11: admin
-        // Control.setCurrentUser(control.getUserList().get(0));
 
     }
 }
