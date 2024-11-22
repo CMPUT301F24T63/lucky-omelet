@@ -181,6 +181,7 @@ public class ChosenListManageActivity extends AppCompatActivity implements Notif
                     event.getCancelledList().add(user);
                     adapter.notifyDataSetChanged();
                     Toast.makeText(this, "Entrant moved to cancelled list", Toast.LENGTH_SHORT).show();
+                    FirestoreManager.getInstance().saveControl(Control.getInstance());
                 })
                 .setNegativeButton(R.string.dialog_cancel, null)
                 .show();
