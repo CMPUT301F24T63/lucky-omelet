@@ -4,15 +4,26 @@ import android.app.AlertDialog;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Picture;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
+import com.bumptech.glide.Glide;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+
 
 /**
  * An Activity that displays the user's profile information and allows editing of the profile.
@@ -26,6 +37,11 @@ public class ProfileActivity extends AppCompatActivity implements EditProfileFra
     private ImageView profileImageView;
     private User curUser;
     private Button gen;
+    private Button uploadImageButton;
+    private Uri selectedImageUri;
+
+    // ActivityResultLauncher for image selection
+    private ActivityResultLauncher<String> pickImageLauncher;
     private ImageView deleteButton;
 
     /**
@@ -47,6 +63,30 @@ public class ProfileActivity extends AppCompatActivity implements EditProfileFra
         contactTextView = findViewById(R.id.contact);
         profileImageView = findViewById(R.id.poster);
         gen = findViewById(R.id.generate_button);
+        uploadImageButton = findViewById(R.id.upload_button);
+
+        // Initialize ActivityResultLauncher
+        pickImageLauncher = registerForActivityResult(
+                new ActivityResultContracts.GetContent(),
+                uri -> {
+                    if (uri != null) {
+                        selectedImageUri = uri;
+                        Bitmap bmURI = getBitmapFromUri(uri);
+                        curUser.setPicture(new Picture(curUser, encodeBitmap(bmURI)));
+                        gen.setText("Replace Image");
+                        Glide.with(this)
+                                .load(uri)
+                                .into(profileImageView);
+                    }
+                }
+        );
+
+        // Set Upload Image Button Listener
+        uploadImageButton.setOnClickListener(v -> {
+            // Launch the image picker
+            pickImageLauncher.launch("image/*");
+        });
+
         deleteButton = findViewById(R.id.del_button);
 
         String picture = curUser.getPicture();  // Get the current picture from the user object
@@ -181,4 +221,21 @@ public class ProfileActivity extends AppCompatActivity implements EditProfileFra
         byte[] decodedString = Base64.decode(encodedImage, Base64.DEFAULT);
         return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
     }
+    private Bitmap getBitmapFromUri(Uri uri) {
+        try {
+            return MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    // Helper method to encode Bitmap to a String (Base64 encoding or any method you prefer)
+    private String encodeBitmap(Bitmap bitmap) {
+        // Convert bitmap to a Base64 encoded string (as an example)
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+        byte[] byteArray = baos.toByteArray();
+        return Base64.encodeToString(byteArray, Base64.DEFAULT);
+    }
+
 }
