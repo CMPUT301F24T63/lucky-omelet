@@ -37,8 +37,8 @@ public class ProfileActivity extends AppCompatActivity implements EditProfileFra
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_profile);
         // Test control data
-        Log.i("checkControlData", "Profile Activity Control Data Test");
-        Utils.checkControlData(Control.getInstance());
+//        Log.i("checkControlData", "Profile Activity Control Data Test");
+//        Utils.checkControlData(Control.getInstance());
         curUser = Control.getCurrentUser();
         Log.i("my index", Control.getInstance().getUserList().indexOf(Control.getCurrentUser())+"");
         nameTextView = findViewById(R.id.name);
@@ -151,7 +151,6 @@ public class ProfileActivity extends AppCompatActivity implements EditProfileFra
         nameTextView.setText(curUser.getName());
         emailTextView.setText("Email: " + curUser.getEmail());
         contactTextView.setText("Contact: " + curUser.getContact());
-        Utils.checkControlData(Control.getInstance());
         FirestoreManager.getInstance().saveControl(Control.getInstance());
     }
 
