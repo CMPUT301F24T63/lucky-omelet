@@ -12,6 +12,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.ArrayList;
+
 /**
  * An Activity that displays a list of notifications for the current user.
  */
@@ -64,7 +66,7 @@ public class NotificationActivity extends AppCompatActivity {
         Button DeleteButton = NotifiView.findViewById(R.id.btnRemove);
 
         // if no need to accept/decline, disable buttons
-        if (!noti.needAccept()) {
+        if (!noti.needAccept() || !inList(noti.getEvent().getChosenList(), curUser)) {
             AcceptButton.setEnabled(false);
             DeclineButton.setEnabled(false);
         }
@@ -93,5 +95,13 @@ public class NotificationActivity extends AppCompatActivity {
         });
 
         section.addView(NotifiView);
+    }
+    private boolean inList(ArrayList<User> l, User u) {
+        for (User user : l) {
+            if (user.getUserID() == u.getUserID()) {
+                return true;
+            }
+        }
+        return false;
     }
 }
