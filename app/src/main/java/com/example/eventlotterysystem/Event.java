@@ -23,6 +23,9 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Date;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.WriterException;
+import com.google.zxing.qrcode.QRCodeWriter;
 
 public class Event {
 
@@ -58,38 +61,34 @@ public class Event {
         this.description = description;
     }
 
-    public void setLimitChosenList(int limitChosenList) {
-        this.limitChosenList = limitChosenList;
-    }
-
-    public void setLimitWaitinglList(int limitWaitinglList) {
-        this.limitWaitinglList = limitWaitinglList;
-    }
-
-    public void generateQR() throws WriterException {
+    public void generateQR(){
         QRCodeWriter writer = new QRCodeWriter();
-        // Define QR code dimensions
-        int width = 200;
-        int height = 200;
-        // Generate QR code bit matrix
-        com.google.zxing.common.BitMatrix bitMatrix = writer.encode(String.valueOf(eventID), BarcodeFormat.QR_CODE, width, height);
-        // Create a bitmap from the bit matrix
-        Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
-                bitmap.setPixel(x, y, bitMatrix.get(x, y) ? 0xFF000000 : 0xFFFFFFFF);
+        try {
+            // Define QR code dimensions
+            int width = 200;
+            int height = 200;
+            // Generate QR code bit matrix
+            com.google.zxing.common.BitMatrix bitMatrix = writer.encode(String.valueOf(eventID), BarcodeFormat.QR_CODE, width, height);
+            // Create a bitmap from the bit matrix
+            Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
+            for (int x = 0; x < width; x++) {
+                for (int y = 0; y < height; y++) {
+                    bitmap.setPixel(x, y, bitMatrix.get(x, y) ? 0xFF000000 : 0xFFFFFFFF);
+                }
             }
+            this.hashCodeQR = encodeBitmap(bitmap);
+        }catch (WriterException e) {
+            e.printStackTrace();
         }
-        this.hashCodeQR = encodeBitmap(bitmap);
     }
 
     private String encodeBitmap(Bitmap bitmap) {
-        // Convert bitmap to a Base64 encoded string (as an example)
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
-        byte[] byteArray = baos.toByteArray();
-        return android.util.Base64.encodeToString(byteArray, Base64.DEFAULT);
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
+        byte[] byteArray = outputStream.toByteArray();
+        return Base64.encodeToString(byteArray, Base64.DEFAULT);
     }
+
 
     public Boolean getGeoSetting() {
         return GeoSetting;
@@ -123,7 +122,7 @@ public class Event {
         this.cancelledList = new ArrayList<>();
         this.chosenList = new ArrayList<>();
         this.finalList = new ArrayList<>();
-        this.GeoSetting = true;
+        this.GeoSetting = false;
         this.latitudeList = new ArrayList<>();
         this.longitudeList = new ArrayList<>();
     }

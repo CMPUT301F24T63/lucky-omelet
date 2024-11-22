@@ -302,11 +302,7 @@ public class FirestoreManager {
                             for (User user : control.getUserList()) {
                                 if (user.getUserID()==creatorId) {
                                     Event curEvent = new Event(id, name, description, limitChosenList, limitWaitingList, user);
-                                    try {
-                                        curEvent.generateQR();
-                                    } catch (WriterException e) {
-                                        throw new RuntimeException(e);
-                                    }
+                                    curEvent.generateQR();
                                     control.getEventList().add(curEvent);
                                     user.getOrganizedList().add(curEvent);
                                     List<DocumentReference> waitingList = (List<DocumentReference>) doc.get("waitingList");

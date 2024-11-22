@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -53,6 +54,7 @@ public class ManageEventActivity extends AppCompatActivity {
 
         // Retrieve the Event object passed via intent
         int id = (int) getIntent().getSerializableExtra("eventID");
+        Toast.makeText(this, String.valueOf(id), Toast.LENGTH_SHORT).show();
         for (Event event : Control.getInstance().getEventList()) {
             if (event.getEventID() == id) {
                 curEvent = event;
@@ -87,9 +89,11 @@ public class ManageEventActivity extends AppCompatActivity {
         });
 
         buttonQRCode.setOnClickListener(v -> {
-            QRCodeDialogFragment dialog = QRCodeDialogFragment.newInstance(curEvent.getHashCodeQR());
-            dialog.show(getSupportFragmentManager(), "QRCodeDialogFragment");
+            Toast.makeText(this, String.valueOf(curEvent.getEventID()), Toast.LENGTH_SHORT).show();
+//    QRCodeDialogFragment dialog = QRCodeDialogFragment.newInstance(curEvent);
+//    dialog.show(getSupportFragmentManager(), "QRCodeDialogFragment");
         });
+
         buttonMap.setOnClickListener(v -> {
 //            curEvent.getLatitudeList().add(53.5461);
 //            curEvent.getLongitudeList().add(-113.4937);

@@ -19,16 +19,13 @@ import com.google.zxing.qrcode.QRCodeWriter;
 public class QRCodeDialogFragment extends DialogFragment {
 
     private static final String ARG_HASH_CODE = "hashCodeQR";
+    private static final String ARG_EVENT_ID = "eventID";
 
-    /**
-     * Factory method to create a new instance of QRCodeDialogFragment with the event's hash code.
-     * @param hashCodeQR the QR code hash string of the event
-     * @return an instance of QRCodeDialogFragment
-     */
-    public static QRCodeDialogFragment newInstance(String hashCodeQR) {
+    public static QRCodeDialogFragment newInstance(Event event) {
         QRCodeDialogFragment fragment = new QRCodeDialogFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_HASH_CODE, hashCodeQR);
+        args.putString(ARG_HASH_CODE, event.getHashCodeQR());
+        args.putString(ARG_EVENT_ID, String.valueOf(event.getEventID()));
         fragment.setArguments(args);
         return fragment;
     }
@@ -39,15 +36,18 @@ public class QRCodeDialogFragment extends DialogFragment {
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.dialog_qrcode, container, false);
 
-        // Retrieve the QR code hash from arguments
+        // Retrieve arguments
         String hashCodeQR = getArguments().getString(ARG_HASH_CODE);
+        String eventID = getArguments().getString(ARG_EVENT_ID);
 
         // Find UI components
         ImageView imageViewQRCode = view.findViewById(R.id.imageViewQRCode);
         TextView textViewHash = view.findViewById(R.id.textViewHash);
-        textViewHash.setVisibility(view.GONE);
 
-        // Generate and display QR code based on hashCodeQR
+        // Display event ID
+        textViewHash.setText(eventID);
+
+        // Generate and display QR code
         Bitmap qrCodeBitmap = decodeBitmap(hashCodeQR);
         if (qrCodeBitmap != null) {
             imageViewQRCode.setImageBitmap(qrCodeBitmap);
@@ -55,10 +55,13 @@ public class QRCodeDialogFragment extends DialogFragment {
 
         return view;
     }
+
     private Bitmap decodeBitmap(String encodedImage) {
         byte[] decodedString = Base64.decode(encodedImage, Base64.DEFAULT);
         return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
     }
+}
+
 
     /**
      * Generates a QR code bitmap from the given data string.
@@ -86,4 +89,3 @@ public class QRCodeDialogFragment extends DialogFragment {
 //            return null;
 //        }
 //    }
-}

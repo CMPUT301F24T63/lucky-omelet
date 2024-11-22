@@ -73,23 +73,11 @@ public class CreateEventDialogFragment extends DialogFragment {
             }
             boolean geo = locationSwitch.isChecked();
             Event newEvent = new Event(Control.getInstance().getEventIDForEventCreation(), eventTitle, eventDescription,limitChosen,limitWaiting,curUser,geo);
-            try {
-                newEvent.generateQR();
-            } catch (WriterException e) {
-                throw new RuntimeException(e);
-            }
+            newEvent.generateQR();
             // Pass the event to the listener
             if (listener != null) {
                 listener.onEventCreated(newEvent);
             }
-            if (listener != null) {
-                listener.onEventCreated(newEvent);
-            }
-
-            // Display the QR code for the created event
-            String qrCodeHash = newEvent.getHashCodeQR(); // Replace with your QR code generation method
-            QRCodeDialogFragment qrCodeDialog = QRCodeDialogFragment.newInstance(qrCodeHash);
-            qrCodeDialog.show(getParentFragmentManager(), "QRCodeDialogFragment");
 
             dismiss(); // Close the dialog
         });

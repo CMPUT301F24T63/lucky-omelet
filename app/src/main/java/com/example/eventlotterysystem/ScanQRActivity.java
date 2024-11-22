@@ -1,5 +1,6 @@
 package com.example.eventlotterysystem;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
@@ -17,37 +18,34 @@ public class ScanQRActivity extends AppCompatActivity {
         // Start QR code scan
         IntentIntegrator integrator = new IntentIntegrator(this);
         integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE);
-        integrator.setCameraId(0);  // Use front camera
+        integrator.setCameraId(0); // Use back camera (use 1 for front camera)
         integrator.setBeepEnabled(true);
         integrator.setBarcodeImageEnabled(false);
         integrator.initiateScan();
     }
 
+    @SuppressLint("MissingSuperCall")
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
         // Handle the result of the QR code scan
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
         if (result != null) {
-            if (result.getContents() == null) {
-                Toast.makeText(this, "Scan canceled", Toast.LENGTH_SHORT).show();
-            } else {
-                String eventIDString = result.getContents();
-                int eventID = Integer.parseInt(eventIDString);
-                try {
-                    // Try to parse the event ID from the QR code contents
-                    // Launch the event view activity
-                    Intent intent = new Intent(this, ViewEventActivity.class);
-                    intent.putExtra("eventID", eventID);
-                    startActivity(intent);
-                } catch (NumberFormatException e) {
-                    // Handle invalid format if the QR code does not contain a valid event ID
-                    Toast.makeText(this, "Invalid QR code format", Toast.LENGTH_SHORT).show();
-                }
+            String contents = result.getContents();
+            if (contents == null || contents.trim().isEmpty()) {
+                Toast.makeText(this, "Scan canceled or no data found", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            try {
+                int eventID = Integer.parseInt(contents.trim());
+                Toast.makeText(this,eventID , Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(this, ViewEventActivity.class);
+                intent.putExtra("eventID", eventID);
+                startActivity(intent);
+            } catch (NumberFormatException e) {
+                Toast.makeText(this, "Invalid QR code format: " + contents, Toast.LENGTH_SHORT).show();
             }
         } else {
-            super.onActivityResult(requestCode, resultCode, data);
+            Toast.makeText(this, "No scan data received", Toast.LENGTH_SHORT).show();
         }
     }
 }
