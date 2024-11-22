@@ -1,7 +1,9 @@
 package com.example.eventlotterysystem;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,17 +45,19 @@ public class QRCodeDialogFragment extends DialogFragment {
         // Find UI components
         ImageView imageViewQRCode = view.findViewById(R.id.imageViewQRCode);
         TextView textViewHash = view.findViewById(R.id.textViewHash);
-
-        // Display hash code in the text view
-        textViewHash.setText("Hash data of your QR code:\n" + hashCodeQR);
+        textViewHash.setVisibility(view.GONE);
 
         // Generate and display QR code based on hashCodeQR
-        Bitmap qrCodeBitmap = generateQRCode(hashCodeQR);
+        Bitmap qrCodeBitmap = decodeBitmap(hashCodeQR);
         if (qrCodeBitmap != null) {
             imageViewQRCode.setImageBitmap(qrCodeBitmap);
         }
 
         return view;
+    }
+    private Bitmap decodeBitmap(String encodedImage) {
+        byte[] decodedString = Base64.decode(encodedImage, Base64.DEFAULT);
+        return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
     }
 
     /**
@@ -61,25 +65,25 @@ public class QRCodeDialogFragment extends DialogFragment {
      * @param data the data to encode in the QR code
      * @return a Bitmap representing the QR code, or null if generation fails
      */
-    private Bitmap generateQRCode(String data) {
-        QRCodeWriter writer = new QRCodeWriter();
-        try {
-            // Define QR code dimensions
-            int width = 200;
-            int height = 200;
-            // Generate QR code bit matrix
-            com.google.zxing.common.BitMatrix bitMatrix = writer.encode(data, BarcodeFormat.QR_CODE, width, height);
-            // Create a bitmap from the bit matrix
-            Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
-            for (int x = 0; x < width; x++) {
-                for (int y = 0; y < height; y++) {
-                    bitmap.setPixel(x, y, bitMatrix.get(x, y) ? 0xFF000000 : 0xFFFFFFFF);
-                }
-            }
-            return bitmap;
-        } catch (WriterException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
+//    private Bitmap generateQRCode(String data) {
+//        QRCodeWriter writer = new QRCodeWriter();
+//        try {
+//            // Define QR code dimensions
+//            int width = 200;
+//            int height = 200;
+//            // Generate QR code bit matrix
+//            com.google.zxing.common.BitMatrix bitMatrix = writer.encode(data, BarcodeFormat.QR_CODE, width, height);
+//            // Create a bitmap from the bit matrix
+//            Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
+//            for (int x = 0; x < width; x++) {
+//                for (int y = 0; y < height; y++) {
+//                    bitmap.setPixel(x, y, bitMatrix.get(x, y) ? 0xFF000000 : 0xFFFFFFFF);
+//                }
+//            }
+//            return bitmap;
+//        } catch (WriterException e) {
+//            e.printStackTrace();
+//            return null;
+//        }
+//    }
 }

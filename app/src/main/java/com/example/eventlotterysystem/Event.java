@@ -8,13 +8,19 @@
  */
 package com.example.eventlotterysystem;
 
+import android.graphics.Bitmap;
 import android.os.Build;
+import android.util.Base64;
 
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.WriterException;
+import com.google.zxing.qrcode.QRCodeWriter;
+
+import java.io.ByteArrayOutputStream;
 import java.io.Serializable;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.Random;
 import java.util.Date;
 
@@ -60,23 +66,29 @@ public class Event {
         this.limitWaitinglList = limitWaitinglList;
     }
 
-    public void generateQR() {
-        int key = 19467382;
-        int enc = eventID^key;
-        this.hashCodeQR = generateRandomHex(12)+Integer.toHexString(enc).toUpperCase()+generateRandomHex(12);
+    public void generateQR() throws WriterException {
+        QRCodeWriter writer = new QRCodeWriter();
+        // Define QR code dimensions
+        int width = 200;
+        int height = 200;
+        // Generate QR code bit matrix
+        com.google.zxing.common.BitMatrix bitMatrix = writer.encode(String.valueOf(eventID), BarcodeFormat.QR_CODE, width, height);
+        // Create a bitmap from the bit matrix
+        Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                bitmap.setPixel(x, y, bitMatrix.get(x, y) ? 0xFF000000 : 0xFFFFFFFF);
+            }
+        }
+        this.hashCodeQR = encodeBitmap(bitmap);
     }
 
-    private String generateRandomHex(int length) {
-        Random random = new Random();
-        StringBuilder sb = new StringBuilder(length);
-
-        for (int i = 0; i < length; i++) {
-            // Generate a random hex digit (0-9, A-F)
-            int hexDigit = random.nextInt(16);
-            sb.append(Integer.toHexString(hexDigit).toUpperCase());
-        }
-
-        return sb.toString();
+    private String encodeBitmap(Bitmap bitmap) {
+        // Convert bitmap to a Base64 encoded string (as an example)
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+        byte[] byteArray = baos.toByteArray();
+        return android.util.Base64.encodeToString(byteArray, Base64.DEFAULT);
     }
 
     public Boolean getGeoSetting() {

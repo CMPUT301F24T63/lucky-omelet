@@ -13,6 +13,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
+import com.google.zxing.WriterException;
+
 /**
  * Previous UI approach to creating an event
  */
@@ -71,7 +73,11 @@ public class CreateEventDialogFragment extends DialogFragment {
             }
             boolean geo = locationSwitch.isChecked();
             Event newEvent = new Event(Control.getInstance().getEventIDForEventCreation(), eventTitle, eventDescription,limitChosen,limitWaiting,curUser,geo);
-
+            try {
+                newEvent.generateQR();
+            } catch (WriterException e) {
+                throw new RuntimeException(e);
+            }
             // Pass the event to the listener
             if (listener != null) {
                 listener.onEventCreated(newEvent);

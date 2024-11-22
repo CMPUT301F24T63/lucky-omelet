@@ -33,10 +33,8 @@ public class ScanQRActivity extends AppCompatActivity {
             if (result.getContents() == null) {
                 Toast.makeText(this, "Scan canceled", Toast.LENGTH_SHORT).show();
             } else {
-                int key = 19467382;
                 String eventIDString = result.getContents();
-                String enc = eventIDString.substring(12, eventIDString.length() - 12); // Remove first 6 and last 6 characters
-                int eventID = Integer.parseInt(enc, 16)^key;
+                int eventID = Integer.parseInt(eventIDString);
                 try {
                     // Try to parse the event ID from the QR code contents
                     // Launch the event view activity

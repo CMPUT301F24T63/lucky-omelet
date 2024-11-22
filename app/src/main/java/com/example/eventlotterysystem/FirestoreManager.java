@@ -13,6 +13,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.zxing.WriterException;
 
 import java.util.HashMap;
 import java.util.List;
@@ -301,7 +302,11 @@ public class FirestoreManager {
                             for (User user : control.getUserList()) {
                                 if (user.getUserID()==creatorId) {
                                     Event curEvent = new Event(id, name, description, limitChosenList, limitWaitingList, user);
-                                    curEvent.generateQR();
+                                    try {
+                                        curEvent.generateQR();
+                                    } catch (WriterException e) {
+                                        throw new RuntimeException(e);
+                                    }
                                     control.getEventList().add(curEvent);
                                     user.getOrganizedList().add(curEvent);
                                     List<DocumentReference> waitingList = (List<DocumentReference>) doc.get("waitingList");
