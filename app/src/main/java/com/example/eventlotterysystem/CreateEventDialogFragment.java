@@ -82,6 +82,15 @@ public class CreateEventDialogFragment extends DialogFragment {
             if (listener != null) {
                 listener.onEventCreated(newEvent);
             }
+            if (listener != null) {
+                listener.onEventCreated(newEvent);
+            }
+
+            // Display the QR code for the created event
+            String qrCodeHash = newEvent.getHashCodeQR(); // Replace with your QR code generation method
+            QRCodeDialogFragment qrCodeDialog = QRCodeDialogFragment.newInstance(qrCodeHash);
+            qrCodeDialog.show(getParentFragmentManager(), "QRCodeDialogFragment");
+
             dismiss(); // Close the dialog
         });
 
