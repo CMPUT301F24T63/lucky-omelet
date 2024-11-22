@@ -343,10 +343,10 @@ public class User {
      * @param limitChosenList    the limit for chosen attendees
      * @param limitWaitingList  the limit for the waiting list
      */
-    public void createEvent(Control control, String name, String description, int limitChosenList, int limitWaitingList) {
+    public void createEvent(Control control, String name, String description, int limitChosenList, int limitWaitingList, boolean geoSetting) {
         if (this.facility != null) {
             int eventID = control.getEventIDForEventCreation();
-            Event newEvent = new Event(eventID, name, description, limitChosenList, limitWaitingList, this);
+            Event newEvent = new Event(eventID, name, description, limitChosenList, limitWaitingList, this, geoSetting);
             this.organizedList.add(newEvent);
             control.getEventList().add(newEvent);
         }

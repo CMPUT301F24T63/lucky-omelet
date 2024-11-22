@@ -18,6 +18,8 @@ public class Control {
     private ArrayList<Facility> facilityList; // List of facilities managed in the system
     private ArrayList<Event> eventList; // List of events in the system
     private ArrayList<Picture> pictureList; // List of pictures uploaded by users
+    private ArrayList<Picture> posterList;
+    private ArrayList<Notification> notificationList; // List of notifications for users
     private static Control instance; // Singleton instance of Control
     private static User currentUser = null; // Currently logged-in user
     private static String localFID = ""; // Local Firebase installation ID
@@ -43,6 +45,7 @@ public class Control {
         this.facilityList = new ArrayList<>();
         this.eventList = new ArrayList<>();
         this.pictureList = new ArrayList<>();
+        this.posterList = new ArrayList<>();
     }
 
     // Singleton instance retrieval

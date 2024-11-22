@@ -34,10 +34,10 @@ public class EventTest {
         organizer.createFacility(control, "Test Facility Name", "Test Facility Location", "Test Facility Description", "Test Facility Open Time");
         assertEquals(0, control.getEventList().size());
         // Entrant tries to create an event (fail)
-        entrant.createEvent(control, "Test Event Name", "Test Event Description", 10, 20);
+        entrant.createEvent(control, "Test Event Name", "Test Event Description", 10, 20, false);
         assertEquals(0, control.getEventList().size()); // Entrant should not be able to create an event
         // Organizer tries to create an event
-        organizer.createEvent(control, "Test Event Name", "Test Event Description", 10, 20);
+        organizer.createEvent(control, "Test Event Name", "Test Event Description", 10, 20, false);
         assertEquals(1, control.getEventList().size());
         // Entrant should be able to see new event
         assertEquals(control.getEventList().get(0), organizer.getOrganizedList().get(0));
@@ -47,11 +47,11 @@ public class EventTest {
     public void testEventID() {
         User organizer = control.getUserList().get(0);
         // Organizer create 5 events
-        organizer.createEvent(control, "Test Event Name", "Test Event Description", 10, 20);
-        organizer.createEvent(control, "Test Event Name", "Test Event Description", 10, 20);
-        organizer.createEvent(control, "Test Event Name", "Test Event Description", 10, 20);
-        organizer.createEvent(control, "Test Event Name", "Test Event Description", 10, 20);
-        organizer.createEvent(control, "Test Event Name", "Test Event Description", 10, 20);
+        organizer.createEvent(control, "Test Event Name", "Test Event Description", 10, 20, false);
+        organizer.createEvent(control, "Test Event Name", "Test Event Description", 10, 20, false);
+        organizer.createEvent(control, "Test Event Name", "Test Event Description", 10, 20, false);
+        organizer.createEvent(control, "Test Event Name", "Test Event Description", 10, 20, false);
+        organizer.createEvent(control, "Test Event Name", "Test Event Description", 10, 20, false);
         // Check event ids
         assertEquals(0, organizer.getOrganizedList().get(0).getEventID());
         assertEquals(1, organizer.getOrganizedList().get(1).getEventID());
@@ -64,7 +64,7 @@ public class EventTest {
     public void testJoinEvent() {
         User organizer = control.getUserList().get(0);
         User entrant = control.getUserList().get(1);
-        organizer.createEvent(control, "Test Event Name", "Test Event Description", 10, 20);
+        organizer.createEvent(control, "Test Event Name", "Test Event Description", 10, 20, false);
         // Entrant tries to join an event
         entrant.joinEvent(control.getEventList().get(0));
         // Organizer should be able to see the user in their waiting list
@@ -78,7 +78,7 @@ public class EventTest {
         User bot1 = new User(control.getUserIDForUserCreation(), "Bot", "email", "contact", false);
         User bot2 = new User(control.getUserIDForUserCreation(), "Bot", "email", "contact", false);
         User bot3 = new User(control.getUserIDForUserCreation(), "Bot", "email", "contact", false);
-        organizer.createEvent(control, "Test Event Name", "Test Event Description", 2, 2);
+        organizer.createEvent(control, "Test Event Name", "Test Event Description", 2, 2, false);
         bot0.joinEvent(control.getEventList().get(0));
         bot1.joinEvent(control.getEventList().get(0));
         bot2.joinEvent(control.getEventList().get(0));
@@ -92,7 +92,7 @@ public class EventTest {
     public void testCancelEventInWaitingList() {
         User organizer = control.getUserList().get(0);
         User entrant = control.getUserList().get(1);
-        organizer.createEvent(control, "Test Event Name", "Test Event Description", 10, 20);
+        organizer.createEvent(control, "Test Event Name", "Test Event Description", 10, 20, false);
         entrant.joinEvent(control.getEventList().get(0));
         // Entrant tries to cancel an event
         entrant.cancelEvent(control.getEventList().get(0));
@@ -116,7 +116,7 @@ public class EventTest {
         User bot9 = new User(control.getUserIDForUserCreation(), "Bot", "email", "contact", false);
         User bot10 = new User(control.getUserIDForUserCreation(), "Bot", "email", "contact", false);
         // Event limit set to 5 people, 11 people join the event
-        organizer.createEvent(control, "Test Event Name", "Test Event Description", 5, 20);
+        organizer.createEvent(control, "Test Event Name", "Test Event Description", 5, 20, false);
         entrant.joinEvent(control.getEventList().get(0));
         bot1.joinEvent(control.getEventList().get(0));
         bot2.joinEvent(control.getEventList().get(0));
@@ -170,7 +170,7 @@ public class EventTest {
         User bot1 = new User(control.getUserIDForUserCreation(), "Bot", "email", "contact", false);
         User bot2 = new User(control.getUserIDForUserCreation(), "Bot", "email", "contact", false);
         // Event limit set to 5 people, only 3 people join the event
-        organizer.createEvent(control, "Test Event Name", "Test Event Description", 5, 20);
+        organizer.createEvent(control, "Test Event Name", "Test Event Description", 5, 20, false);
         Event event = organizer.getOrganizedList().get(0);
         entrant.joinEvent(event);
         bot1.joinEvent(event);
@@ -200,7 +200,7 @@ public class EventTest {
         User organizer = control.getUserList().get(0);
         User user1 = new User(control.getUserIDForUserCreation(), "User1", "user1@example.com", "1234567891", false);
         User user2 = new User(control.getUserIDForUserCreation(), "User2", "user2@example.com", "1234567892", false);
-        organizer.createEvent(control, "Test Event Name", "Test Event Description", 10, 20);
+        organizer.createEvent(control, "Test Event Name", "Test Event Description", 10, 20, false);
         Event event = organizer.getOrganizedList().get(0);
         user1.joinEvent(event);
         user2.joinEvent(event);
@@ -215,7 +215,7 @@ public class EventTest {
         User organizer = control.getUserList().get(0);
         User user1 = new User(control.getUserIDForUserCreation(), "User1", "user1@example.com", "1234567891", false);
         User user2 = new User(control.getUserIDForUserCreation(), "User2", "user2@example.com", "1234567892", false);
-        organizer.createEvent(control, "Test Event Name", "Test Event Description", 10, 20);
+        organizer.createEvent(control, "Test Event Name", "Test Event Description", 10, 20, false);
         Event event = organizer.getOrganizedList().get(0);
         event.getChosenList().add(user1);
         event.getChosenList().add(user2);
@@ -230,7 +230,7 @@ public class EventTest {
         User organizer = control.getUserList().get(0);
         User user1 = new User(control.getUserIDForUserCreation(), "User1", "user1@example.com", "1234567891", false);
         User user2 = new User(control.getUserIDForUserCreation(), "User2", "user2@example.com", "1234567892", false);
-        organizer.createEvent(control, "Test Event Name", "Test Event Description", 10, 20);
+        organizer.createEvent(control, "Test Event Name", "Test Event Description", 10, 20, false);
         Event event = organizer.getOrganizedList().get(0);
         event.getCancelledList().add(user1);
         event.getCancelledList().add(user2);
@@ -245,7 +245,7 @@ public class EventTest {
         User organizer = control.getUserList().get(0);
         User user1 = new User(control.getUserIDForUserCreation(), "User1", "user1@example.com", "1234567891", false);
         User user2 = new User(control.getUserIDForUserCreation(), "User2", "user2@example.com", "1234567892", false);
-        organizer.createEvent(control, "Test Event Name", "Test Event Description", 10, 20);
+        organizer.createEvent(control, "Test Event Name", "Test Event Description", 10, 20, false);
         Event event = organizer.getOrganizedList().get(0);
         event.getFinalList().add(user1);
         event.getFinalList().add(user2);
@@ -260,7 +260,7 @@ public class EventTest {
         User organizer = control.getUserList().get(0);
         User user1 = new User(control.getUserIDForUserCreation(), "User1", "user1@example.com", "1234567891", false);
         User user2 = new User(control.getUserIDForUserCreation(), "User2", "user2@example.com", "1234567892", false);
-        organizer.createEvent(control, "Test Event Name", "Test Event Description", 10, 20);
+        organizer.createEvent(control, "Test Event Name", "Test Event Description", 10, 20, false);
         Event event = organizer.getOrganizedList().get(0);
         event.getWaitingList().add(user1);
         event.getWaitingList().add(user2);
@@ -280,7 +280,7 @@ public class EventTest {
         User organizer = control.getUserList().get(0);
         User user1 = new User(control.getUserIDForUserCreation(), "User1", "user1@example.com", "1234567891", false);
         User user2 = new User(control.getUserIDForUserCreation(), "User2", "user2@example.com", "1234567892", false);
-        organizer.createEvent(control, "Test Event Name", "Test Event Description", 10, 20);
+        organizer.createEvent(control, "Test Event Name", "Test Event Description", 10, 20, false);
         Event event = organizer.getOrganizedList().get(0);
         event.getChosenList().add(user1);
         event.getChosenList().add(user2);

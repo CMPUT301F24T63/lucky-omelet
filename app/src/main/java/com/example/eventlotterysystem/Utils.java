@@ -66,9 +66,9 @@ public class Utils {
         control.getUserList().add(admin);
 
         // Organizer create multiple events
-        organizer.createEvent(control, "Event 1", "Test Event Description", 5, 10); // fixed winner
-        organizer.createEvent(control, "Event 2", "Test Event Description", 20, 20); // random winner
-        organizer.createEvent(control, "Event 3", "Test Event Description", 20, 20); // random winner
+        organizer.createEvent(control, "Event 1", "Test Event Description", 5, 10, false); // fixed winner
+        organizer.createEvent(control, "Event 2", "Test Event Description", 20, 20, false); // random winner
+        organizer.createEvent(control, "Event 3", "Test Event Description", 20, 20, false); // random winner
 
         for (int i = 0; i < 10; i++) {
             control.getUserList().get(i).joinEvent(control.getEventList().get(0));

@@ -70,7 +70,7 @@ public class CreateEventDialogFragment extends DialogFragment {
                 return;
             }
             boolean geo = locationSwitch.isChecked();
-            Event newEvent = new Event(Control.getInstance().getEventIDForEventCreation(), eventTitle, eventDescription,limitChosen,limitWaiting,curUser,geo);
+            Event newEvent = new Event(Control.getInstance().getEventIDForEventCreation(), eventTitle, eventDescription, limitChosen, limitWaiting, curUser, geo);
 
             // Pass the event to the listener
             if (listener != null) {

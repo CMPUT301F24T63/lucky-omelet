@@ -146,6 +146,11 @@ public class FirestoreManager {
         eventData.put("limitChosenList", event.getLimitChosenList());
         eventData.put("limitWaitingList", event.getLimitWaitinglList());
         eventData.put("hashCodeQR", event.getHashCodeQR());
+        eventData.put("geoSetting", event.getGeoSetting());
+
+        // save coordinates
+        eventData.put("latitudeList", event.getLatitudeList());
+        eventData.put("longitudeList", event.getLongitudeList());
 
         // Save references
         eventData.put("creatorRef", db.collection("users").document(String.valueOf(event.getCreator().getUserID())));
@@ -294,13 +299,14 @@ public class FirestoreManager {
                         String description = doc.getString("description");
                         int limitChosenList = doc.getLong("limitChosenList").intValue();
                         int limitWaitingList = doc.getLong("limitWaitingList").intValue();
+                        Boolean geoSetting = doc.getBoolean("geoSetting");
                         DocumentReference creatorRef = doc.getDocumentReference("creatorRef");
                         creatorRef.get().addOnCompleteListener(creatorTask -> {
                             DocumentSnapshot creatorDoc = creatorTask.getResult();
                             int creatorId = Integer.parseInt(creatorDoc.getId());
                             for (User user : control.getUserList()) {
                                 if (user.getUserID()==creatorId) {
-                                    Event curEvent = new Event(id, name, description, limitChosenList, limitWaitingList, user);
+                                    Event curEvent = new Event(id, name, description, limitChosenList, limitWaitingList, user, geoSetting);
                                     curEvent.generateQR();
                                     control.getEventList().add(curEvent);
                                     user.getOrganizedList().add(curEvent);
