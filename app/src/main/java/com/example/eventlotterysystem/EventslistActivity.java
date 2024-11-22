@@ -146,11 +146,8 @@ public class EventslistActivity extends AppCompatActivity {
         // Set click listener to open the appropriate activity with event details
         eventView.setOnClickListener(v -> {
             boolean manage = false;
-            for (Event orgEvent : curUser.getOrganizedList()) {
-                if (orgEvent.getEventID() == event.getEventID()) {
-                    manage = true;
-                    break;
-                }
+            if (event.getCreator().getUserID() == curUser.getUserID()) {
+                manage = true;
             }
             Intent intent = manage
                     ? new Intent(this, ManageEventActivity.class)

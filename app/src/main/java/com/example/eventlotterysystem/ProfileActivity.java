@@ -10,6 +10,8 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 
@@ -36,6 +38,9 @@ public class ProfileActivity extends AppCompatActivity implements EditProfileFra
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_profile);
+
+
+
         // Test control data
         Log.i("checkControlData", "Profile Activity Control Data Test");
         Utils.checkControlData(Control.getInstance());
@@ -55,7 +60,7 @@ public class ProfileActivity extends AppCompatActivity implements EditProfileFra
             profileImageView.setImageBitmap(pictureBitmap);  // Set the generated bitmap as the ImageView source
             gen.setText("Replace Image");
         }
-
+        Toast.makeText(this,String.valueOf(curUser.getUserID()), Toast.LENGTH_SHORT).show();
         // Set initial profile information
         nameTextView.setText(curUser.getName());
         emailTextView.setText("Email: " +curUser.getEmail());

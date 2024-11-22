@@ -61,6 +61,7 @@ public class ManageEventActivity extends AppCompatActivity {
                 break;
             }
         }
+        Toast.makeText(this, curEvent.getName(), Toast.LENGTH_SHORT).show();
         if (curEvent != null) {
             // Populate the UI with event data
             eventTitle.setText(curEvent.getName());
