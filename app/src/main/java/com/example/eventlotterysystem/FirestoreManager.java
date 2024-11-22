@@ -444,6 +444,19 @@ public class FirestoreManager {
 
     // delete functions: these functions will only delete data from database, not delete in ram or frontend
     public void deleteEventFromDatabase(Event event) {
+        // Before deleting event, delete all related notifications
+        for (User user: Control.getInstance().getUserList()) {
+            // a list of notifications to be deleted
+            ArrayList<Notification> deleteList = new ArrayList<>();
+            for (Notification notification: user.getNotificationList()) {
+                if (notification.getEvent().getEventID() == event.getEventID()) {
+                    deleteList.add(notification);
+                    deleteNotificationFromDatabase(notification);
+                }
+            }
+            user.getNotificationList().removeAll(deleteList);
+        }
+
         db.collection("events").document(String.valueOf(event.getEventID())).delete()
                 .addOnSuccessListener(aVoid -> {
                     Log.i("Database Success", "Event deleted: " + event.getEventID());
@@ -456,6 +469,13 @@ public class FirestoreManager {
     // Here is an example:
     // FirestoreManager.getInstance().deleteFacilityFromDatabase(Control.getCurrentUser().getFacility());
     public void deleteFacilityFromDatabase(Facility facility) {
+        // Delete facility will also delete all events created by this user
+        for (Event event: facility.getCreator().getOrganizedList()) {
+            deleteEventFromDatabase(event);
+            Control.getInstance().getEventList().remove(event);
+        }
+        facility.getCreator().getOrganizedList().clear();
+
         db.collection("facilities").document(String.valueOf(facility.getCreator().getUserID())).delete()
                 .addOnSuccessListener(aVoid -> {
                     Log.i("Database Success", "Facility deleted: " + facility.getCreator().getUserID());

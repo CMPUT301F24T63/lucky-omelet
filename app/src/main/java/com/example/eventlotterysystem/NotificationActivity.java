@@ -88,8 +88,8 @@ public class NotificationActivity extends AppCompatActivity {
         // handle delete button
         DeleteButton.setOnClickListener(v -> {
             section.removeView(NotifiView);
+            FirestoreManager.getInstance().deleteNotificationFromDatabase(noti);
             curUser.removeNotification(noti);
-            FirestoreManager.getInstance().saveControl(Control.getInstance());
         });
 
         section.addView(NotifiView);

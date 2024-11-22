@@ -85,7 +85,19 @@ public class ProfileActivity extends AppCompatActivity implements EditProfileFra
                     .setTitle("Delete Profile Information")
                     .setMessage("Are you sure you want to delete this profile?")
                     .setPositiveButton("Delete", (dialog, which) -> {
-
+                    // Withdraw from all the events
+                        for (Event event : curUser.getEnrolledList()) {
+                            event.getWaitingList().remove(curUser);
+                            if (event.getChosenList().contains(curUser)){
+                                event.getChosenList().remove(curUser);
+                                event.getCancelledList().add(curUser);
+                            }
+                            if (event.getFinalList().contains(curUser)) {
+                                event.getFinalList().remove(curUser);
+                                event.getCancelledList().add(curUser);
+                            }
+                        }
+                        curUser.getEnrolledList().clear();
                         curUser.setName("Default Name");
                         curUser.setEmail("user@example.com");
                         curUser.setContact("000-000-0000");
