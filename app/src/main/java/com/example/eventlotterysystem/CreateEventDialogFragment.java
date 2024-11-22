@@ -117,11 +117,11 @@ public class CreateEventDialogFragment extends DialogFragment {
             boolean geo = locationSwitch.isChecked();
             Event newEvent = new Event(Control.getInstance().getEventIDForEventCreation(), eventTitle, eventDescription,limitChosen,limitWaiting,curUser,geo);
 
-            // Show a Progress Dialog
-            ProgressDialog progressDialog = new ProgressDialog(getContext());
-            progressDialog.setMessage("Creating event...");
-            progressDialog.setCancelable(true);
-            progressDialog.show();
+//            // Show a Progress Dialog
+//            ProgressDialog progressDialog = new ProgressDialog(getContext());
+//            progressDialog.setMessage("Creating event...");
+//            progressDialog.setCancelable(true);
+//            progressDialog.show();
 
             dismiss(); // Close the dialog
         });
