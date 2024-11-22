@@ -62,7 +62,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:hint="Registration Start"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:inputType="date"/>
 
             <TextView
                 android:id="@+id/to"
@@ -77,7 +78,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:hint="Registration End"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:inputType="date"/>
         </LinearLayout>
 
         <LinearLayout
@@ -91,7 +93,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:hint="Event Start"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:inputType="date"/>
 
             <TextView
                 android:id="@+id/to2"
@@ -106,7 +109,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:hint="Event End"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:inputType="date"/>
         </LinearLayout>
 
 

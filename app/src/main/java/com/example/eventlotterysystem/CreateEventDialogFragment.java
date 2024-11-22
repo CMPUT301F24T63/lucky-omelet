@@ -13,6 +13,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
+import java.util.Date;
+import java.time.LocalDate;
+
 /**
  * Previous UI approach to creating an event
  */
@@ -73,6 +76,10 @@ public class CreateEventDialogFragment extends DialogFragment {
                 return;
             }
 
+            if (!validDates(registrationStart, registrationEnd, eventStart, eventEnd)) {
+                return;
+            }
+
             int limitChosen = Integer.parseInt(limitChosenString);
             int limitWaiting = limitWaitingString.isEmpty() ? 9999 : Integer.parseInt(limitWaitingString);
 
@@ -80,6 +87,7 @@ public class CreateEventDialogFragment extends DialogFragment {
                 Toast.makeText(getContext(), "Limits must be greater than zero.", Toast.LENGTH_SHORT).show();
                 return;
             }
+
             boolean geo = locationSwitch.isChecked();
             Event newEvent = new Event(Control.getInstance().getEventIDForEventCreation(), eventTitle, eventDescription,limitChosen,limitWaiting,curUser,geo);
 
@@ -94,4 +102,35 @@ public class CreateEventDialogFragment extends DialogFragment {
 
         return view;
     }
+    protected boolean validDate(String date) {
+        String regex = "^\\d{0,4}(-\\d{0,2})?(-\\d{0,2})?$";
+        return date.length() == 10 && date.matches(regex);
+    }
+
+    protected boolean validPeriod(String start, String end) {
+        LocalDate date1 = LocalDate.parse(start);
+        LocalDate date2 = LocalDate.parse(end);
+        return date1.isBefore(date2);
+    }
+
+    protected boolean validDates(String regStart, String regEnd, String eventStart, String eventEnd) {
+        if (!validDate(regStart) || !validDate(regEnd) || !validDate(eventStart) || !validDate(eventEnd)) {
+            Toast.makeText(getContext(), "Use date format: YYYY-MM-DD", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if (!validPeriod(regStart, regEnd)) {
+            Toast.makeText(getContext(), "Registration Start must precede Registration End", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if ( !validPeriod(eventStart, eventEnd)) {
+            Toast.makeText(getContext(), "Event Start must precede Event End", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if (!validPeriod(regEnd, eventStart)) {
+            Toast.makeText(getContext(), "Registration End must precede Event Start", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
+    }
 }
+
