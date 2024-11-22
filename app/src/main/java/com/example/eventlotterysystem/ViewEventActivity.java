@@ -213,6 +213,7 @@ public class ViewEventActivity extends AppCompatActivity {
                 curEvent.getFinalList().add(curUser);
                 joinbutton.setVisibility(View.GONE);
                 declinebutton.setVisibility(View.GONE);
+                FirestoreManager.getInstance().saveControl(Control.getInstance());
             } else {
                 // User clicked to cancel event
                 Control.getCurrentUser().cancelEvent(curEvent);
@@ -232,6 +233,7 @@ public class ViewEventActivity extends AppCompatActivity {
             curEvent.getCancelledList().add(curUser);
             joinbutton.setVisibility(View.GONE);
             declinebutton.setVisibility(View.GONE);
+            FirestoreManager.getInstance().saveControl(Control.getInstance());
         });
     }
     private boolean inList(ArrayList<User> l, User u) {
