@@ -6,6 +6,7 @@
 package com.example.eventlotterysystem;
 
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -258,6 +259,7 @@ public class FirestoreManager {
                             );
                             control.getFacilityList().add(facility);
                             creator.setFacility(facility);
+                            Log.e("________________", "_________________");
                         }
                     }
                 })
