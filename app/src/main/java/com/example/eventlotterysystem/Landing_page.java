@@ -156,13 +156,13 @@ public class Landing_page extends AppCompatActivity {
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
+    protected void onRestart() {
+        super.onRestart();
 
         Toast.makeText(Landing_page.this, "Synchronizing data...", Toast.LENGTH_SHORT).show();
 //        FirestoreManager.getInstance().loadControl(Control.getInstance());
 //        int temp = Control.getCurrentUser().getUserID();
-
+//
 //        try {
 //            Thread.sleep(2500); // Wait for 2.5 seconds
 //        } catch (InterruptedException e) {
@@ -173,9 +173,7 @@ public class Landing_page extends AppCompatActivity {
 //                Control.setCurrentUser(user);
 //            }
 //        }
-//
 //        Control.getInstance().match();
-//
     }
 }
 

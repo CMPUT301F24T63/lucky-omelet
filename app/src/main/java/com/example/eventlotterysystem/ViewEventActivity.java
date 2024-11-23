@@ -132,35 +132,35 @@ public class ViewEventActivity extends AppCompatActivity {
         });
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
-
-
+        if (joinbutton.getText().equals("Join Event")) {
+            if ((curEvent.getChosenList().size() + curEvent.getFinalList().size())>=curEvent.getLimitChosenList() || curEvent.getWaitingList().size() >= curEvent.getLimitWaitinglList()){
+                joinbutton.setEnabled(false);
+            }
+        }
         // Join or cancel participation in the event based on current status
         joinbutton.setOnClickListener(v -> {
             if (joinbutton.getText().equals("Join Event")) {
-                if ((curEvent.getChosenList().size() + curEvent.getFinalList().size())>=curEvent.getLimitChosenList() || curEvent.getWaitingList().size() >= curEvent.getLimitWaitinglList()){
-                    joinbutton.setEnabled(false);
-                }
+
                 if (curEvent.getGeoSetting()) {
+                    if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
+                            != PackageManager.PERMISSION_GRANTED
+                            && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION)
+                            != PackageManager.PERMISSION_GRANTED) {
+
+                        // Request location permissions from the user
+                        ActivityCompat.requestPermissions(this,
+                                new String[]{
+                                        android.Manifest.permission.ACCESS_FINE_LOCATION,
+                                        android.Manifest.permission.ACCESS_COARSE_LOCATION
+                                },
+                                1001); // Request code (unique identifier)
+                        return; // Exit the current method to wait for the user's response
+                    }
                     // Create a dialog if geolocation is required
                     new android.app.AlertDialog.Builder(ViewEventActivity.this)
                             .setMessage("This event requires geo information. Do you want to join?")
                             .setPositiveButton("Confirm", (dialog, which) -> {
                                 LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-                                if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
-                                        != PackageManager.PERMISSION_GRANTED
-                                        && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION)
-                                        != PackageManager.PERMISSION_GRANTED) {
-
-                                    // Request location permissions from the user
-                                    ActivityCompat.requestPermissions(this,
-                                            new String[]{
-                                                    android.Manifest.permission.ACCESS_FINE_LOCATION,
-                                                    android.Manifest.permission.ACCESS_COARSE_LOCATION
-                                            },
-                                            1001); // Request code (unique identifier)
-                                    return; // Exit the current method to wait for the user's response
-                                }
-
                                 // Permission is already granted; proceed with location access
                                 fusedLocationClient.getLastLocation()
                                         .addOnCompleteListener(this, new OnCompleteListener<Location>() {
@@ -212,9 +212,6 @@ public class ViewEventActivity extends AppCompatActivity {
                     FirestoreManager.getInstance().saveControl(Control.getInstance());
                 }
             } else if (joinbutton.getText().equals("Accept Invitation")) {
-                if ((curEvent.getChosenList().size() + curEvent.getFinalList().size())>=curEvent.getLimitChosenList() || curEvent.getWaitingList().size() >= curEvent.getLimitWaitinglList()){
-                    joinbutton.setEnabled(false);
-                }
                 curEvent.getChosenList().remove(curUser);
                 curEvent.getFinalList().add(curUser);
                 joinbutton.setVisibility(View.GONE);
