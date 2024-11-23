@@ -47,7 +47,7 @@ public class QRCodeDialogFragment extends DialogFragment {
         TextView textViewHash = view.findViewById(R.id.textViewHash);
 
         // Display hash code in the text view
-//        textViewHash.setText("Hash data of your QR code:\n" + hashCodeQR);
+        textViewHash.setVisibility(view.GONE);
 
         // Generate and display QR code based on hashCodeQR
         Bitmap qrCodeBitmap = decodeBitmap(hashCodeQR);

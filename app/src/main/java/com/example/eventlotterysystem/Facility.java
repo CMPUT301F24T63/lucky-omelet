@@ -8,6 +8,8 @@
  */
 package com.example.eventlotterysystem;
 
+import android.graphics.Picture;
+
 public class Facility {
 
     // Attributes
@@ -17,7 +19,7 @@ public class Facility {
     private String description; // Description of the facility
     private String openTime; // Open time of the facility
     private User creator; // Creator of the facility
-    private Picture poster; // Poster image for the facility, initially null
+    private String poster; // Poster image for the facility, initially null
 
     // Constructor
 
@@ -91,7 +93,7 @@ public class Facility {
      *
      * @return the {@code Picture} representing the facility's poster, or {@code null} if not set
      */
-    public Picture getPoster() {return poster;}
+    public String getPoster() {return poster;}
 
     // Setters
 
@@ -128,6 +130,6 @@ public class Facility {
      *
      * @param poster the {@code Picture} to set as the facility's poster
      */
-    public void setPoster(Picture poster) {this.poster = poster;}
+    public void setPoster(String poster) {this.poster = poster;}
 
 }

@@ -9,6 +9,7 @@
 package com.example.eventlotterysystem;
 
 import android.graphics.Bitmap;
+import android.graphics.Picture;
 import android.util.Base64;
 
 import com.google.zxing.BarcodeFormat;
@@ -29,7 +30,7 @@ public class Event {
     private int limitChosenList; // Maximum number of users in the chosen list
     private int limitWaitinglList; // Maximum number of users in the waiting list
     private User creator; // Creator of the event
-    private Picture poster; // Poster image for the event, initially null
+    private String poster; // Poster image for the event, initially null
     private String hashCodeQR; // Hash code for the event's QR code, initially empty
     private ArrayList<User> waitingList; // List of users in the waiting queue for the event
     private ArrayList<User> cancelledList; // List of users who cancelled their participation
@@ -108,7 +109,7 @@ public class Event {
      *
      * @return the {@code Picture} representing the event's poster
      */
-    public Picture getPoster() {return poster;}
+    public String getPoster() {return poster;}
 
     /**
      * Retrieves the hash code for the event's QR code.
@@ -173,7 +174,7 @@ public class Event {
      *
      * @param poster the {@code Picture} representing the event's poster
      */
-    public void setPoster(Picture poster) {
+    public void setPoster(String poster) {
         this.poster = poster;
     }
 

@@ -3,6 +3,7 @@ package com.example.eventlotterysystem;
 import android.app.AlertDialog;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Picture;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
@@ -48,10 +49,10 @@ public class ProfileActivity extends AppCompatActivity implements EditProfileFra
         gen = findViewById(R.id.generate_button);
         deleteButton = findViewById(R.id.del_button);
 
-        Picture picture = curUser.getPicture();  // Get the current picture from the user object
+        String picture = curUser.getPicture();  // Get the current picture from the user object
         if (picture != null) {
             // If a picture exists, decode the Base64 content and set it to the ImageView
-            Bitmap pictureBitmap = decodeBitmap(picture.getContent());  // Assuming decodeBitmap method to convert String to Bitmap
+            Bitmap pictureBitmap = decodeBitmap(picture);  // Assuming decodeBitmap method to convert String to Bitmap
             profileImageView.setImageBitmap(pictureBitmap);  // Set the generated bitmap as the ImageView source
             gen.setText("Replace Image");
         }
@@ -159,9 +160,9 @@ public class ProfileActivity extends AppCompatActivity implements EditProfileFra
         curUser.generate_picture();  // This calls the generate_picture method in the User class
 
         // After the picture is generated, update the ImageView with the new profile picture
-        Picture generatedPicture = curUser.getPicture();
+        String generatedPicture = curUser.getPicture();
         if (generatedPicture != null) {
-            Bitmap pictureBitmap = decodeBitmap(generatedPicture.getContent());  // Assuming decodeBitmap method to convert String to Bitmap
+            Bitmap pictureBitmap = decodeBitmap(generatedPicture);  // Assuming decodeBitmap method to convert String to Bitmap
             profileImageView.setImageBitmap(pictureBitmap);  // Set the generated bitmap as the ImageView source
             gen.setText("Replace Image");
         } else {

@@ -6,6 +6,8 @@
  */
 package com.example.eventlotterysystem;
 
+import android.graphics.Picture;
+
 import java.util.ArrayList;
 
 public class Control {
@@ -17,8 +19,6 @@ public class Control {
     private ArrayList<User> userList; // List of users in the system
     private ArrayList<Facility> facilityList; // List of facilities managed in the system
     private ArrayList<Event> eventList; // List of events in the system
-    private ArrayList<Picture> pictureList; // List of pictures uploaded by users
-    private ArrayList<Picture> posterList;
     private ArrayList<Notification> notificationList; // List of notifications for users
     private static Control instance; // Singleton instance of Control
     private static User currentUser = null; // Currently logged-in user
@@ -44,8 +44,6 @@ public class Control {
         this.userList = new ArrayList<>();
         this.facilityList = new ArrayList<>();
         this.eventList = new ArrayList<>();
-        this.pictureList = new ArrayList<>();
-        this.posterList = new ArrayList<>();
     }
 
     // Singleton instance retrieval
@@ -127,14 +125,6 @@ public class Control {
         return eventList;
     }
 
-    /**
-     * Retrieves the list of pictures uploaded by users.
-     *
-     * @return an {@code ArrayList} of {@code Picture} objects
-     */
-    public ArrayList<Picture> getPictureList() {
-        return pictureList;
-    }
 
     /**
      * Retrieves the currently logged-in user.

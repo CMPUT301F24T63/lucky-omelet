@@ -5,6 +5,7 @@
 
 package com.example.eventlotterysystem;
 
+import android.graphics.Picture;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -60,11 +61,6 @@ public class FirestoreManager {
         // Save all events
         for (Event event : control.getEventList()) {
             saveEvent(event);
-        }
-
-        // Save all pictures
-        for (Picture picture : control.getPictureList()) {
-            savePicture(picture);
         }
 
     }
@@ -129,9 +125,9 @@ public class FirestoreManager {
         // Save creator as reference
         facilityData.put("creatorRef", db.collection("users").document(String.valueOf(facility.getCreator().getUserID())));
 
-        if (facility.getPoster() != null) {
-            facilityData.put("posterRef", db.collection("pictures").document(String.valueOf(facility.getPoster().getUploader().getUserID())));
-        }
+//        if (facility.getPoster() != null) {
+//            facilityData.put("posterRef", db.collection("pictures").document(String.valueOf(facility.getPoster().getUploader().getUserID())));
+//        }
 
         db.collection("facilities").document(facility.getCreator().getUserID() + "")
                 .set(facilityData)
@@ -156,9 +152,9 @@ public class FirestoreManager {
         // Save references
         eventData.put("creatorRef", db.collection("users").document(String.valueOf(event.getCreator().getUserID())));
 
-        if (event.getPoster() != null) {
-            eventData.put("posterRef", db.collection("pictures").document(String.valueOf(event.getPoster().getUploader().getUserID())));
-        }
+//        if (event.getPoster() != null) {
+//            eventData.put("posterRef", db.collection("pictures").document(String.valueOf(event.getPoster().getUploader().getUserID())));
+//        }
 
         // Save user lists as references
         ArrayList<DocumentReference> waitingRefs = new ArrayList<>();
@@ -191,17 +187,6 @@ public class FirestoreManager {
                 .addOnFailureListener(e -> Log.e("Database Error", "Error saving event: " + e));
     }
 
-    private void savePicture(Picture picture) {
-        Map<String, Object> pictureData = new HashMap<>();
-        pictureData.put("content", picture.getContent());
-        pictureData.put("uploaderRef", db.collection("users").document(String.valueOf(picture.getUploader().getUserID())));
-
-        db.collection("pictures").document(String.valueOf(picture.getUploader().getUserID()))
-                .set(pictureData)
-                .addOnSuccessListener(aVoid -> Log.i("Database Success", "Picture saved for user: " + picture.getUploader().getUserID()))
-                .addOnFailureListener(e -> Log.e("Database Error", "Error saving picture: " + e));
-    }
-
     public void loadControl(Control control) {
         if (db == null) {
             Log.e("Database Error", "Database not initialized");
@@ -220,7 +205,7 @@ public class FirestoreManager {
         // load lists
         loadUsers(control);
         loadFacilities(control);
-        loadPictures(control);
+//        loadPictures(control);
         loadEvents(control);
         // loadNotifications(control);
     }
@@ -264,26 +249,6 @@ public class FirestoreManager {
                     }
                 })
                 .addOnFailureListener(e -> Log.e("Database Error", "Error loading facilities: " + e));
-    }
-
-    private void loadPictures(Control control) {
-        db.collection("pictures").get()
-                .addOnSuccessListener(queryDocumentSnapshots -> {
-                    for (DocumentSnapshot document : queryDocumentSnapshots) {
-                        DocumentReference uploaderRef = (DocumentReference) document.get("uploaderRef");
-                        User uploader = findUserById(control, Integer.parseInt(uploaderRef.getId()));
-
-                        if (uploader != null) {
-                            Picture picture = new Picture(
-                                    uploader,
-                                    document.getString("content")
-                            );
-                            control.getPictureList().add(picture);
-                            uploader.setPicture(picture);
-                        }
-                    }
-                })
-                .addOnFailureListener(e -> Log.e("Database Error", "Error loading pictures: " + e));
     }
 
     private void loadEvents(Control control) {
@@ -439,13 +404,6 @@ public class FirestoreManager {
     private Event findEventById(Control control, int eventId) {
         for (Event event : control.getEventList()) {
             if (event.getEventID() == eventId) return event;
-        }
-        return null;
-    }
-
-    private Picture findPictureByUploaderId(Control control, int uploaderId) {
-        for (Picture picture : control.getPictureList()) {
-            if (picture.getUploader().getUserID() == uploaderId) return picture;
         }
         return null;
     }
