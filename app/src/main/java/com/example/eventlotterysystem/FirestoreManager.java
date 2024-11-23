@@ -278,21 +278,21 @@ public class FirestoreManager {
                                     curEvent.getWaitingListRef().add(userId);
                                 }
                             }
-                            List<DocumentReference> cancelList = (List<DocumentReference>) doc.get("waitingList");
+                            List<DocumentReference> cancelList = (List<DocumentReference>) doc.get("cancelledList");
                             if (cancelList != null) {
                                 for (DocumentReference userRef : cancelList) {
                                     int userId = Integer.parseInt(userRef.getId());
                                     curEvent.getCancelledListRef().add(userId);
                                 }
                             }
-                            List<DocumentReference> chosenList = (List<DocumentReference>) doc.get("waitingList");
+                            List<DocumentReference> chosenList = (List<DocumentReference>) doc.get("chosenList");
                             if (chosenList != null) {
                                 for (DocumentReference userRef : chosenList) {
                                     int userId = Integer.parseInt(userRef.getId());
                                     curEvent.getChosenListRef().add(userId);
                                 }
                             }
-                            List<DocumentReference> finalList = (List<DocumentReference>) doc.get("waitingList");
+                            List<DocumentReference> finalList = (List<DocumentReference>) doc.get("finalList");
                             if (finalList != null) {
                                 for (DocumentReference userRef : finalList) {
                                     int userId = Integer.parseInt(userRef.getId());
@@ -400,10 +400,6 @@ public class FirestoreManager {
                 .addOnFailureListener(e -> {
                     Log.e("Database Error", "Error deleting facility: " + e);
                 });
-    }
-
-    public void deletePictureFromDatabase(Picture picture) {
-        // will be implemented later
     }
 
     public void deleteNotificationFromDatabase(Notification notification) {
