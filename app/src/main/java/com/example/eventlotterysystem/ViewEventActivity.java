@@ -132,13 +132,14 @@ public class ViewEventActivity extends AppCompatActivity {
         });
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
-        if ((curEvent.getChosenList().size() + curEvent.getFinalList().size())>=curEvent.getLimitChosenList() || curEvent.getWaitingList().size() >= curEvent.getLimitWaitinglList()){
-            joinbutton.setEnabled(false);
-        }
+
 
         // Join or cancel participation in the event based on current status
         joinbutton.setOnClickListener(v -> {
             if (joinbutton.getText().equals("Join Event")) {
+                if ((curEvent.getChosenList().size() + curEvent.getFinalList().size())>=curEvent.getLimitChosenList() || curEvent.getWaitingList().size() >= curEvent.getLimitWaitinglList()){
+                    joinbutton.setEnabled(false);
+                }
                 if (curEvent.getGeoSetting()) {
                     // Create a dialog if geolocation is required
                     new android.app.AlertDialog.Builder(ViewEventActivity.this)
@@ -176,6 +177,8 @@ public class ViewEventActivity extends AppCompatActivity {
                                                     Toast.makeText(getApplicationContext(),
                                                             "Latitude: " + latitude + ", Longitude: " + longitude,
                                                             Toast.LENGTH_SHORT).show();
+                                                    // Save user action to Firestore
+                                                    FirestoreManager.getInstance().saveControl(Control.getInstance());
                                                 }
                                             }
                                         });
@@ -186,6 +189,8 @@ public class ViewEventActivity extends AppCompatActivity {
                                 eventDetail.setText("Description: " + curEvent.getDescription() + "\n"
                                         + "Capacity of Event: (" + (curEvent.getChosenList().size() + curEvent.getFinalList().size()) + "/" + curEvent.getLimitChosenList() + ")\n"
                                         + "Capacity of Waiting List: (" + curEvent.getWaitingList().size() + "/" + curEvent.getLimitWaitinglList() + ")");
+                                // Save user action to Firestore
+                                FirestoreManager.getInstance().saveControl(Control.getInstance());
                             })
                             .setNegativeButton("Cancel", (dialog, which) -> {
                                 // User canceled, don't join the event
@@ -204,12 +209,18 @@ public class ViewEventActivity extends AppCompatActivity {
                             + "Capacity of Waiting List: (" + curEvent.getWaitingList().size() + "/" + curEvent.getLimitWaitinglList() + ")");
 
                     // Save user action to Firestore
+                    FirestoreManager.getInstance().saveControl(Control.getInstance());
                 }
             } else if (joinbutton.getText().equals("Accept Invitation")) {
+                if ((curEvent.getChosenList().size() + curEvent.getFinalList().size())>=curEvent.getLimitChosenList() || curEvent.getWaitingList().size() >= curEvent.getLimitWaitinglList()){
+                    joinbutton.setEnabled(false);
+                }
                 curEvent.getChosenList().remove(curUser);
                 curEvent.getFinalList().add(curUser);
                 joinbutton.setVisibility(View.GONE);
                 declinebutton.setVisibility(View.GONE);
+                // Save user action to Firestore
+                FirestoreManager.getInstance().saveControl(Control.getInstance());
             } else {
                 // User clicked to cancel event
                 Control.getCurrentUser().cancelEvent(curEvent);
@@ -218,6 +229,8 @@ public class ViewEventActivity extends AppCompatActivity {
                 eventDetail.setText("Description: " + curEvent.getDescription() + "\n"
                         + "Capacity of Event: (" + (curEvent.getChosenList().size() + curEvent.getFinalList().size()) + "/" + curEvent.getLimitChosenList() + ")\n"
                         + "Capacity of Waiting List: (" + curEvent.getWaitingList().size() + "/" + curEvent.getLimitWaitinglList() + ")");
+                // Save user action to Firestore
+                FirestoreManager.getInstance().saveControl(Control.getInstance());
             }
         });
         declinebutton.setOnClickListener(v -> {
@@ -225,9 +238,10 @@ public class ViewEventActivity extends AppCompatActivity {
             curEvent.getCancelledList().add(curUser);
             joinbutton.setVisibility(View.GONE);
             declinebutton.setVisibility(View.GONE);
+            // Save user action to Firestore
+            FirestoreManager.getInstance().saveControl(Control.getInstance());
         });
-        // Save user action to Firestore
-        FirestoreManager.getInstance().saveControl(Control.getInstance());
+
     }
     private boolean inList(ArrayList<User> l, User u) {
         for (User user : l) {

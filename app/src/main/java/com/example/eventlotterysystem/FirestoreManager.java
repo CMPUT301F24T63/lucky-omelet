@@ -74,28 +74,25 @@ public class FirestoreManager {
         userData.put("isAdmin", user.isAdmin());
         userData.put("notificationSetting", user.getNotificationSetting());
         userData.put("FID", user.getFID());
-
-        if (user.getPicture() != null) {
-            userData.put("pictureRef", db.collection("pictures").document(String.valueOf(user.getUserID())));
-        }
+        userData.put("picture", user.getPicture());
 
         if (user.getFacility() != null) {
             userData.put("facilityRef", db.collection("facilities").document(String.valueOf(user.getFacility().getCreator().getUserID())));
         }
 
         // Save enrolled events as references
-        ArrayList<DocumentReference> enrolledRefs = new ArrayList<>();
-        for (Event event : user.getEnrolledList()) {
-            enrolledRefs.add(db.collection("events").document(String.valueOf(event.getEventID())));
-        }
-        userData.put("enrolledEvents", enrolledRefs);
+//        ArrayList<DocumentReference> enrolledRefs = new ArrayList<>();
+//        for (Event event : user.getEnrolledList()) {
+//            enrolledRefs.add(db.collection("events").document(String.valueOf(event.getEventID())));
+//        }
+//        userData.put("enrolledEvents", enrolledRefs);
 
         // Save organized events as references
-        ArrayList<DocumentReference> organizedRefs = new ArrayList<>();
-        for (Event event : user.getOrganizedList()) {
-            organizedRefs.add(db.collection("events").document(String.valueOf(event.getEventID())));
-        }
-        userData.put("organizedEvents", organizedRefs);
+//        ArrayList<DocumentReference> organizedRefs = new ArrayList<>();
+//        for (Event event : user.getOrganizedList()) {
+//            organizedRefs.add(db.collection("events").document(String.valueOf(event.getEventID())));
+//        }
+//        userData.put("organizedEvents", organizedRefs);
 
         // Save notifications
         DocumentReference userIDRef = db.collection("notifications").document(String.valueOf(user.getUserID()));
@@ -219,7 +216,7 @@ public class FirestoreManager {
                                 document.getString("email"),
                                 document.getString("contact"),
                                 document.getBoolean("isAdmin"),
-                                document.contains("Picture") ? document.getString("Picture") : null
+                                document.contains("picture") ? document.getString("picture") : null
                         );
                         user.setNotificationSetting(document.getBoolean("notificationSetting"));
                         user.setFID(document.getString("FID"));
@@ -271,6 +268,8 @@ public class FirestoreManager {
                             int creatorId = Integer.parseInt(creatorDoc.getId());
                             Event curEvent = new Event(id, name, description, limitChosenList, limitWaitingList, creatorId, geoSetting , qr, poster);
                             control.getEventList().add(curEvent);
+                            curEvent.setLatitudeList((ArrayList<Double>) doc.get("latitudeList"));
+                            curEvent.setLongitudeList((ArrayList<Double>) doc.get("longitudeList"));
 
                             List<DocumentReference> waitingList = (List<DocumentReference>) doc.get("waitingList");
                             if (waitingList != null) {

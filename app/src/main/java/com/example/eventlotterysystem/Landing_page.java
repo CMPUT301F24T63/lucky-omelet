@@ -129,12 +129,12 @@ public class Landing_page extends AppCompatActivity {
         });
 
     }
-
-    @Override
-    protected void onDestroy() {
-        handler.removeCallbacksAndMessages(null); // Clean up any pending callbacks
-        super.onDestroy();
-    }
+//
+//    @Override
+//    protected void onDestroy() {
+//        handler.removeCallbacksAndMessages(null); // Clean up any pending callbacks
+//        super.onDestroy();
+//    }
 
     protected void checkDevice(Control control){
         for (User user : Control.getInstance().getUserList()) {

@@ -65,6 +65,14 @@ public class Event {
         this.longitudeList = new ArrayList<>();
     }
 
+    public void setLatitudeList(ArrayList<Double> latitudeList) {
+        this.latitudeList = latitudeList;
+    }
+
+    public void setLongitudeList(ArrayList<Double> longitudeList) {
+        this.longitudeList = longitudeList;
+    }
+
     public ArrayList<Integer> getWaitingListRef() {
         return waitingListRef;
     }
