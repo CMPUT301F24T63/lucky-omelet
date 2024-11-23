@@ -20,25 +20,33 @@ public class Facility {
     private String openTime; // Open time of the facility
     private User creator; // Creator of the facility
     private String poster; // Poster image for the facility, initially null
+    private int creatorRef;
 
     // Constructor
+
+    public int getCreatorRef() {
+        return creatorRef;
+    }
+
+    public void setCreator(User creator) {
+        this.creator = creator;
+    }
 
     /**
      * Constructs a new {@code Facility} instance with the specified name, location, description,
      * open time, and creator.
      *
      * @param name the name of the facility
-     * @param location the location of the facility
      * @param description a brief description of the facility
-     * @param openTime the opening hours of the facility
-     * @param creator the {@code User} who created the facility
+     * @param creatorRef the {@code User} who created the facility
      */
-    public Facility(String name, String location, String description, String openTime, User creator) {
+
+    public Facility(String name, String description, int creatorRef) {
         this.name = name;
-        this.location = location;
+        this.location = "Default location";
         this.description = description;
-        this.openTime = openTime;
-        this.creator = creator;
+        this.openTime = "Default open time";
+        this.creatorRef = creatorRef;
         this.poster = null;
     }
 

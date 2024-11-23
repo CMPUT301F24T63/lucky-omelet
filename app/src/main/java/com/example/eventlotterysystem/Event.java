@@ -36,9 +36,14 @@ public class Event {
     private ArrayList<User> cancelledList; // List of users who cancelled their participation
     private ArrayList<User> chosenList; // List of users selected to participate
     private ArrayList<User> finalList; // List of users confirmed to participate
+    private ArrayList<Integer> waitingListRef; // List of users in the waiting queue for the event
+    private ArrayList<Integer> cancelledListRef; // List of users who cancelled their participation
+    private ArrayList<Integer> chosenListRef; // List of users selected to participate
+    private ArrayList<Integer> finalListRef; // List of users confirmed to participate
     private Boolean GeoSetting; // Whether the event require location to register
     private ArrayList<Double> latitudeList; // List of latitudes for users' location
     private ArrayList<Double> longitudeList; // List of longitudes for users' location
+    private int creatorRef;
 
     // Constructor
 
@@ -58,6 +63,54 @@ public class Event {
         this.GeoSetting = geo;
         this.latitudeList = new ArrayList<>();
         this.longitudeList = new ArrayList<>();
+    }
+
+    public ArrayList<Integer> getWaitingListRef() {
+        return waitingListRef;
+    }
+
+    public ArrayList<Integer> getCancelledListRef() {
+        return cancelledListRef;
+    }
+
+    public ArrayList<Integer> getChosenListRef() {
+        return chosenListRef;
+    }
+
+    public ArrayList<Integer> getFinalListRef() {
+        return finalListRef;
+    }
+
+    public void setCreator(User creator) {
+        this.creator = creator;
+    }
+
+    public int getCreatorRef() {
+        return creatorRef;
+    }
+
+    public Event(int eventID, String name, String description, int limitChosenList, int limitWaitingList, int creatorRef, Boolean geo, String qr, String poster) {
+        this.eventID = eventID;
+        this.name = name;
+        this.description = description;
+        this.limitChosenList = limitChosenList;
+        this.limitWaitinglList = limitWaitingList;
+        this.creatorRef = creatorRef;
+        this.creator = null;
+        this.poster = poster;
+        this.hashCodeQR = "";
+        this.waitingList = new ArrayList<>();
+        this.cancelledList = new ArrayList<>();
+        this.chosenList = new ArrayList<>();
+        this.finalList = new ArrayList<>();
+        this.waitingListRef = new ArrayList<>();
+        this.cancelledListRef = new ArrayList<>();
+        this.chosenListRef = new ArrayList<>();
+        this.finalListRef = new ArrayList<>();
+        this.GeoSetting = geo;
+        this.latitudeList = new ArrayList<>();
+        this.longitudeList = new ArrayList<>();
+        this.hashCodeQR = qr;
     }
 
     // Getters

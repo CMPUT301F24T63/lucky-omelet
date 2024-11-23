@@ -205,9 +205,8 @@ public class FirestoreManager {
         // load lists
         loadUsers(control);
         loadFacilities(control);
-//        loadPictures(control);
         loadEvents(control);
-        // loadNotifications(control);
+//        loadNotifications(control);
     }
 
     private void loadUsers(Control control) {
@@ -219,7 +218,8 @@ public class FirestoreManager {
                                 document.getString("name"),
                                 document.getString("email"),
                                 document.getString("contact"),
-                                document.getBoolean("isAdmin")
+                                document.getBoolean("isAdmin"),
+                                document.contains("Picture") ? document.getString("Picture") : null
                         );
                         user.setNotificationSetting(document.getBoolean("notificationSetting"));
                         user.setFID(document.getString("FID"));
@@ -234,18 +234,13 @@ public class FirestoreManager {
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     for (DocumentSnapshot document : queryDocumentSnapshots) {
                         DocumentReference creatorRef = (DocumentReference) document.get("creatorRef");
-                        User creator = findUserById(control, Integer.parseInt(creatorRef.getId()));
+                        Facility facility = new Facility(
+                                document.getString("name"),
+                                document.getString("description"),
+                                Integer.parseInt(creatorRef.getId())
+                        );
+                        control.getFacilityList().add(facility);
 
-                        if (creator != null) {
-                            Facility facility = new Facility(
-                                    document.getString("name"),
-                                    document.getString("description"),
-                                    creator
-                            );
-                            control.getFacilityList().add(facility);
-                            creator.setFacility(facility);
-                            Log.e("________________", "_________________");
-                        }
                     }
                 })
                 .addOnFailureListener(e -> Log.e("Database Error", "Error loading facilities: " + e));
@@ -267,67 +262,42 @@ public class FirestoreManager {
                         int limitChosenList = doc.getLong("limitChosenList").intValue();
                         int limitWaitingList = doc.getLong("limitWaitingList").intValue();
                         Boolean geoSetting = doc.getBoolean("geoSetting");
+                        String qr = doc.getString("hashCodeQR");
+                        String poster = doc.contains("Picture") ? doc.getString("Picture") : null;
+
                         DocumentReference creatorRef = doc.getDocumentReference("creatorRef");
                         creatorRef.get().addOnCompleteListener(creatorTask -> {
                             DocumentSnapshot creatorDoc = creatorTask.getResult();
                             int creatorId = Integer.parseInt(creatorDoc.getId());
-                            for (User user : control.getUserList()) {
-                                if (user.getUserID()==creatorId) {
-                                    Event curEvent = new Event(id, name, description, limitChosenList, limitWaitingList, user, geoSetting);
-                                    curEvent.generateQR();
-                                    control.getEventList().add(curEvent);
-                                    user.getOrganizedList().add(curEvent);
-                                    List<DocumentReference> waitingList = (List<DocumentReference>) doc.get("waitingList");
-                                    if (waitingList != null) {
-                                        for (DocumentReference userRef : waitingList) {
-                                            int userId = Integer.parseInt(userRef.getId());
-                                            for (User waituser : control.getUserList()) {
-                                                if (waituser.getUserID()==userId) {
-                                                    curEvent.getWaitingList().add(waituser);
-                                                    waituser.getEnrolledList().add(curEvent);
-                                                    break;
-                                                }
-                                            }
-                                        }
-                                    }
-                                    List<DocumentReference> chosenList = (List<DocumentReference>) doc.get("chosenList");
-                                    if (chosenList != null) {
-                                        for (DocumentReference userRef : chosenList) {
-                                            int userId = Integer.parseInt(userRef.getId());
-                                            for (User chosenuser : control.getUserList()) {
-                                                if (chosenuser.getUserID()==userId) {
-                                                    curEvent.getChosenList().add(chosenuser);
-                                                    chosenuser.getEnrolledList().add(curEvent);
-                                                    break;
-                                                }
-                                            }
-                                        }
-                                    }
-                                    List<DocumentReference> cancelledList = (List<DocumentReference>) doc.get("cancelledList");
-                                    if (cancelledList != null) {
-                                        for (DocumentReference userRef : cancelledList) {
-                                            int userId = Integer.parseInt(userRef.getId());
-                                            for (User cancelleduser : control.getUserList()) {
-                                                if (cancelleduser.getUserID()==userId) {
-                                                    curEvent.getCancelledList().add(cancelleduser);
-                                                }
-                                            }
-                                        }
-                                    }
-                                    List<DocumentReference> FinalList = (List<DocumentReference>) doc.get("finalList");
-                                    if (FinalList != null) {
-                                        for (DocumentReference userRef : FinalList) {
-                                            int userId = Integer.parseInt(userRef.getId());
-                                            for (User finaluser : control.getUserList()) {
-                                                if (finaluser.getUserID()==userId) {
-                                                    curEvent.getFinalList().add(finaluser);
-                                                    finaluser.getEnrolledList().add(curEvent);
+                            Event curEvent = new Event(id, name, description, limitChosenList, limitWaitingList, creatorId, geoSetting , qr, poster);
+                            control.getEventList().add(curEvent);
 
-                                                }
-                                            }
-                                        }
-                                    }
-                                    break;
+                            List<DocumentReference> waitingList = (List<DocumentReference>) doc.get("waitingList");
+                            if (waitingList != null) {
+                                for (DocumentReference userRef : waitingList) {
+                                    int userId = Integer.parseInt(userRef.getId());
+                                    curEvent.getWaitingListRef().add(userId);
+                                }
+                            }
+                            List<DocumentReference> cancelList = (List<DocumentReference>) doc.get("waitingList");
+                            if (cancelList != null) {
+                                for (DocumentReference userRef : cancelList) {
+                                    int userId = Integer.parseInt(userRef.getId());
+                                    curEvent.getCancelledListRef().add(userId);
+                                }
+                            }
+                            List<DocumentReference> chosenList = (List<DocumentReference>) doc.get("waitingList");
+                            if (chosenList != null) {
+                                for (DocumentReference userRef : chosenList) {
+                                    int userId = Integer.parseInt(userRef.getId());
+                                    curEvent.getChosenListRef().add(userId);
+                                }
+                            }
+                            List<DocumentReference> finalList = (List<DocumentReference>) doc.get("waitingList");
+                            if (finalList != null) {
+                                for (DocumentReference userRef : finalList) {
+                                    int userId = Integer.parseInt(userRef.getId());
+                                    curEvent.getFinalListRef().add(userId);
                                 }
                             }
                         });
@@ -337,43 +307,25 @@ public class FirestoreManager {
         });
     }
 
-    public void loadNotifications(Control control) {
-        Log.i("Hello", "Hello from loadNotifications!!!!!");
-        Log.i("UserListSize", String.valueOf(control.getUserList().size()));
-        for (User user : control.getUserList()) {
-            String userID = String.valueOf(user.getUserID());
-            db.collection("notifications").document(userID).collection("Events").get()
-                    .addOnSuccessListener(queryDocumentSnapshots -> {
-                        for (DocumentSnapshot document : queryDocumentSnapshots) {
-                            int eventID = -1;
-                            Event event;
-                            try{
-                                eventID=  Integer.parseInt(document.getId());
-                            } catch (Exception e) {
-                                Log.e("Database Error", "Irregular document name in notifications" + e);
-                            }
-                            if (eventID != -1) {
-                                event = findEventById(control, eventID);
-                            } else {
-                                event = null;
-                            }
-
-                            if (event != null) {
-                                Notification notification = new Notification(
-                                        event,
-                                        user,
-                                        document.getBoolean("needAccept"),
-                                        document.getString("customMessage")
-                                );
-                                notification.setAccepted(document.getBoolean("isAccepted"));
-                                notification.setDeclined(document.getBoolean("isDeclined"));
-                                user.getNotificationList().add(notification);
-                            }
-                        }
-                    })
-                    .addOnFailureListener(e -> Log.e("Database Error", "Error loading notifications: " + e));
-        }
-    }
+//    public void loadNotifications(Control control) {
+//        Log.i("Hello", "Hello from loadNotifications!!!!!");
+//        Log.i("UserListSize", String.valueOf(control.getUserList().size()));
+//            db.collection("notifications").document(userID).collection("Events").get()
+//                    .addOnSuccessListener(queryDocumentSnapshots -> {
+//                        for (DocumentSnapshot document : queryDocumentSnapshots) {
+//                            Notification notification = new Notification(
+//                                    Integer.parseInt(document.getId()),
+//                                    Integer.parseInt((DocumentReference) document.get("userRef").getId()),
+//                                    document.getBoolean("needAccept"),
+//                                    document.getString("customMessage"),
+//                                    document.getBoolean("isAccepted"),
+//                                    document.getBoolean("isDeclined")
+//                            );
+//
+//                        }
+//                    })
+//                    .addOnFailureListener(e -> Log.e("Database Error", "Error loading notifications: " + e));
+//    }
 
     // Helper methods
     private void loadUserList(DocumentSnapshot document, String listName,

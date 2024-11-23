@@ -46,80 +46,80 @@ public class Utils {
         return resultList;
     }
 
-    public static void setUpMockData(Control control){
-        // set up mock data
+//    public static void setUpMockData(Control control){
+//        // set up mock data
+//
+//        // 10 entrants (index 0-9)
+//        for (int i = 0; i < 10; i++) {
+//            User entrant = new User(control.getUserIDForUserCreation(), "Entrant" + i, "entrant" + i + "@example.com", "contact" + i, false);
+//            control.getUserList().add(entrant);
+//        }
+//
+//        // 1 organizer (index 10)
+//        User organizer = new User(control.getUserIDForUserCreation(), "Organizer", "organizer" + "@example.com", "contact", false);
+//        control.getUserList().add(organizer);
+//        organizer.createFacility(control, "Test Facility Name", "Test Facility Location", "Test Facility Description", "Test Facility Open Time");
+//
+//
+//        // 1 admin (index 11)
+//        User admin = new User(control.getUserIDForUserCreation(), "Admin", "email", "contact", true);
+//        control.getUserList().add(admin);
+//
+//        // Organizer create multiple events
+//        organizer.createEvent(control, "Event 1", "Test Event Description", 5, 10, false); // fixed winner
+//        organizer.createEvent(control, "Event 2", "Test Event Description", 20, 20, false); // random winner
+//        organizer.createEvent(control, "Event 3", "Test Event Description", 20, 20, false); // random winner
+//
+//        for (int i = 0; i < 10; i++) {
+//            control.getUserList().get(i).joinEvent(control.getEventList().get(0));
+//            control.getUserList().get(i).joinEvent(control.getEventList().get(1));
+//            control.getUserList().get(i).joinEvent(control.getEventList().get(2));
+//        }
+//
+//        // For event 0, we choose user 0-4 to win; 0, 1 accept; 2,3 decline, 4 no response
+//        // WaitingList: 5-9
+//        // ChosenList: 0, 1, 4
+//        // CancelledList: 2, 3
+//        // FinalList: 0, 1
+//
+//        // Remove from waiting list
+//        for (int i = 0; i < 5; i++) {
+//            control.getEventList().get(0).getWaitingList().remove(control.getUserList().get(i));
+//        }
+//        // ChosenList
+//        control.getEventList().get(0).getChosenList().add(control.getUserList().get(4));
+//        // CancelledList
+//        control.getUserList().get(2).cancelEvent(control.getEventList().get(0));
+//        control.getUserList().get(3).cancelEvent(control.getEventList().get(0));
+//        control.getEventList().get(0).getCancelledList().add(control.getUserList().get(2));
+//        control.getEventList().get(0).getCancelledList().add(control.getUserList().get(3));
+//        // FinalList
+//        control.getEventList().get(0).getFinalList().add(control.getUserList().get(0));
+//        control.getEventList().get(0).getFinalList().add(control.getUserList().get(1));
+//
+//        // For event 1,2, the organizer reroll, so that everyone gets an invitation message
+//        organizer.reRoll(organizer.getOrganizedList().get(1));
+//        organizer.reRoll(organizer.getOrganizedList().get(2));
+//
+//
+//    }
 
-        // 10 entrants (index 0-9)
-        for (int i = 0; i < 10; i++) {
-            User entrant = new User(control.getUserIDForUserCreation(), "Entrant" + i, "entrant" + i + "@example.com", "contact" + i, false);
-            control.getUserList().add(entrant);
-        }
-
-        // 1 organizer (index 10)
-        User organizer = new User(control.getUserIDForUserCreation(), "Organizer", "organizer" + "@example.com", "contact", false);
-        control.getUserList().add(organizer);
-        organizer.createFacility(control, "Test Facility Name", "Test Facility Location", "Test Facility Description", "Test Facility Open Time");
-
-
-        // 1 admin (index 11)
-        User admin = new User(control.getUserIDForUserCreation(), "Admin", "email", "contact", true);
-        control.getUserList().add(admin);
-
-        // Organizer create multiple events
-        organizer.createEvent(control, "Event 1", "Test Event Description", 5, 10, false); // fixed winner
-        organizer.createEvent(control, "Event 2", "Test Event Description", 20, 20, false); // random winner
-        organizer.createEvent(control, "Event 3", "Test Event Description", 20, 20, false); // random winner
-
-        for (int i = 0; i < 10; i++) {
-            control.getUserList().get(i).joinEvent(control.getEventList().get(0));
-            control.getUserList().get(i).joinEvent(control.getEventList().get(1));
-            control.getUserList().get(i).joinEvent(control.getEventList().get(2));
-        }
-
-        // For event 0, we choose user 0-4 to win; 0, 1 accept; 2,3 decline, 4 no response
-        // WaitingList: 5-9
-        // ChosenList: 0, 1, 4
-        // CancelledList: 2, 3
-        // FinalList: 0, 1
-
-        // Remove from waiting list
-        for (int i = 0; i < 5; i++) {
-            control.getEventList().get(0).getWaitingList().remove(control.getUserList().get(i));
-        }
-        // ChosenList
-        control.getEventList().get(0).getChosenList().add(control.getUserList().get(4));
-        // CancelledList
-        control.getUserList().get(2).cancelEvent(control.getEventList().get(0));
-        control.getUserList().get(3).cancelEvent(control.getEventList().get(0));
-        control.getEventList().get(0).getCancelledList().add(control.getUserList().get(2));
-        control.getEventList().get(0).getCancelledList().add(control.getUserList().get(3));
-        // FinalList
-        control.getEventList().get(0).getFinalList().add(control.getUserList().get(0));
-        control.getEventList().get(0).getFinalList().add(control.getUserList().get(1));
-
-        // For event 1,2, the organizer reroll, so that everyone gets an invitation message
-        organizer.reRoll(organizer.getOrganizedList().get(1));
-        organizer.reRoll(organizer.getOrganizedList().get(2));
-
-
-    }
-
-    public static void checkControlData(Control control){
-         // Control Data Test
-        Log.i("UserListSize", String.valueOf(control.getUserList().size()));
-        Log.i("FacilityListSize", String.valueOf(control.getFacilityList().size()));
-        Log.i("EventListSize", String.valueOf(control.getEventList().size()));
-        Log.i("E0 Waiting List Size", String.valueOf(control.getEventList().get(0).getWaitingList().size()));
-        Log.i("E0 Chosen List Size", String.valueOf(control.getEventList().get(0).getChosenList().size()));
-        Log.i("E0 Cancelled List Size", String.valueOf(control.getEventList().get(0).getCancelledList().size()));
-        Log.i("E0 FinalList size", String.valueOf(control.getEventList().get(0).getFinalList().size()));
-        Log.i("U0 FID", control.getUserList().get(0).getFID());
-        Log.i("U0 notification list size", String.valueOf(control.getUserList().get(0).getNotificationList().size()));
-        Log.i("U0 EnrolledList size", String.valueOf(control.getUserList().get(0).getEnrolledList().size()));
-        Log.i("U0 OrganizedList size", String.valueOf(control.getUserList().get(0).getOrganizedList().size()));
-        Log.i("U10 OrganizedEventsize", String.valueOf(control.getUserList().get(2).getOrganizedList().size()));
-        Log.i("Local FID", Control.getLocalFID());
-
-
-    }
+//    public static void checkControlData(Control control){
+//         // Control Data Test
+//        Log.i("UserListSize", String.valueOf(control.getUserList().size()));
+//        Log.i("FacilityListSize", String.valueOf(control.getFacilityList().size()));
+//        Log.i("EventListSize", String.valueOf(control.getEventList().size()));
+//        Log.i("E0 Waiting List Size", String.valueOf(control.getEventList().get(0).getWaitingList().size()));
+//        Log.i("E0 Chosen List Size", String.valueOf(control.getEventList().get(0).getChosenList().size()));
+//        Log.i("E0 Cancelled List Size", String.valueOf(control.getEventList().get(0).getCancelledList().size()));
+//        Log.i("E0 FinalList size", String.valueOf(control.getEventList().get(0).getFinalList().size()));
+//        Log.i("U0 FID", control.getUserList().get(0).getFID());
+//        Log.i("U0 notification list size", String.valueOf(control.getUserList().get(0).getNotificationList().size()));
+//        Log.i("U0 EnrolledList size", String.valueOf(control.getUserList().get(0).getEnrolledList().size()));
+//        Log.i("U0 OrganizedList size", String.valueOf(control.getUserList().get(0).getOrganizedList().size()));
+//        Log.i("U10 OrganizedEventsize", String.valueOf(control.getUserList().get(2).getOrganizedList().size()));
+//        Log.i("Local FID", Control.getLocalFID());
+//
+//
+//    }
 }

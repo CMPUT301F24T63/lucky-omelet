@@ -54,12 +54,12 @@ public class User {
      * @param isAdmin  specifies if the user is an admin
      */
 
-    public User(int userID, String name, String email, String contact, Boolean isAdmin) {
+    public User(int userID, String name, String email, String contact, Boolean isAdmin, String Pic) {
         this.userID = userID;
         this.name = name;
         this.email = email;
         this.contact = contact;
-        this.picture = null; // A user has no picture at creation
+        this.picture = Pic;
         this.facility = null; // A user has no facility at creation
         this.isAdmin = isAdmin;
         this.notificationList = new ArrayList<>();
@@ -263,23 +263,6 @@ public class User {
      */
     public void deletePicture(Control control) {
         this.picture = null;
-    }
-
-    /**
-     * Creates a new facility managed by the user. A user can only have one facility.
-     *
-     * @param control     the control object
-     * @param name        the name of the facility
-     * @param location    the location of the facility
-     * @param description the description of the facility
-     * @param openTime    the opening time of the facility
-     */
-    public void createFacility(Control control, String name, String location, String description, String openTime) {
-        if (this.facility == null) {
-            Facility newFacility = new Facility(name, location, description, openTime, this);
-            this.facility = newFacility;
-            control.getFacilityList().add(newFacility);
-        }
     }
 
     /**

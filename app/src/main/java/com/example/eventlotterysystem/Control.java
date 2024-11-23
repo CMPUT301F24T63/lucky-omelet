@@ -7,6 +7,7 @@
 package com.example.eventlotterysystem;
 
 import android.graphics.Picture;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -47,6 +48,10 @@ public class Control {
     }
 
     // Singleton instance retrieval
+
+    public ArrayList<Notification> getNotificationList() {
+        return notificationList;
+    }
 
     /**
      * Retrieves the singleton instance of {@code Control}. If it does not exist,
@@ -182,6 +187,81 @@ public class Control {
             if (event.getEventID() == eventId) {
                 return event;
             }
+        }
+        return null;
+    }
+
+    public void match(){
+        for (User user : userList) {
+            Facility fac = findFacById(user.getUserID());
+            if (fac!=null){
+                user.setFacility(fac);
+                fac.setCreator(user);
+            }
+        }
+        for (Event event : eventList){
+            User c = findUserById(event.getCreatorRef());
+            if (c != null){
+                event.setCreator(c);
+                c.getOrganizedList().add(event);
+            }
+            for (int id : event.getWaitingListRef()){
+                User u = findUserById(id);
+                if (u!=null){
+                    event.getWaitingList().add(u);
+                    u.getEnrolledList().add(event);
+                }
+            }
+            for (int id : event.getCancelledListRef()){
+                User u = findUserById(id);
+                if (u!=null){
+                    event.getCancelledList().add(u);
+//                    u.getEnrolledList().add(event);
+//                    ?????????????????????????????????????????????????????????????
+                }
+            }
+            for (int id : event.getChosenListRef()){
+                User u = findUserById(id);
+                if (u!=null){
+                    event.getChosenList().add(u);
+                    u.getEnrolledList().add(event);
+                }
+            }
+            for (int id : event.getFinalListRef()){
+                User u = findUserById(id);
+                if (u!=null){
+                    event.getFinalList().add(u);
+                    u.getEnrolledList().add(event);
+                }
+            }
+        }
+    }
+
+    private User findUserById(int userId) {
+        for (User user : userList) {
+            if (user.getUserID() == userId){
+//                Log.i("++++++++++++++++++++++++++++", "++++++++++++++++++++++++++++");
+                return user;
+            }
+        }
+//        Log.i("___________________________", "user"+String.valueOf(userId));
+        return null;
+    }
+
+    private Facility findFacById(int userId) {
+        for (Facility fac : facilityList) {
+            if (fac.getCreatorRef() == userId) {
+//                Log.i("++++++++++++++++++++++++++++", "++++++++++++++++++++++++++++");
+                return fac;
+            }
+        }
+//        Log.i("___________________________", "fac"+String.valueOf(userId));
+        return null;
+    }
+
+    private Event findEventById(int eventId) {
+        for (Event event : eventList) {
+            if (event.getEventID() == eventId) return event;
         }
         return null;
     }
