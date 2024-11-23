@@ -3,6 +3,7 @@ package com.example.eventlotterysystem;
 import android.app.AlertDialog;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Picture;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
@@ -37,8 +38,8 @@ public class ProfileActivity extends AppCompatActivity implements EditProfileFra
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_profile);
         // Test control data
-        Log.i("checkControlData", "Profile Activity Control Data Test");
-        Utils.checkControlData(Control.getInstance());
+//        Log.i("checkControlData", "Profile Activity Control Data Test");
+//        Utils.checkControlData(Control.getInstance());
         curUser = Control.getCurrentUser();
         Log.i("my index", Control.getInstance().getUserList().indexOf(Control.getCurrentUser())+"");
         nameTextView = findViewById(R.id.name);
@@ -48,10 +49,10 @@ public class ProfileActivity extends AppCompatActivity implements EditProfileFra
         gen = findViewById(R.id.generate_button);
         deleteButton = findViewById(R.id.del_button);
 
-        Picture picture = curUser.getPicture();  // Get the current picture from the user object
+        String picture = curUser.getPicture();  // Get the current picture from the user object
         if (picture != null) {
             // If a picture exists, decode the Base64 content and set it to the ImageView
-            Bitmap pictureBitmap = decodeBitmap(picture.getContent());  // Assuming decodeBitmap method to convert String to Bitmap
+            Bitmap pictureBitmap = decodeBitmap(picture);  // Assuming decodeBitmap method to convert String to Bitmap
             profileImageView.setImageBitmap(pictureBitmap);  // Set the generated bitmap as the ImageView source
             gen.setText("Replace Image");
         }
@@ -85,7 +86,19 @@ public class ProfileActivity extends AppCompatActivity implements EditProfileFra
                     .setTitle("Delete Profile Information")
                     .setMessage("Are you sure you want to delete this profile?")
                     .setPositiveButton("Delete", (dialog, which) -> {
-
+                    // Withdraw from all the events
+                        for (Event event : curUser.getEnrolledList()) {
+                            event.getWaitingList().remove(curUser);
+                            if (event.getChosenList().contains(curUser)){
+                                event.getChosenList().remove(curUser);
+                                event.getCancelledList().add(curUser);
+                            }
+                            if (event.getFinalList().contains(curUser)) {
+                                event.getFinalList().remove(curUser);
+                                event.getCancelledList().add(curUser);
+                            }
+                        }
+                        curUser.getEnrolledList().clear();
                         curUser.setName("Default Name");
                         curUser.setEmail("user@example.com");
                         curUser.setContact("000-000-0000");
@@ -139,7 +152,6 @@ public class ProfileActivity extends AppCompatActivity implements EditProfileFra
         nameTextView.setText(curUser.getName());
         emailTextView.setText("Email: " + curUser.getEmail());
         contactTextView.setText("Contact: " + curUser.getContact());
-        Utils.checkControlData(Control.getInstance());
         FirestoreManager.getInstance().saveControl(Control.getInstance());
     }
 
@@ -148,9 +160,9 @@ public class ProfileActivity extends AppCompatActivity implements EditProfileFra
         curUser.generate_picture();  // This calls the generate_picture method in the User class
 
         // After the picture is generated, update the ImageView with the new profile picture
-        Picture generatedPicture = curUser.getPicture();
+        String generatedPicture = curUser.getPicture();
         if (generatedPicture != null) {
-            Bitmap pictureBitmap = decodeBitmap(generatedPicture.getContent());  // Assuming decodeBitmap method to convert String to Bitmap
+            Bitmap pictureBitmap = decodeBitmap(generatedPicture);  // Assuming decodeBitmap method to convert String to Bitmap
             profileImageView.setImageBitmap(pictureBitmap);  // Set the generated bitmap as the ImageView source
             gen.setText("Replace Image");
         } else {

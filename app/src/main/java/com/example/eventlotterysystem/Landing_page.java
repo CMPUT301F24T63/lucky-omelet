@@ -27,12 +27,12 @@ public class Landing_page extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.landing_page);
 
-
-        FirestoreManager.getInstance().loadNotifications(Control.getInstance());
+        Control.getInstance().match();
 
         if (Control.getCurrentUser() == null){
             checkDevice(Control.getInstance());
         }
+//        Control.setCurrentUser(Control.getInstance().getUserList().get(1));
 //        else {
 //            int currentUserID = Control.getCurrentUser().getUserID();
 //            Control control = new Control();
@@ -129,18 +129,17 @@ public class Landing_page extends AppCompatActivity {
         });
 
     }
-
-    @Override
-    protected void onDestroy() {
-        handler.removeCallbacksAndMessages(null); // Clean up any pending callbacks
-        super.onDestroy();
-    }
+//
+//    @Override
+//    protected void onDestroy() {
+//        handler.removeCallbacksAndMessages(null); // Clean up any pending callbacks
+//        super.onDestroy();
+//    }
 
     protected void checkDevice(Control control){
-        Log.i("checkDevice", "checkDevice function Control Data Test");
-        Utils.checkControlData(Control.getInstance());
         for (User user : Control.getInstance().getUserList()) {
             if (user.getFID().equals(Control.getLocalFID())) {
+                Toast.makeText(this, String.valueOf(user.getUserID()), Toast.LENGTH_SHORT).show();
                 Control.setCurrentUser(user);
                 return;
             }
@@ -150,17 +149,31 @@ public class Landing_page extends AppCompatActivity {
             me.setFID(Control.getLocalFID());
             Control.getInstance().getUserList().add(me);
             Control.setCurrentUser(me);
-            // Just don't save... Saving is causing the app to crash
-            // FirestoreManager.getInstance().saveControl(control);
-            // FirestoreManager.getInstance().saveUser(me);
         }
 
-        Log.i("checkDevice", "After checkDevice function Control Data Test");
-        Utils.checkControlData(Control.getInstance());
         FirestoreManager.getInstance().saveControl(Control.getInstance());
-        // Or set user by using index: 0: entrant   10: organizer   11: admin
-        // Control.setCurrentUser(control.getUserList().get(0));
 
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+
+        Toast.makeText(Landing_page.this, "Synchronizing data...", Toast.LENGTH_SHORT).show();
+//        FirestoreManager.getInstance().loadControl(Control.getInstance());
+//        int temp = Control.getCurrentUser().getUserID();
+//
+//        try {
+//            Thread.sleep(2500); // Wait for 2.5 seconds
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+//        for (User user : Control.getInstance().getUserList()) {
+//            if (user.getUserID() == temp){
+//                Control.setCurrentUser(user);
+//            }
+//        }
+//        Control.getInstance().match();
     }
 }
 

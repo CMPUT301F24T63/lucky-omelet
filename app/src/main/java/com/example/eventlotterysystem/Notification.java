@@ -13,6 +13,8 @@ public class Notification {
     private Boolean isAccepted; // Indicates if the user has accepted the notification
     private Boolean isDeclined; // Indicates if the user has declined the notification
     private String customMessage; // Custom message included in the notification
+    private int eventRef;
+    private int userRef;
 
     // Constructor
 
@@ -32,6 +34,17 @@ public class Notification {
         this.isAccepted = false; // On the notification creation stage, no one has accepted yet
         this.isDeclined = false; // On the notification creation stage, no one has declined yet
         this.customMessage = customMessage;
+    }
+
+    public Notification(int eventRef, int userRef, Boolean needAccept, String customMessage, boolean isAccepted, boolean isDeclined) {
+        this.event = null;
+        this.user = null;
+        this.needAccept = needAccept;
+        this.isAccepted = isAccepted; // On the notification creation stage, no one has accepted yet
+        this.isDeclined = isDeclined; // On the notification creation stage, no one has declined yet
+        this.customMessage = customMessage;
+        this.userRef = userRef;
+        this.eventRef = eventRef;
     }
 
     // Getters

@@ -6,6 +6,9 @@
  */
 package com.example.eventlotterysystem;
 
+import android.graphics.Picture;
+import android.util.Log;
+
 import java.util.ArrayList;
 
 public class Control {
@@ -17,10 +20,10 @@ public class Control {
     private ArrayList<User> userList; // List of users in the system
     private ArrayList<Facility> facilityList; // List of facilities managed in the system
     private ArrayList<Event> eventList; // List of events in the system
-    private ArrayList<Picture> pictureList; // List of pictures uploaded by users
+    private ArrayList<Notification> notificationList; // List of notifications for users
     private static Control instance; // Singleton instance of Control
     private static User currentUser = null; // Currently logged-in user
-    private static String localFID; // Local Firebase installation ID
+    private static String localFID = ""; // Local Firebase installation ID
 
     public static void setLocalFID(String localFID) {
         Control.localFID = localFID;
@@ -42,10 +45,13 @@ public class Control {
         this.userList = new ArrayList<>();
         this.facilityList = new ArrayList<>();
         this.eventList = new ArrayList<>();
-        this.pictureList = new ArrayList<>();
     }
 
     // Singleton instance retrieval
+
+    public ArrayList<Notification> getNotificationList() {
+        return notificationList;
+    }
 
     /**
      * Retrieves the singleton instance of {@code Control}. If it does not exist,
@@ -124,14 +130,6 @@ public class Control {
         return eventList;
     }
 
-    /**
-     * Retrieves the list of pictures uploaded by users.
-     *
-     * @return an {@code ArrayList} of {@code Picture} objects
-     */
-    public ArrayList<Picture> getPictureList() {
-        return pictureList;
-    }
 
     /**
      * Retrieves the currently logged-in user.
@@ -189,6 +187,81 @@ public class Control {
             if (event.getEventID() == eventId) {
                 return event;
             }
+        }
+        return null;
+    }
+
+    public void match(){
+        for (User user : userList) {
+            Facility fac = findFacById(user.getUserID());
+            if (fac!=null){
+                user.setFacility(fac);
+                fac.setCreator(user);
+            }
+        }
+        for (Event event : eventList){
+            User c = findUserById(event.getCreatorRef());
+            if (c != null){
+                event.setCreator(c);
+                c.getOrganizedList().add(event);
+            }
+            for (int id : event.getWaitingListRef()){
+                User u = findUserById(id);
+                if (u!=null){
+                    event.getWaitingList().add(u);
+                    u.getEnrolledList().add(event);
+                }
+            }
+            for (int id : event.getCancelledListRef()){
+                User u = findUserById(id);
+                if (u!=null){
+                    event.getCancelledList().add(u);
+//                    u.getEnrolledList().add(event);
+//                    ?????????????????????????????????????????????????????????????
+                }
+            }
+            for (int id : event.getChosenListRef()){
+                User u = findUserById(id);
+                if (u!=null){
+                    event.getChosenList().add(u);
+                    u.getEnrolledList().add(event);
+                }
+            }
+            for (int id : event.getFinalListRef()){
+                User u = findUserById(id);
+                if (u!=null){
+                    event.getFinalList().add(u);
+                    u.getEnrolledList().add(event);
+                }
+            }
+        }
+    }
+
+    private User findUserById(int userId) {
+        for (User user : userList) {
+            if (user.getUserID() == userId){
+//                Log.i("++++++++++++++++++++++++++++", "++++++++++++++++++++++++++++");
+                return user;
+            }
+        }
+//        Log.i("___________________________", "user"+String.valueOf(userId));
+        return null;
+    }
+
+    private Facility findFacById(int userId) {
+        for (Facility fac : facilityList) {
+            if (fac.getCreatorRef() == userId) {
+//                Log.i("++++++++++++++++++++++++++++", "++++++++++++++++++++++++++++");
+                return fac;
+            }
+        }
+//        Log.i("___________________________", "fac"+String.valueOf(userId));
+        return null;
+    }
+
+    private Event findEventById(int eventId) {
+        for (Event event : eventList) {
+            if (event.getEventID() == eventId) return event;
         }
         return null;
     }

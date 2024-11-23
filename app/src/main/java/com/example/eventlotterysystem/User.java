@@ -20,6 +20,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Picture;
 import android.graphics.Typeface;
 import android.util.Base64;
 
@@ -31,7 +32,7 @@ public class User {
     private String name; // Name of the user
     private String email; // Email address of the user
     private String contact; // Contact information of the user
-    private Picture picture; // User's profile picture, stored as a Picture object
+    private String picture; // User's profile picture, stored as a Picture object
     private Facility facility; // Facility managed by the user
     private boolean isAdmin; // Specifies if the user has administrative privileges
     private ArrayList<Notification> notificationList; // List of notifications for the user
@@ -53,12 +54,12 @@ public class User {
      * @param isAdmin  specifies if the user is an admin
      */
 
-    public User(int userID, String name, String email, String contact, Boolean isAdmin) {
+    public User(int userID, String name, String email, String contact, Boolean isAdmin, String Pic) {
         this.userID = userID;
         this.name = name;
         this.email = email;
         this.contact = contact;
-        this.picture = null; // A user has no picture at creation
+        this.picture = Pic;
         this.facility = null; // A user has no facility at creation
         this.isAdmin = isAdmin;
         this.notificationList = new ArrayList<>();
@@ -100,7 +101,7 @@ public class User {
             Bitmap bitmap = createImageWithInitials(initials);
 
             // Create a Picture object with the generated Bitmap (assumes the current user is the uploader)
-            this.picture = new Picture(this, encodeBitmap(bitmap)); // You may need a way to encode the bitmap as a String
+            this.picture = encodeBitmap(bitmap); // You may need a way to encode the bitmap as a String
         }
     }
 
@@ -165,7 +166,7 @@ public class User {
     public String getContact() { return contact; }
 
     /** @return the user's profile picture. */
-    public Picture getPicture() { return picture; }
+    public String getPicture() { return picture; }
 
     /** @return the facility managed by the user. */
     public Facility getFacility() { return facility; }
@@ -204,7 +205,7 @@ public class User {
      *
      * @param picture the picture to set
      */
-    public void setPicture(Picture picture) {
+    public void setPicture(String picture) {
         this.picture = picture;
     }
 
@@ -256,44 +257,12 @@ public class User {
     // Functions
 
     /**
-     * Uploads a new profile picture for the user.
-     *
-     * @param control   the control object
-     * @param uploader  the user uploading the picture
-     */
-    public void uploadPicture(Control control, User uploader) {
-        // encode and save to picture string
-        String encodedContent = "Some Encoded Content";
-        Picture newPic = new Picture(uploader, encodedContent);
-        this.picture = newPic;
-        control.getPictureList().add(newPic);
-    }
-
-    /**
      * Deletes the user's profile picture.
      *
      * @param control  the control object
      */
     public void deletePicture(Control control) {
-        control.getPictureList().remove(this.picture);
         this.picture = null;
-    }
-
-    /**
-     * Creates a new facility managed by the user. A user can only have one facility.
-     *
-     * @param control     the control object
-     * @param name        the name of the facility
-     * @param location    the location of the facility
-     * @param description the description of the facility
-     * @param openTime    the opening time of the facility
-     */
-    public void createFacility(Control control, String name, String location, String description, String openTime) {
-        if (this.facility == null) {
-            Facility newFacility = new Facility(name, location, description, openTime, this);
-            this.facility = newFacility;
-            control.getFacilityList().add(newFacility);
-        }
     }
 
     /**
@@ -343,10 +312,10 @@ public class User {
      * @param limitChosenList    the limit for chosen attendees
      * @param limitWaitingList  the limit for the waiting list
      */
-    public void createEvent(Control control, String name, String description, int limitChosenList, int limitWaitingList) {
+    public void createEvent(Control control, String name, String description, int limitChosenList, int limitWaitingList, boolean geoSetting) {
         if (this.facility != null) {
             int eventID = control.getEventIDForEventCreation();
-            Event newEvent = new Event(eventID, name, description, limitChosenList, limitWaitingList, this);
+            Event newEvent = new Event(eventID, name, description, limitChosenList, limitWaitingList, this, geoSetting);
             this.organizedList.add(newEvent);
             control.getEventList().add(newEvent);
         }

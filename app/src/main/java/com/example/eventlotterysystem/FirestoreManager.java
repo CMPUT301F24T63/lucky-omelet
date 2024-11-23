@@ -5,7 +5,9 @@
 
 package com.example.eventlotterysystem;
 
+import android.graphics.Picture;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -61,11 +63,6 @@ public class FirestoreManager {
             saveEvent(event);
         }
 
-        // Save all pictures
-        for (Picture picture : control.getPictureList()) {
-            savePicture(picture);
-        }
-
     }
 
     public void saveUser(User user) {
@@ -77,28 +74,25 @@ public class FirestoreManager {
         userData.put("isAdmin", user.isAdmin());
         userData.put("notificationSetting", user.getNotificationSetting());
         userData.put("FID", user.getFID());
-
-        if (user.getPicture() != null) {
-            userData.put("pictureRef", db.collection("pictures").document(String.valueOf(user.getUserID())));
-        }
+        userData.put("picture", user.getPicture());
 
         if (user.getFacility() != null) {
             userData.put("facilityRef", db.collection("facilities").document(String.valueOf(user.getFacility().getCreator().getUserID())));
         }
 
         // Save enrolled events as references
-        ArrayList<DocumentReference> enrolledRefs = new ArrayList<>();
-        for (Event event : user.getEnrolledList()) {
-            enrolledRefs.add(db.collection("events").document(String.valueOf(event.getEventID())));
-        }
-        userData.put("enrolledEvents", enrolledRefs);
+//        ArrayList<DocumentReference> enrolledRefs = new ArrayList<>();
+//        for (Event event : user.getEnrolledList()) {
+//            enrolledRefs.add(db.collection("events").document(String.valueOf(event.getEventID())));
+//        }
+//        userData.put("enrolledEvents", enrolledRefs);
 
         // Save organized events as references
-        ArrayList<DocumentReference> organizedRefs = new ArrayList<>();
-        for (Event event : user.getOrganizedList()) {
-            organizedRefs.add(db.collection("events").document(String.valueOf(event.getEventID())));
-        }
-        userData.put("organizedEvents", organizedRefs);
+//        ArrayList<DocumentReference> organizedRefs = new ArrayList<>();
+//        for (Event event : user.getOrganizedList()) {
+//            organizedRefs.add(db.collection("events").document(String.valueOf(event.getEventID())));
+//        }
+//        userData.put("organizedEvents", organizedRefs);
 
         // Save notifications
         DocumentReference userIDRef = db.collection("notifications").document(String.valueOf(user.getUserID()));
@@ -128,9 +122,9 @@ public class FirestoreManager {
         // Save creator as reference
         facilityData.put("creatorRef", db.collection("users").document(String.valueOf(facility.getCreator().getUserID())));
 
-        if (facility.getPoster() != null) {
-            facilityData.put("posterRef", db.collection("pictures").document(String.valueOf(facility.getPoster().getUploader().getUserID())));
-        }
+//        if (facility.getPoster() != null) {
+//            facilityData.put("posterRef", db.collection("pictures").document(String.valueOf(facility.getPoster().getUploader().getUserID())));
+//        }
 
         db.collection("facilities").document(facility.getCreator().getUserID() + "")
                 .set(facilityData)
@@ -146,13 +140,18 @@ public class FirestoreManager {
         eventData.put("limitChosenList", event.getLimitChosenList());
         eventData.put("limitWaitingList", event.getLimitWaitinglList());
         eventData.put("hashCodeQR", event.getHashCodeQR());
+        eventData.put("geoSetting", event.getGeoSetting());
+
+        // save coordinates
+        eventData.put("latitudeList", event.getLatitudeList());
+        eventData.put("longitudeList", event.getLongitudeList());
 
         // Save references
         eventData.put("creatorRef", db.collection("users").document(String.valueOf(event.getCreator().getUserID())));
 
-        if (event.getPoster() != null) {
-            eventData.put("posterRef", db.collection("pictures").document(String.valueOf(event.getPoster().getUploader().getUserID())));
-        }
+//        if (event.getPoster() != null) {
+//            eventData.put("posterRef", db.collection("pictures").document(String.valueOf(event.getPoster().getUploader().getUserID())));
+//        }
 
         // Save user lists as references
         ArrayList<DocumentReference> waitingRefs = new ArrayList<>();
@@ -185,17 +184,6 @@ public class FirestoreManager {
                 .addOnFailureListener(e -> Log.e("Database Error", "Error saving event: " + e));
     }
 
-    private void savePicture(Picture picture) {
-        Map<String, Object> pictureData = new HashMap<>();
-        pictureData.put("content", picture.getContent());
-        pictureData.put("uploaderRef", db.collection("users").document(String.valueOf(picture.getUploader().getUserID())));
-
-        db.collection("pictures").document(String.valueOf(picture.getUploader().getUserID()))
-                .set(pictureData)
-                .addOnSuccessListener(aVoid -> Log.i("Database Success", "Picture saved for user: " + picture.getUploader().getUserID()))
-                .addOnFailureListener(e -> Log.e("Database Error", "Error saving picture: " + e));
-    }
-
     public void loadControl(Control control) {
         if (db == null) {
             Log.e("Database Error", "Database not initialized");
@@ -214,9 +202,8 @@ public class FirestoreManager {
         // load lists
         loadUsers(control);
         loadFacilities(control);
-        loadPictures(control);
         loadEvents(control);
-        // loadNotifications(control);
+//        loadNotifications(control);
     }
 
     private void loadUsers(Control control) {
@@ -228,7 +215,8 @@ public class FirestoreManager {
                                 document.getString("name"),
                                 document.getString("email"),
                                 document.getString("contact"),
-                                document.getBoolean("isAdmin")
+                                document.getBoolean("isAdmin"),
+                                document.contains("picture") ? document.getString("picture") : null
                         );
                         user.setNotificationSetting(document.getBoolean("notificationSetting"));
                         user.setFID(document.getString("FID"));
@@ -243,40 +231,16 @@ public class FirestoreManager {
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     for (DocumentSnapshot document : queryDocumentSnapshots) {
                         DocumentReference creatorRef = (DocumentReference) document.get("creatorRef");
-                        User creator = findUserById(control, Integer.parseInt(creatorRef.getId()));
+                        Facility facility = new Facility(
+                                document.getString("name"),
+                                document.getString("description"),
+                                Integer.parseInt(creatorRef.getId())
+                        );
+                        control.getFacilityList().add(facility);
 
-                        if (creator != null) {
-                            Facility facility = new Facility(
-                                    document.getString("name"),
-                                    document.getString("description"),
-                                    creator
-                            );
-                            control.getFacilityList().add(facility);
-                            creator.setFacility(facility);
-                        }
                     }
                 })
                 .addOnFailureListener(e -> Log.e("Database Error", "Error loading facilities: " + e));
-    }
-
-    private void loadPictures(Control control) {
-        db.collection("pictures").get()
-                .addOnSuccessListener(queryDocumentSnapshots -> {
-                    for (DocumentSnapshot document : queryDocumentSnapshots) {
-                        DocumentReference uploaderRef = (DocumentReference) document.get("uploaderRef");
-                        User uploader = findUserById(control, Integer.parseInt(uploaderRef.getId()));
-
-                        if (uploader != null) {
-                            Picture picture = new Picture(
-                                    uploader,
-                                    document.getString("content")
-                            );
-                            control.getPictureList().add(picture);
-                            uploader.setPicture(picture);
-                        }
-                    }
-                })
-                .addOnFailureListener(e -> Log.e("Database Error", "Error loading pictures: " + e));
     }
 
     private void loadEvents(Control control) {
@@ -294,67 +258,45 @@ public class FirestoreManager {
                         String description = doc.getString("description");
                         int limitChosenList = doc.getLong("limitChosenList").intValue();
                         int limitWaitingList = doc.getLong("limitWaitingList").intValue();
+                        Boolean geoSetting = doc.getBoolean("geoSetting");
+                        String qr = doc.getString("hashCodeQR");
+                        String poster = doc.contains("Picture") ? doc.getString("Picture") : null;
+
                         DocumentReference creatorRef = doc.getDocumentReference("creatorRef");
                         creatorRef.get().addOnCompleteListener(creatorTask -> {
                             DocumentSnapshot creatorDoc = creatorTask.getResult();
                             int creatorId = Integer.parseInt(creatorDoc.getId());
-                            for (User user : control.getUserList()) {
-                                if (user.getUserID()==creatorId) {
-                                    Event curEvent = new Event(id, name, description, limitChosenList, limitWaitingList, user);
-                                    curEvent.generateQR();
-                                    control.getEventList().add(curEvent);
-                                    user.getOrganizedList().add(curEvent);
-                                    List<DocumentReference> waitingList = (List<DocumentReference>) doc.get("waitingList");
-                                    if (waitingList != null) {
-                                        for (DocumentReference userRef : waitingList) {
-                                            int userId = Integer.parseInt(userRef.getId());
-                                            for (User waituser : control.getUserList()) {
-                                                if (waituser.getUserID()==userId) {
-                                                    curEvent.getWaitingList().add(waituser);
-                                                    waituser.getEnrolledList().add(curEvent);
-                                                    break;
-                                                }
-                                            }
-                                        }
-                                    }
-                                    List<DocumentReference> chosenList = (List<DocumentReference>) doc.get("chosenList");
-                                    if (chosenList != null) {
-                                        for (DocumentReference userRef : chosenList) {
-                                            int userId = Integer.parseInt(userRef.getId());
-                                            for (User chosenuser : control.getUserList()) {
-                                                if (chosenuser.getUserID()==userId) {
-                                                    curEvent.getChosenList().add(chosenuser);
-                                                    chosenuser.getEnrolledList().add(curEvent);
-                                                    break;
-                                                }
-                                            }
-                                        }
-                                    }
-                                    List<DocumentReference> cancelledList = (List<DocumentReference>) doc.get("cancelledList");
-                                    if (cancelledList != null) {
-                                        for (DocumentReference userRef : cancelledList) {
-                                            int userId = Integer.parseInt(userRef.getId());
-                                            for (User cancelleduser : control.getUserList()) {
-                                                if (cancelleduser.getUserID()==userId) {
-                                                    curEvent.getCancelledList().add(cancelleduser);
-                                                }
-                                            }
-                                        }
-                                    }
-                                    List<DocumentReference> FinalList = (List<DocumentReference>) doc.get("finalList");
-                                    if (FinalList != null) {
-                                        for (DocumentReference userRef : FinalList) {
-                                            int userId = Integer.parseInt(userRef.getId());
-                                            for (User finaluser : control.getUserList()) {
-                                                if (finaluser.getUserID()==userId) {
-                                                    curEvent.getFinalList().add(finaluser);
-                                                    finaluser.getEnrolledList().add(curEvent);
+                            Event curEvent = new Event(id, name, description, limitChosenList, limitWaitingList, creatorId, geoSetting , qr, poster);
+                            control.getEventList().add(curEvent);
+                            curEvent.setLatitudeList((ArrayList<Double>) doc.get("latitudeList"));
+                            curEvent.setLongitudeList((ArrayList<Double>) doc.get("longitudeList"));
 
-                                                }
-                                            }
-                                        }
-                                    }
-                                    break;
+                            List<DocumentReference> waitingList = (List<DocumentReference>) doc.get("waitingList");
+                            if (waitingList != null) {
+                                for (DocumentReference userRef : waitingList) {
+                                    int userId = Integer.parseInt(userRef.getId());
+                                    curEvent.getWaitingListRef().add(userId);
+                                }
+                            }
+                            List<DocumentReference> cancelList = (List<DocumentReference>) doc.get("cancelledList");
+                            if (cancelList != null) {
+                                for (DocumentReference userRef : cancelList) {
+                                    int userId = Integer.parseInt(userRef.getId());
+                                    curEvent.getCancelledListRef().add(userId);
+                                }
+                            }
+                            List<DocumentReference> chosenList = (List<DocumentReference>) doc.get("chosenList");
+                            if (chosenList != null) {
+                                for (DocumentReference userRef : chosenList) {
+                                    int userId = Integer.parseInt(userRef.getId());
+                                    curEvent.getChosenListRef().add(userId);
+                                }
+                            }
+                            List<DocumentReference> finalList = (List<DocumentReference>) doc.get("finalList");
+                            if (finalList != null) {
+                                for (DocumentReference userRef : finalList) {
+                                    int userId = Integer.parseInt(userRef.getId());
+                                    curEvent.getFinalListRef().add(userId);
                                 }
                             }
                         });
@@ -364,43 +306,25 @@ public class FirestoreManager {
         });
     }
 
-    public void loadNotifications(Control control) {
-        Log.i("Hello", "Hello from loadNotifications!!!!!");
-        Log.i("UserListSize", String.valueOf(control.getUserList().size()));
-        for (User user : control.getUserList()) {
-            String userID = String.valueOf(user.getUserID());
-            db.collection("notifications").document(userID).collection("Events").get()
-                    .addOnSuccessListener(queryDocumentSnapshots -> {
-                        for (DocumentSnapshot document : queryDocumentSnapshots) {
-                            int eventID = -1;
-                            Event event;
-                            try{
-                                eventID=  Integer.parseInt(document.getId());
-                            } catch (Exception e) {
-                                Log.e("Database Error", "Irregular document name in notifications" + e);
-                            }
-                            if (eventID != -1) {
-                                event = findEventById(control, eventID);
-                            } else {
-                                event = null;
-                            }
-
-                            if (event != null) {
-                                Notification notification = new Notification(
-                                        event,
-                                        user,
-                                        document.getBoolean("needAccept"),
-                                        document.getString("customMessage")
-                                );
-                                notification.setAccepted(document.getBoolean("isAccepted"));
-                                notification.setDeclined(document.getBoolean("isDeclined"));
-                                user.getNotificationList().add(notification);
-                            }
-                        }
-                    })
-                    .addOnFailureListener(e -> Log.e("Database Error", "Error loading notifications: " + e));
-        }
-    }
+//    public void loadNotifications(Control control) {
+//        Log.i("Hello", "Hello from loadNotifications!!!!!");
+//        Log.i("UserListSize", String.valueOf(control.getUserList().size()));
+//            db.collection("notifications").document(userID).collection("Events").get()
+//                    .addOnSuccessListener(queryDocumentSnapshots -> {
+//                        for (DocumentSnapshot document : queryDocumentSnapshots) {
+//                            Notification notification = new Notification(
+//                                    Integer.parseInt(document.getId()),
+//                                    Integer.parseInt((DocumentReference) document.get("userRef").getId()),
+//                                    document.getBoolean("needAccept"),
+//                                    document.getString("customMessage"),
+//                                    document.getBoolean("isAccepted"),
+//                                    document.getBoolean("isDeclined")
+//                            );
+//
+//                        }
+//                    })
+//                    .addOnFailureListener(e -> Log.e("Database Error", "Error loading notifications: " + e));
+//    }
 
     // Helper methods
     private void loadUserList(DocumentSnapshot document, String listName,
@@ -435,15 +359,21 @@ public class FirestoreManager {
         return null;
     }
 
-    private Picture findPictureByUploaderId(Control control, int uploaderId) {
-        for (Picture picture : control.getPictureList()) {
-            if (picture.getUploader().getUserID() == uploaderId) return picture;
-        }
-        return null;
-    }
-
     // delete functions: these functions will only delete data from database, not delete in ram or frontend
     public void deleteEventFromDatabase(Event event) {
+        // Before deleting event, delete all related notifications
+        for (User user: Control.getInstance().getUserList()) {
+            // a list of notifications to be deleted
+            ArrayList<Notification> deleteList = new ArrayList<>();
+            for (Notification notification: user.getNotificationList()) {
+                if (notification.getEvent().getEventID() == event.getEventID()) {
+                    deleteList.add(notification);
+                    deleteNotificationFromDatabase(notification);
+                }
+            }
+            user.getNotificationList().removeAll(deleteList);
+        }
+
         db.collection("events").document(String.valueOf(event.getEventID())).delete()
                 .addOnSuccessListener(aVoid -> {
                     Log.i("Database Success", "Event deleted: " + event.getEventID());
@@ -456,6 +386,13 @@ public class FirestoreManager {
     // Here is an example:
     // FirestoreManager.getInstance().deleteFacilityFromDatabase(Control.getCurrentUser().getFacility());
     public void deleteFacilityFromDatabase(Facility facility) {
+        // Delete facility will also delete all events created by this user
+        for (Event event: facility.getCreator().getOrganizedList()) {
+            deleteEventFromDatabase(event);
+            Control.getInstance().getEventList().remove(event);
+        }
+        facility.getCreator().getOrganizedList().clear();
+
         db.collection("facilities").document(String.valueOf(facility.getCreator().getUserID())).delete()
                 .addOnSuccessListener(aVoid -> {
                     Log.i("Database Success", "Facility deleted: " + facility.getCreator().getUserID());
@@ -463,10 +400,6 @@ public class FirestoreManager {
                 .addOnFailureListener(e -> {
                     Log.e("Database Error", "Error deleting facility: " + e);
                 });
-    }
-
-    public void deletePictureFromDatabase(Picture picture) {
-        // will be implemented later
     }
 
     public void deleteNotificationFromDatabase(Notification notification) {
