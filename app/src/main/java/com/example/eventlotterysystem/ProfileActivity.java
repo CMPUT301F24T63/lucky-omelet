@@ -72,11 +72,12 @@ public class ProfileActivity extends AppCompatActivity implements EditProfileFra
                     if (uri != null) {
                         selectedImageUri = uri;
                         Bitmap bmURI = getBitmapFromUri(uri);
-                        curUser.setPicture(new Picture(curUser, encodeBitmap(bmURI)));
+                        curUser.setPicture(encodeBitmap(bmURI));
                         gen.setText("Replace Image");
                         Glide.with(this)
                                 .load(uri)
                                 .into(profileImageView);
+                        FirestoreManager.getInstance().saveControl(Control.getInstance());
                     }
                 }
         );
