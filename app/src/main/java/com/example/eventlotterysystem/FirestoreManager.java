@@ -140,6 +140,7 @@ public class FirestoreManager {
         eventData.put("limitChosenList", event.getLimitChosenList());
         eventData.put("limitWaitingList", event.getLimitWaitinglList());
         eventData.put("hashCodeQR", event.getHashCodeQR());
+        eventData.put("poster", event.getPoster());
         eventData.put("geoSetting", event.getGeoSetting());
 
         // save coordinates

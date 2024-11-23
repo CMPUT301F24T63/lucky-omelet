@@ -1,9 +1,11 @@
 package com.example.eventlotterysystem;
 
-import android.app.ProgressDialog;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
+import android.provider.MediaStore;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,8 +22,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import com.bumptech.glide.Glide;
-import java.util.UUID;
-import java.util.concurrent.atomic.AtomicBoolean;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 
 
 /**
@@ -36,6 +39,7 @@ public class CreateEventDialogFragment extends DialogFragment {
     private ImageButton removeImageButton;
     private Button uploadImageButton;
     private Uri selectedImageUri;
+    private String pos;
 
     // ActivityResultLauncher for image selection
     private ActivityResultLauncher<String> pickImageLauncher;
@@ -72,6 +76,8 @@ public class CreateEventDialogFragment extends DialogFragment {
                 uri -> {
                     if (uri != null) {
                         selectedImageUri = uri;
+                        Bitmap bmURI = getBitmapFromUri(uri);
+                        pos = encodeBitmap(bmURI);
                         imagePreview.setVisibility(View.VISIBLE);
                         removeImageButton.setVisibility(View.VISIBLE);
                         Glide.with(this)
@@ -92,6 +98,7 @@ public class CreateEventDialogFragment extends DialogFragment {
             imagePreview.setVisibility(View.GONE);
             removeImageButton.setVisibility(View.GONE);
             imagePreview.setImageDrawable(null);
+            pos = null;
             Toast.makeText(getContext(), "Image removed", Toast.LENGTH_SHORT).show();
         });
 
@@ -116,6 +123,8 @@ public class CreateEventDialogFragment extends DialogFragment {
             }
             boolean geo = locationSwitch.isChecked();
             Event newEvent = new Event(Control.getInstance().getEventIDForEventCreation(), eventTitle, eventDescription,limitChosen,limitWaiting,curUser,geo);
+            newEvent.generateQR();
+            newEvent.setPoster(pos);
 
             // Pass the event to the listener
             if (listener != null) {
@@ -131,5 +140,31 @@ public class CreateEventDialogFragment extends DialogFragment {
         cancelButton.setOnClickListener(v -> dismiss()); // Close the dialog if canceled
 
         return view;
+    }
+    /**
+     * Decodes a Base64 encoded string back to a Bitmap.
+     *
+     * @param encodedImage The Base64 encoded image content.
+     * @return The decoded Bitmap.
+     */
+    private Bitmap decodeBitmap(String encodedImage) {
+        byte[] decodedString = Base64.decode(encodedImage, Base64.DEFAULT);
+        return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+    }
+    private Bitmap getBitmapFromUri(Uri uri) {
+        try {
+            return MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), uri);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    // Helper method to encode Bitmap to a String (Base64 encoding or any method you prefer)
+    private String encodeBitmap(Bitmap bitmap) {
+        // Convert bitmap to a Base64 encoded string (as an example)
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+        byte[] byteArray = baos.toByteArray();
+        return Base64.encodeToString(byteArray, Base64.DEFAULT);
     }
 }
